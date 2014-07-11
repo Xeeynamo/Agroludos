@@ -20,23 +20,17 @@ import javax.swing.*;
 public class JFrameHomePartec extends javax.swing.JFrame
 {
     AgroConnect db;
+    AgroPartec agro;
     
     public JFrameHomePartec()
     {
         initComponents();
-        try {
-            db = new AgroConnect("root", "agroludos");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.agro = null;
+    }
+    public JFrameHomePartec(AgroPartec agro)
+    {
+        initComponents();
+        this.agro = agro;
     }
 
     /**

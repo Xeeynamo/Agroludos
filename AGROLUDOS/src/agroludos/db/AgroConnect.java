@@ -1,7 +1,11 @@
 package agroludos.db;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class AgroConnect
 {
@@ -20,9 +24,41 @@ public class AgroConnect
         s = (Statement)db.createStatement();
     }
     
+    public int MySqlLogin(String username, String password) throws SQLException
+    {
+        s.executeQuery("SELECT tipo FROM utente WHERE mail=\"" + username +
+                "\" AND password=PASSWORD('" + password + "');");
+        ResultSet rs = s.getResultSet();
+        if (rs.next() == false)
+            return -1;
+        else
+            return rs.getInt("tipo");
+    }
+    
     public AgroUser Login(String user, String password)
     {
-        return new AgroSysMan(s);
+        int tipo = -1;
+        try
+        {
+            tipo = MySqlLogin(user, password);
+            switch (tipo)
+            {
+                case 0:
+                    return new AgroPartec(s);
+                case 1:
+                    return new AgroCompMan(s);
+                case 2:
+                    return new AgroSysMan(s);
+                default:
+                    JOptionPane.showMessageDialog(null, "Indirizzo E-mail o password errati\n",
+                            "Errore", JOptionPane.ERROR_MESSAGE);
+                    return null;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Impossibile stabilire una connessione col database\n" +
+                    e.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
     }
     
     // PARTE DEDICATA AL MANAGER DI SISTEMA

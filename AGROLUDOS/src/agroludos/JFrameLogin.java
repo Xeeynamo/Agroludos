@@ -6,13 +6,7 @@
 
 package agroludos;
 
-import agroludos.db.AgroConnect;
-import agroludos.db.AgroSysMan;
-import agroludos.db.AgroUser;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import agroludos.db.*;
 import javax.swing.*;
 
 /**
@@ -47,27 +41,27 @@ public class JFrameLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextFieldUsername = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextFieldPassword = new javax.swing.JTextField();
-        jButtonEntra = new javax.swing.JButton();
-        jButtonRegistrati = new javax.swing.JButton();
+        jTextMail = new javax.swing.JTextField();
+        jLoginMail = new javax.swing.JLabel();
+        jLoginPassword = new javax.swing.JLabel();
+        jTextPassword = new javax.swing.JTextField();
+        jLoginEntra = new javax.swing.JButton();
+        jLoginRegistrati = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Nome utente");
+        jLoginMail.setText("Nome utente");
 
-        jLabel2.setText("Password");
+        jLoginPassword.setText("Password");
 
-        jButtonEntra.setText("Entra");
-        jButtonEntra.addActionListener(new java.awt.event.ActionListener() {
+        jLoginEntra.setText("Entra");
+        jLoginEntra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonEntraActionPerformed(evt);
+                jLoginEntraActionPerformed(evt);
             }
         });
 
-        jButtonRegistrati.setText("Registrati");
+        jLoginRegistrati.setText("Registrati");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -78,16 +72,16 @@ public class JFrameLogin extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
+                            .addComponent(jLoginMail)
+                            .addComponent(jLoginPassword))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextFieldPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                            .addComponent(jTextFieldUsername)))
+                            .addComponent(jTextPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                            .addComponent(jTextMail)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonRegistrati)
+                        .addComponent(jLoginRegistrati)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonEntra, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLoginEntra, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -95,29 +89,40 @@ public class JFrameLogin extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jTextMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLoginMail))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(jTextPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLoginPassword))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonRegistrati)
-                    .addComponent(jButtonEntra))
+                    .addComponent(jLoginRegistrati)
+                    .addComponent(jLoginEntra))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonEntraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEntraActionPerformed
-        AgroUser user = Agroludos.agroConnect.Login("SysMan", "password");
-        JFrameMainSystem jFrame = new JFrameMainSystem((AgroSysMan)user);
-        this.setVisible(false);
-        jFrame.pack();
-        jFrame.setVisible(true);
-    }//GEN-LAST:event_jButtonEntraActionPerformed
+    private void jLoginEntraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginEntraActionPerformed
+        AgroUser user = Agroludos.agroConnect.Login(jTextMail.getText(), jTextPassword.getText());
+        if (user != null)
+        {
+            JFrame jFrame;
+            if (user instanceof  AgroSysMan)
+                jFrame = new JFrameMainSystem((AgroSysMan)user);
+            else if (user instanceof  AgroCompMan)
+                jFrame = new JFrameManComp((AgroCompMan)user);
+            else if (user instanceof  AgroPartec)
+                jFrame = new JFrameHomePartec((AgroPartec)user);
+            else
+                return;
+            this.setVisible(false);
+            jFrame.pack();
+            jFrame.setVisible(true);
+        }
+    }//GEN-LAST:event_jLoginEntraActionPerformed
 
     /**
      * @param args the command line arguments
@@ -155,11 +160,11 @@ public class JFrameLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonEntra;
-    private javax.swing.JButton jButtonRegistrati;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextFieldPassword;
-    private javax.swing.JTextField jTextFieldUsername;
+    private javax.swing.JButton jLoginEntra;
+    private javax.swing.JLabel jLoginMail;
+    private javax.swing.JLabel jLoginPassword;
+    private javax.swing.JButton jLoginRegistrati;
+    private javax.swing.JTextField jTextMail;
+    private javax.swing.JTextField jTextPassword;
     // End of variables declaration//GEN-END:variables
 }

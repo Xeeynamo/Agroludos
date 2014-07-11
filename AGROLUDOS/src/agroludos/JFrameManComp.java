@@ -6,17 +6,26 @@
 
 package agroludos;
 
+import agroludos.db.*;
+import java.awt.*;
+import javax.swing.*;
+import java.sql.SQLException;
+
 /**
  *
  * @author Luciano
  */
 public class JFrameManComp extends javax.swing.JFrame {
 
-    /**
-     * Creates new form JFrameManComp
-     */
+    AgroCompMan agro;
+    
     public JFrameManComp() {
         initComponents();
+        this.agro = null;
+    }
+    public JFrameManComp(AgroCompMan agro) {
+        initComponents();
+        this.agro = agro;
     }
 
     /**

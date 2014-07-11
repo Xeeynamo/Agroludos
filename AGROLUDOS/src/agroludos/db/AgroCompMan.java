@@ -2,9 +2,9 @@ package agroludos.db;
 
 import java.sql.*;
 
-public class AgroSysMan extends AgroUser
+public class AgroCompMan extends AgroUser
 {
-    public AgroSysMan(Statement statement)
+    public AgroCompMan(Statement statement)
     {
         super(statement);
     }
