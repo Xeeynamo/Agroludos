@@ -44,9 +44,9 @@ public class JFrameLogin extends javax.swing.JFrame {
         jTextMail = new javax.swing.JTextField();
         jLoginMail = new javax.swing.JLabel();
         jLoginPassword = new javax.swing.JLabel();
-        jTextPassword = new javax.swing.JTextField();
         jLoginEntra = new javax.swing.JButton();
         jLoginRegistrati = new javax.swing.JButton();
+        jTextPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -75,14 +75,16 @@ public class JFrameLogin extends javax.swing.JFrame {
                             .addComponent(jLoginMail)
                             .addComponent(jLoginPassword))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                            .addComponent(jTextMail)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jTextMail, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jTextPassword)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLoginRegistrati)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLoginEntra, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,8 +95,8 @@ public class JFrameLogin extends javax.swing.JFrame {
                     .addComponent(jLoginMail))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLoginPassword))
+                    .addComponent(jLoginPassword)
+                    .addComponent(jTextPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLoginRegistrati)
@@ -165,6 +167,6 @@ public class JFrameLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLoginPassword;
     private javax.swing.JButton jLoginRegistrati;
     private javax.swing.JTextField jTextMail;
-    private javax.swing.JTextField jTextPassword;
+    private javax.swing.JPasswordField jTextPassword;
     // End of variables declaration//GEN-END:variables
 }

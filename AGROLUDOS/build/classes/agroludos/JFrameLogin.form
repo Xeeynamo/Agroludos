@@ -32,9 +32,12 @@
                           <Component id="jLoginPassword" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jTextPassword" pref="166" max="32767" attributes="0"/>
-                          <Component id="jTextMail" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jTextMail" min="-2" pref="166" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="jTextPassword" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
@@ -43,7 +46,7 @@
                       <Component id="jLoginEntra" min="-2" pref="79" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -57,8 +60,8 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jTextPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLoginPassword" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextPassword" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -83,8 +86,6 @@
         <Property name="text" type="java.lang.String" value="Password"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextPassword">
-    </Component>
     <Component class="javax.swing.JButton" name="jLoginEntra">
       <Properties>
         <Property name="text" type="java.lang.String" value="Entra"/>
@@ -97,6 +98,8 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Registrati"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JPasswordField" name="jTextPassword">
     </Component>
   </SubComponents>
 </Form>

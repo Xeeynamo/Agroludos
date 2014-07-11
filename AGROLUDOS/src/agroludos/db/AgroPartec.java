@@ -1,5 +1,6 @@
 package agroludos.db;
 
+import agroludos.db.components.Optional;
 import java.sql.*;
 
 public class AgroPartec extends AgroUser

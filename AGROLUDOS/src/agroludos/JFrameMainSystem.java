@@ -6,6 +6,7 @@
 
 package agroludos;
 
+import agroludos.db.components.Optional;
 import agroludos.db.*;
 import java.awt.*;
 import javax.swing.*;
