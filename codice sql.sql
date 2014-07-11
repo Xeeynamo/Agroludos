@@ -43,6 +43,7 @@ tipo varchar (255) NOT NULL,
 primary key (id)
 );
 
+alter table competizione add foreign key (tipo) references tipo_comp(nome);
 
 alter table opt_comp add foreign key (comp) references competizione(id);
 
@@ -55,3 +56,21 @@ primary key (part,comp)
 
 alter table prenotazione add foreign key (part) references partecipante(codfisc);
 alter table prenotazione add foreign key (comp) references competizione(id);
+
+alter table competizione add manager_comp int (2) NOT NULL;
+
+alter table competizione add foreign key (manager_comp) references mc(id);
+
+alter table opt_comp add prezzo float (4,2) NOT NULL;
+
+create table opt_pren
+(
+opt varchar (255) NOT NULL,
+part char(16) NOT NULL,
+comp int (4) NOT NULL,
+primary key (opt,part,comp)
+);
+
+alter table opt_pren add foreign key (opt,comp) references opt_comp(opt,comp);
+alter table opt_pren add foreign key (part,comp) references prenotazione (part,comp);
+ 
