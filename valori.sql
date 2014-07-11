@@ -1,0 +1,11 @@
+insert into tipo_comp values ("Tiro con l'arco", "Descrizione?");
+insert into tipo_comp values ("Corsa campestre", "Descrizione plz");
+
+insert into utente values ('sysman@agroludos.it', PASSWORD('L&L'), 2);
+insert into utente values ('luigi.rosini@agroludos.it', PASSWORD('ros290'), 1);
+insert into utente values ('luciano.ciccariello@agroludos.it', PASSWORD('Xeey'), 1);
+
+insert into ms values ('sysman@agroludos.it', 0);
+insert into mc values ('luigi.rosini@agroludos.it', 'Luigi', 'Rosini', 0);
+insert into mc values ('luciano.ciccariello@agroludos.it', 'Luciano', 'Ciccariello', 1);
+
