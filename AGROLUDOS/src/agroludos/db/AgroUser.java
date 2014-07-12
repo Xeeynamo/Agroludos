@@ -1,11 +1,12 @@
 package agroludos.db;
 
-import agroludos.db.components.Optional;
+import agroludos.db.components.*;
 import java.sql.*;
 
 public class AgroUser
 {
     private static final String DB_AGRO = "agroludos";
+    private static final String TABLE_PARTECIPANTE = "partecipante";
     private static final String TABLE_OPTIONAL = "optional";
     
     Statement statement;
@@ -43,17 +44,20 @@ public class AgroUser
         getStatement().executeUpdate(query);
     }
     
-    protected String[] _getOptionalNomi() throws SQLException
+    protected void _addPartec(Partecipante p)
     {
-        sendQuery("SELECT nome FROM " + TABLE_OPTIONAL);
-        ResultSet rs = getStatement().getResultSet();
-        String[] str = new String[getResultSetLength(rs)];
-        for (int i = 0; i < str.length; i++, rs.next())
-        {
-            str[i] = rs.getString("nome");
-        }
-        return str;
+        String s = "INSERT INTO " + TABLE_PARTECIPANTE + " VALUES (" +
+                "\"" + p.getCodiceFiscale()+ "\"" +
+                "\"" + p.getNome() + "\"" +
+                "\"" + p.getCognome() + "\"" +
+                "\"" + p.getIndirizzo() + "\"" +
+                "'" + p.getDataNascita()+ "'" +
+                "'" + p.getSesso()+ "'" +
+                "\"" + p.getTesseraSan()+ "\"" +
+                "\"" + p.getCertSrc()+ "\"" +
+                "'" + p.getDataSrc()+ "'";
     }
+    
     protected Optional[] _getOptional() throws SQLException
     {
         sendQuery("SELECT * FROM " + TABLE_OPTIONAL);

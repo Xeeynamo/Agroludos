@@ -98,6 +98,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Registrati"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jLoginRegistratiActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JPasswordField" name="jTextPassword">
     </Component>

@@ -49,6 +49,8 @@ public class AgroConnect
                     return new AgroCompMan(s);
                 case 2:
                     return new AgroSysMan(s);
+                case 3:
+                    return new AgroAnonimo(s);
                 default:
                     JOptionPane.showMessageDialog(null, "Indirizzo E-mail o password errati\n",
                             "Errore", JOptionPane.ERROR_MESSAGE);
@@ -60,8 +62,10 @@ public class AgroConnect
         }
         return null;
     }
-    
-    // PARTE DEDICATA AL MANAGER DI SISTEMA
+    public AgroAnonimo LoginAnonimo()
+    {
+        return new AgroAnonimo(s);
+    }
     
     
     public int getPartecipanteId()

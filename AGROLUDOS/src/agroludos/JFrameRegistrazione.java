@@ -6,6 +6,15 @@
 
 package agroludos;
 
+import agroludos.db.components.Partecipante;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Luciano
@@ -229,7 +238,27 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jRegistraConfermaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegistraConfermaActionPerformed
-        
+        SimpleDateFormat d1 = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat d2 = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            d1.parse(jRegistraDatanascita.getText());
+            d2.parse(jRegistraDataSrc.getText());
+            Partecipante p = new Partecipante(
+                jRegistraMail.getText(),
+                jRegistraNome.getText(),
+                jRegistraCognome.getText(),
+                "",
+                jRegistraIndirizzo.getText(),
+                new Date(1, 2, 3),
+                jRegistraSesso.getSelectedIndex() == 0 ? 'M' : 'F',
+                jRegistraTesserasan.getText(),
+                new Date(1, 2, 3),
+                jRegistraCertificatoSrc.getText());
+            Agroludos.agroConnect.LoginAnonimo().addPartec(p);
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(null, "Data di nascita o data SRC non riconosciuta. Il formato corretto è DD/MM/YYYY.\n" + e.toString(),
+                    "Errore", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jRegistraConfermaActionPerformed
 
     private void jRegistraAnnullaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegistraAnnullaActionPerformed

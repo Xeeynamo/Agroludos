@@ -62,6 +62,11 @@ public class JFrameLogin extends javax.swing.JFrame {
         });
 
         jLoginRegistrati.setText("Registrati");
+        jLoginRegistrati.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jLoginRegistratiActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -125,6 +130,10 @@ public class JFrameLogin extends javax.swing.JFrame {
             jFrame.setVisible(true);
         }
     }//GEN-LAST:event_jLoginEntraActionPerformed
+
+    private void jLoginRegistratiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginRegistratiActionPerformed
+        new JFrameRegistrazione().setVisible(true);
+    }//GEN-LAST:event_jLoginRegistratiActionPerformed
 
     /**
      * @param args the command line arguments

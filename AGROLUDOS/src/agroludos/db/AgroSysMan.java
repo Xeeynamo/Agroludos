@@ -10,10 +10,6 @@ public class AgroSysMan extends AgroUser
         super(statement);
     }
     
-    public String[] getOptionalNomi() throws SQLException
-    {
-        return super._getOptionalNomi();
-    }
     public Optional[] getOptional() throws SQLException
     {
         return super._getOptional();
