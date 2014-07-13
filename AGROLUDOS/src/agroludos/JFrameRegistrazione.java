@@ -6,6 +6,8 @@
 
 package agroludos;
 
+import agroludos.db.components.DefCodFiscException;
+import agroludos.db.components.DefEmailException;
 import agroludos.db.components.DefPassException;
 import agroludos.db.components.Partecipante;
 import java.io.File;
@@ -37,7 +39,7 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
 
     
     //AGGIUNTA by ROS (13/07/2014)
-    public String DefinePass (char [] P1,char [] P2) throws DefPassException
+    private String DefinePass (char [] P1,char [] P2) throws DefPassException
     {
         String x;
         String pass1,pass2;
@@ -339,6 +341,12 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
                     "Errore", JOptionPane.ERROR_MESSAGE);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Problemi con il mySQL.\n" + e.toString(),
+                    "Errore", JOptionPane.ERROR_MESSAGE);
+        } catch (DefEmailException e) {
+                        JOptionPane.showMessageDialog(null, "Email inserita già presente nel sistema",
+                    "Errore", JOptionPane.ERROR_MESSAGE);
+        } catch (DefCodFiscException e) {
+                        JOptionPane.showMessageDialog(null, "Codice fiscale inserito già presente nel sistema.\n" + e.toString(),
                     "Errore", JOptionPane.ERROR_MESSAGE);
         }
         

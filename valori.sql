@@ -12,5 +12,4 @@ insert into mc values ('luciano.ciccariello@agroludos.it', 'Luciano', 'Ciccariel
 
 insert into utente values ('geralt@str.com',PASSWORD('furia'),0);
 
-insert into partecipante values ('MOCCATTE12LOLASD','geralt','di rivia',"via temeria",'1992-10-10','M','IOMORO666','2011-8-23','geralt@str.com','C:\Users\Luigi Rosini\Documents\GitHub\Agroludos\File SRC\MOCCATTE12LOLASD.txt');
-
+insert into partecipante values ('MOCCATTE12LOLASD','geralt','di rivia',"via temeria",'1992-10-10','M','IOMORO666','2011-8-23','geralt@str.com','C:\File SRC\MOCCATTE12LOLASD.txt');

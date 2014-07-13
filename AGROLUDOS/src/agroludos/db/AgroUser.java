@@ -50,9 +50,13 @@ public class AgroUser
         getStatement().executeUpdate(query);
     }
     
-    protected void _addPartec(Partecipante p) throws SQLException
+    protected void _addPartec(Partecipante p) throws SQLException,DefEmailException,DefCodFiscException
     {
         //MODIFICA by ROS (13/07/2014)
+        if (!_checkMailExists(p.getMail()))
+            throw new DefEmailException();
+        if (!_checkCodFiscExists(p.getCodiceFiscale()))
+            throw new DefCodFiscException();
         SimpleDateFormat d = new SimpleDateFormat("yyyy-MM-dd");
         String date=d.format(p.getDataNascita());
         String dateSrc=d.format(p.getDataSrc());
@@ -77,8 +81,10 @@ public class AgroUser
                 "'" + p.getMail()+ "'," +
                 "'" + p.getDirSrc()+ "');";
         
-        statement.executeUpdate(s1);
-        statement.executeUpdate(s2);
+        //statement.executeUpdate(s1);
+        //statement.executeUpdate(s2);
+        sendUpdate(s1);
+        sendUpdate(s2);
     }
     
     protected Optional[] _getOptional() throws SQLException
@@ -92,6 +98,53 @@ public class AgroUser
         }
         return opt;
     }
+    
+    private boolean _checkMailExists(String email) throws SQLException
+    {
+        sendQuery("SELECT "+TABLE_PARTECIPANTE+".mail FROM " + TABLE_PARTECIPANTE +" join " + TABLE_UTENTE + " on " + TABLE_PARTECIPANTE+".mail="+TABLE_UTENTE+".mail;");
+        ResultSet rs = getStatement().getResultSet();
+        String [] emailParts= new String[getResultSetLength(rs)];
+        for (int i = 0; i < emailParts.length; i++, rs.next())
+        {
+            emailParts[i]=new String (rs.getString("mail"));
+        }
+        int i=0;
+        while (i<emailParts.length)
+        {
+            if (email.compareTo(emailParts[i])==0)
+                break;
+            i++;
+        }
+        if (i!=emailParts.length)
+            return false;
+        else
+            return true;
+        
+    }
+    
+    private boolean _checkCodFiscExists(String codfisc) throws SQLException
+    {
+        sendQuery("SELECT codfisc FROM " + TABLE_PARTECIPANTE );
+        ResultSet rs = getStatement().getResultSet();
+        String [] codfiscParts= new String[getResultSetLength(rs)];
+        for (int i = 0; i < codfiscParts.length; i++, rs.next())
+        {
+            codfiscParts[i]=new String (rs.getString("codfisc"));
+        }
+        int i=0;
+        while (i<codfiscParts.length)
+        {
+            if (codfisc.compareTo(codfiscParts[i])==0)
+                break;
+            i++;
+        }
+        if (i!=codfiscParts.length)
+            return false;
+        else
+            return true;
+        
+    }
+    
     protected void _setOptional(Optional optional) throws SQLException
     {
         sendUpdate("UPDATE " + TABLE_OPTIONAL +

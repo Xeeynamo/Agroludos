@@ -1,5 +1,7 @@
 package agroludos.db;
 
+import agroludos.db.components.DefCodFiscException;
+import agroludos.db.components.DefEmailException;
 import agroludos.db.components.Partecipante;
 import java.sql.*;
 
@@ -10,7 +12,7 @@ public class AgroAnonimo extends AgroUser
         super(statement);
     }
     
-    public void addPartec(Partecipante p) throws SQLException
+    public void addPartec(Partecipante p) throws SQLException, DefEmailException, DefCodFiscException
     {
         super._addPartec(p);
     }
