@@ -9,30 +9,38 @@ import java.util.logging.Logger;
 
 public class Partecipante
 {
+    //MODIFICA by ROS (12/07/2014) 
     private String mail;
+    private String pass;
     private String nome;
     private String cognome;
     private String codfisc;
     private String indirizzo;
     private Date dataNascita;
+    //private SimpleDateFormat dataNascita = new SimpleDateFormat("yyyy-MM-dd");
     private char sesso;
     private String tesseraSan;
     private Date dataSrc;
+    //private SimpleDateFormat dataSrc = new SimpleDateFormat("yyyy-MM-dd");
     private String certSrc;
     
     public Partecipante(
             String mail,
+            String pass,
             String nome,
             String cognome,
             String codfisc,
             String indirizzo,
             Date dataNascita,
+            //SimpleDateFormat dataNascita,
             char sesso,
             String tesseraSan,
             Date dataSrc,
+            //SimpleDateFormat dataSrc,
             String certSrc)
     {
         this.mail = mail;
+        this.pass=pass;
         this.nome = nome;
         this.cognome = cognome;
         this.codfisc = codfisc;
@@ -58,18 +66,21 @@ public class Partecipante
     }
     public String getCodiceFiscale()
     {
-        return "";
+        return codfisc;
     }
     public String getIndirizzo()
     {
         return indirizzo;
     }
     public Date getDataNascita()
+   //public SimpleDateFormat getDataNascita()
     {
         return dataNascita;
     }
     public String getDataNascitaString()
     {
+        //MODIFICA by ROS (12/07/2014)
+        /*
         SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
         try {
             d.parse(getDataNascita().toString());
@@ -77,7 +88,12 @@ public class Partecipante
             return "";
         }
         d.applyPattern("yyyy/MM/dd");
+                
         return d.toString();
+        */
+        SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
+        return d.format(getDataNascita());
+        //return getDataNascita().toString();
     }
     public char getSesso()
     {
@@ -88,11 +104,14 @@ public class Partecipante
         return tesseraSan;
     }
     public Date getDataSrc()
+    //public SimpleDateFormat getDataSrc()
     {
         return dataSrc;
     }
     public String getDataSrcString()
     {
+        //MODIFICA by ROS (12/07/2014)
+        /*
         SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
         try {
             d.parse(getDataSrc().toString());
@@ -101,9 +120,20 @@ public class Partecipante
         }
         d.applyPattern("yyyy/MM/dd");
         return d.toString();
+        */
+        
+        SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
+        return d.format(getDataSrc());
+        
+        //return getDataSrc().toString();
     }
-    public String getCertSrc()
+    public String getDirSrc()
     {
         return certSrc;
+    }
+    
+    public String getPassword()
+    {
+        return pass;
     }
 }

@@ -74,3 +74,8 @@ primary key (opt,part,comp)
 alter table opt_pren add foreign key (opt,comp) references opt_comp(opt,comp);
 alter table opt_pren add foreign key (part,comp) references prenotazione (part,comp);
  
+alter table partecipante drop src;
+
+alter table partecipante add src varchar (255) NOT NULL;
+
+

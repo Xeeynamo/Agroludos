@@ -10,7 +10,7 @@ public class AgroAnonimo extends AgroUser
         super(statement);
     }
     
-    public void addPartec(Partecipante p)
+    public void addPartec(Partecipante p) throws SQLException
     {
         super._addPartec(p);
     }

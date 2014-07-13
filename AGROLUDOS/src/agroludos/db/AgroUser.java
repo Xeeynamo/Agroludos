@@ -1,13 +1,19 @@
 package agroludos.db;
 
 import agroludos.db.components.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 
 public class AgroUser
 {
     private static final String DB_AGRO = "agroludos";
     private static final String TABLE_PARTECIPANTE = "partecipante";
     private static final String TABLE_OPTIONAL = "optional";
+    private static final String TABLE_UTENTE = "utente";
+    
     
     Statement statement;
     
@@ -44,18 +50,35 @@ public class AgroUser
         getStatement().executeUpdate(query);
     }
     
-    protected void _addPartec(Partecipante p)
+    protected void _addPartec(Partecipante p) throws SQLException
     {
-        String s = "INSERT INTO " + TABLE_PARTECIPANTE + " VALUES (" +
-                "\"" + p.getCodiceFiscale()+ "\"" +
-                "\"" + p.getNome() + "\"" +
-                "\"" + p.getCognome() + "\"" +
-                "\"" + p.getIndirizzo() + "\"" +
-                "'" + p.getDataNascita()+ "'" +
-                "'" + p.getSesso()+ "'" +
-                "\"" + p.getTesseraSan()+ "\"" +
-                "\"" + p.getCertSrc()+ "\"" +
-                "'" + p.getDataSrc()+ "'";
+        //MODIFICA by ROS (13/07/2014)
+        SimpleDateFormat d = new SimpleDateFormat("yyyy-MM-dd");
+        String date=d.format(p.getDataNascita());
+        String dateSrc=d.format(p.getDataSrc());
+        String s1 = "INSERT INTO " + TABLE_UTENTE + " VALUES (" +
+                "\"" + p.getMail()+ "\"," +
+                "PASSWORD(\"" + p.getPassword()+ "\")," +
+                0 + ");";
+        String s2 = "INSERT INTO " + TABLE_PARTECIPANTE + " VALUES (" +
+                "\"" + p.getCodiceFiscale()+ "\"," +
+                "\"" + p.getNome() + "\"," +
+                "\"" + p.getCognome() + "\"," +
+                "\"" + p.getIndirizzo() + "\"," +
+                //"'" + p.getDataNascita()+ "'" +
+                //"'" + p.getDataNascitaString()+ "'," +
+                "'" +date+ "'," +
+                "'" + p.getSesso()+ "'," +
+                "\"" + p.getTesseraSan()+ "\"," +
+                //"\"" + p.getCertSrc()+ "\"" +
+                //"'" + p.getDataSrc()+ "'";
+                //"'"+p.getDataSrcString()+"'," +
+                "'" + dateSrc+ "'," +
+                "'" + p.getMail()+ "'," +
+                "'" + p.getDirSrc()+ "');";
+        
+        statement.executeUpdate(s1);
+        statement.executeUpdate(s2);
     }
     
     protected Optional[] _getOptional() throws SQLException
@@ -76,4 +99,6 @@ public class AgroUser
                 ", prezzo=" + optional.getPrezzo() +
                 " WHERE nome='" + optional.getNome() + "'");
     }
+    
+ 
 }
