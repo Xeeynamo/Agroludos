@@ -329,7 +329,7 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
             jFrame.pack();
             jFrame.setVisible(true);
         } catch (ParseException e) {
-            JOptionPane.showMessageDialog(null, "Data di nascita o data SRC non riconosciuta. Il formato corretto è YYYY/MM/DD.\n" + e.toString(),
+            JOptionPane.showMessageDialog(null, "Data di nascita o data SRC non riconosciuta. Il formato corretto è DD/MM/YYYY.\n" + e.toString(),
                     "Errore", JOptionPane.ERROR_MESSAGE);
         } catch (DefPassException e) {
             JOptionPane.showMessageDialog(null, "Password inseriti diversi.\n" + jRegistratiPwd.getPassword() + "è diverso da " + jRegistratiPwd2.getPassword() +".\n",
