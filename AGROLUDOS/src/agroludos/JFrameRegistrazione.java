@@ -6,6 +6,7 @@
 
 package agroludos;
 
+import agroludos.db.components.CampiVuotiException;
 import agroludos.db.components.DefCodFiscException;
 import agroludos.db.components.DefEmailException;
 import agroludos.db.components.DefPassException;
@@ -48,18 +49,25 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
         else
             throw new DefPassException();
     }
-   public String createFileSrc (String file_name, String text) throws IOException
+    private String DefineSourceFileSrc (String file_name)
     {
         File dir=new File (DIR);
         if (!dir.isDirectory())
             dir.mkdir();
         String x=DIR+"\\"+file_name+".txt";
-        File f=new File (x);
+        return x;
+    }
+    
+    private void createFileSrc (String file_name, String text) throws IOException
+    {
+        File dir=new File (DIR);
+        if (!dir.isDirectory())
+            dir.mkdir();
+        File f=new File (file_name);
         FileWriter fr=new FileWriter (f);
         fr.write(text);
         fr.flush();
         fr.close();
-        return x;
     }
    
    public void deleteFileSrc (String file_name) throws IOException
@@ -306,7 +314,7 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
             //d1.parse(jRegistraDatanascita.getText());
             d2.parse(jRegistraDataSrc.getText());
             Password=DefinePass (jRegistratiPwd.getPassword(),jRegistratiPwd2.getPassword());
-            FileSRC=createFileSrc(jRegistraCodFisc.getText(),jRegistraCertificatoSrc.getText());
+            FileSRC=DefineSourceFileSrc(jRegistraCodFisc.getText());
             Partecipante p = new Partecipante(
                 jRegistraMail.getText(),
                 Password,
@@ -327,33 +335,40 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
                 FileSRC);
             
             Agroludos.agroConnect.LoginAnonimo().addPartec(p);
+            createFileSrc(FileSRC,jRegistraCertificatoSrc.getText());
             jFrame=new JFrameLogin();
+            this.setVisible(false);
             jFrame.pack();
             jFrame.setVisible(true);
         } catch (ParseException e) {
             JOptionPane.showMessageDialog(null, "Data di nascita o data SRC non riconosciuta. Il formato corretto è DD/MM/YYYY.\n" + e.toString(),
                     "Errore", JOptionPane.ERROR_MESSAGE);
         } catch (DefPassException e) {
-            JOptionPane.showMessageDialog(null, "Password inseriti diversi.\n" + jRegistratiPwd.getPassword() + "è diverso da " + jRegistratiPwd2.getPassword() +".\n",
-                    "Errore", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Problemi con il certificato SRC.\n" + e.toString(),
+            JOptionPane.showMessageDialog(null, "Password inseriti diversi.\n",
                     "Errore", JOptionPane.ERROR_MESSAGE);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Problemi con il mySQL.\n" + e.toString(),
                     "Errore", JOptionPane.ERROR_MESSAGE);
         } catch (DefEmailException e) {
-                        JOptionPane.showMessageDialog(null, "Email inserita già presente nel sistema",
+                        JOptionPane.showMessageDialog(null,e.toString(),
                     "Errore", JOptionPane.ERROR_MESSAGE);
         } catch (DefCodFiscException e) {
-                        JOptionPane.showMessageDialog(null, "Codice fiscale inserito già presente nel sistema.\n" + e.toString(),
+                        JOptionPane.showMessageDialog(null, e.toString(),
+                    "Errore", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException e) {
+                                    JOptionPane.showMessageDialog(null, "Errore con la creazione del file SRC.\n" + e.toString(),
+                    "Errore", JOptionPane.ERROR_MESSAGE);
+        } catch (CampiVuotiException e) {
+            JOptionPane.showMessageDialog(null, e.toString(),
                     "Errore", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_jRegistraConfermaActionPerformed
 
     private void jRegistraAnnullaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegistraAnnullaActionPerformed
-        
+
+            this.setVisible(false);  
+            
     }//GEN-LAST:event_jRegistraAnnullaActionPerformed
 
     /**

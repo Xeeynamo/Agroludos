@@ -50,13 +50,15 @@ public class AgroUser
         getStatement().executeUpdate(query);
     }
     
-    protected void _addPartec(Partecipante p) throws SQLException,DefEmailException,DefCodFiscException
+    protected void _addPartec(Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
         //MODIFICA by ROS (13/07/2014)
         if (!_checkMailExists(p.getMail()))
             throw new DefEmailException();
         if (!_checkCodFiscExists(p.getCodiceFiscale()))
             throw new DefCodFiscException();
+        if (_checkCampiVuotiPart(p))
+            throw new CampiVuotiException();
         SimpleDateFormat d = new SimpleDateFormat("yyyy-MM-dd");
         String date=d.format(p.getDataNascita());
         String dateSrc=d.format(p.getDataSrc());
@@ -101,21 +103,21 @@ public class AgroUser
     
     private boolean _checkMailExists(String email) throws SQLException
     {
-        sendQuery("SELECT "+TABLE_PARTECIPANTE+".mail FROM " + TABLE_PARTECIPANTE +" join " + TABLE_UTENTE + " on " + TABLE_PARTECIPANTE+".mail="+TABLE_UTENTE+".mail;");
+        sendQuery("SELECT mail FROM " + TABLE_UTENTE );
         ResultSet rs = getStatement().getResultSet();
-        String [] emailParts= new String[getResultSetLength(rs)];
-        for (int i = 0; i < emailParts.length; i++, rs.next())
+        String [] emailAccs= new String[getResultSetLength(rs)];
+        for (int i = 0; i < emailAccs.length; i++, rs.next())
         {
-            emailParts[i]=new String (rs.getString("mail"));
+            emailAccs[i]=new String (rs.getString("mail"));
         }
         int i=0;
-        while (i<emailParts.length)
+        while (i<emailAccs.length)
         {
-            if (email.compareTo(emailParts[i])==0)
+            if (email.compareTo(emailAccs[i])==0)
                 break;
             i++;
         }
-        if (i!=emailParts.length)
+        if (i!=emailAccs.length)
             return false;
         else
             return true;
@@ -144,6 +146,30 @@ public class AgroUser
             return true;
         
     }
+    
+    protected boolean _checkCampiVuotiPart (Partecipante p)
+    {
+        boolean x=false;
+        if (p.getCodiceFiscale().trim().length()==0)
+            x=true;
+        if (p.getMail().trim().length()==0)
+            x=true;
+        if (p.getCognome().trim().length()==0)
+            x=true;
+        if (p.getDataNascitaString().trim().length()==0)
+            x=true;
+        if (p.getDataSrcString().trim().length()==0)
+            x=true;
+        if (p.getIndirizzo().trim().length()==0)
+            x=true;
+        if (p.getNome().trim().length()==0)
+            x=true;
+        if (p.getPassword().trim().length()==0)
+            x=true;
+        if (p.getTesseraSan().trim().length()==0)
+            x=true;
+        return x;
+    }        
     
     protected void _setOptional(Optional optional) throws SQLException
     {

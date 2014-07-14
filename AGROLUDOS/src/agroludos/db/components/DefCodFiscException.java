@@ -12,4 +12,8 @@ package agroludos.db.components;
  */
 public class DefCodFiscException extends Exception{
     
+    public String toString()
+    {
+            return "Codice fiscale inserito già presente nel sistema.\n";
+    }
 }

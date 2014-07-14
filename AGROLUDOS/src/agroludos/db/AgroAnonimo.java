@@ -1,5 +1,6 @@
 package agroludos.db;
 
+import agroludos.db.components.CampiVuotiException;
 import agroludos.db.components.DefCodFiscException;
 import agroludos.db.components.DefEmailException;
 import agroludos.db.components.Partecipante;
@@ -12,7 +13,7 @@ public class AgroAnonimo extends AgroUser
         super(statement);
     }
     
-    public void addPartec(Partecipante p) throws SQLException, DefEmailException, DefCodFiscException
+    public void addPartec(Partecipante p) throws SQLException, DefEmailException, DefCodFiscException, CampiVuotiException
     {
         super._addPartec(p);
     }

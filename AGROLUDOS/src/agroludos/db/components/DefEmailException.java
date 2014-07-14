@@ -11,5 +11,9 @@ package agroludos.db.components;
  * @author Luigi Rosini
  */
 public class DefEmailException extends Exception{
-    
+
+    public String toString()
+    {
+            return  "Email inserita già presente nel sistema";
+    }
 }

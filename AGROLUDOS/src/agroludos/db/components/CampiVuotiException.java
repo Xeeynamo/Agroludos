@@ -10,9 +10,9 @@ package agroludos.db.components;
  *
  * @author Luigi Rosini
  */
-public class DefPassException extends Exception{
+public class CampiVuotiException extends Exception{
     public String toString()
     {
-            return "Password inseriti diversi.\n";
-    }    
+        return "Almeno un campo è stato lasciato vuoto.\n";
+    }        
 }
