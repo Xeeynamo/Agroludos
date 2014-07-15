@@ -1,6 +1,7 @@
 package agroludos.db;
 
-import agroludos.db.components.Optional;
+import agroludos.db.*;
+import agroludos.db.components.*;
 import java.sql.*;
 
 public class AgroSysMan extends AgroUser
