@@ -33,14 +33,14 @@ public class Partecipante
             Date dataSrc,
             String certSrc)
     {
-        this.mail = mail;
-        this.nome = nome;
-        this.cognome = cognome;
-        this.codfisc = codfisc;
-        this.indirizzo = indirizzo;
+        this.mail = mail.trim();
+        this.nome = nome.trim();
+        this.cognome = cognome.trim();
+        this.codfisc = codfisc.trim();
+        this.indirizzo = indirizzo.trim();
         this.dataNascita = dataNascita;
         this.sesso = sesso;
-        this.tesseraSan = tesseraSan;
+        this.tesseraSan = tesseraSan.trim();
         this.dataSrc = dataSrc;
         this.certSrc = certSrc;
     }
@@ -122,5 +122,25 @@ public class Partecipante
     public String getDirSrc()
     {
         return certSrc;
+    }
+    
+    /**
+     * Controlla se il partecipante corrente contiene parametri validi.
+     * Per fare in modo che ritorni vero, ogni campo deve essere riempito
+     * con almeno un campo.
+     * @return true se il partecipante è valido, viceversa false
+     */
+    public boolean isValid()
+    {
+        if (getCodiceFiscale().length() == 0 ||
+                getMail().length() == 0 ||
+                getNome().length() == 0 ||
+                getCognome().length() == 0 ||
+                getDataNascitaString().length() == 0 ||
+                getDataSrcString().length() == 0 ||
+                getIndirizzo().length() == 0 ||
+                getTesseraSan().length() == 0)
+            return false;
+        return true;
     }
 }

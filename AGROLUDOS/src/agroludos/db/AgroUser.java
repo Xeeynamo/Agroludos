@@ -62,11 +62,11 @@ public class AgroUser
     protected void _addPartec(String password,Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
         //MODIFICA by ROS (13/07/2014)
-        if (!_checkMailExists(p.getMail()))
+        if (!isMailExists(p.getMail()))
             throw new DefEmailException();
         if (!_checkCodFiscExists(p.getCodiceFiscale()))
             throw new DefCodFiscException();
-        if (_checkCampiVuotiPart(password,p))
+        if (isCampiVuoti(password,p))
             throw new CampiVuotiException();
         SimpleDateFormat d = new SimpleDateFormat("yyyy-MM-dd");
         String date=d.format(p.getDataNascita());
@@ -196,78 +196,61 @@ public class AgroUser
         return rs.getInt(1);
     }
     
-    private boolean _checkMailExists(String email) throws SQLException
+    // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai controlli sui campi">
+    /**
+     * Controlla se l'indirizzo mail specificato è presente nel sistema
+     * @param email indirizzo e-mail da verificare
+     * @return true se esiste, viceversa false
+     * @throws SQLException 
+     */
+    private boolean isMailExists(String email) throws SQLException
     {
-        sendQuery("SELECT mail FROM " + TABLE_UTENTE );
-        ResultSet rs = getStatement().getResultSet();
-        String [] emailAccs= new String[getResultSetLength(rs)];
-        for (int i = 0; i < emailAccs.length; i++, rs.next())
+        ResultSet rs = sendQuery("SELECT mail FROM " + TABLE_UTENTE);
+        String[] mailList = new String[getResultSetLength(rs)];
+        for (int i = 0; i < mailList.length; i++, rs.next())
         {
-            emailAccs[i]=new String (rs.getString("mail"));
+            mailList [i] = new String (rs.getString("mail"));
         }
-        int i=0;
-        while (i<emailAccs.length)
+        for (String s : mailList)
         {
-            if (email.compareTo(emailAccs[i])==0)
-                break;
-            i++;
+            if (s.compareTo(email) == 0)
+                return true;
         }
-        if (i!=emailAccs.length)
-            return false;
-        else
-            return true;
-        
+        return false;
     }
     
+    /**
+     * Controlla se il codice fiscale specificato è presente nel sistema
+     * @param codfisc codice fiscale da verificare
+     * @return true se esiste, viceversa false
+     * @throws SQLException 
+     */
     private boolean _checkCodFiscExists(String codfisc) throws SQLException
     {
-        sendQuery("SELECT codfisc FROM " + TABLE_PARTECIPANTE );
-        ResultSet rs = getStatement().getResultSet();
-        String [] codfiscParts= new String[getResultSetLength(rs)];
-        for (int i = 0; i < codfiscParts.length; i++, rs.next())
+        ResultSet rs = sendQuery("SELECT codfisc FROM " + TABLE_PARTECIPANTE );
+        String [] cfList = new String[getResultSetLength(rs)];
+        for (int i = 0; i < cfList.length; i++, rs.next())
         {
-            codfiscParts[i]=new String (rs.getString("codfisc"));
+            cfList[i]=new String (rs.getString("codfisc"));
         }
-        int i=0;
-        while (i<codfiscParts.length)
+        for (String s : cfList)
         {
-            if (codfisc.compareTo(codfiscParts[i])==0)
-                break;
-            i++;
+            if (s.compareTo(codfisc) == 0)
+                return true;
         }
-        if (i!=codfiscParts.length)
-            return false;
-        else
-            return true;
-        
+        return false;
     }
     
-    protected boolean _checkCampiVuotiPart (String Password,Partecipante p)
+    /**
+     * Controlla se sono stati inseriti dei campi vuoti
+     * @param password password inserita
+     * @param p partecipante compilato
+     * @return true se almeno uno dei campi è vuoto
+     */
+    protected boolean isCampiVuoti (String password, Partecipante p)
     {
-        boolean x=false;
-        if (p.getCodiceFiscale().trim().length()==0)
-            x=true;
-        if (p.getMail().trim().length()==0)
-            x=true;
-        if (p.getCognome().trim().length()==0)
-            x=true;
-        if (p.getDataNascitaString().trim().length()==0)
-            x=true;
-        if (p.getDataSrcString().trim().length()==0)
-            x=true;
-        if (p.getIndirizzo().trim().length()==0)
-            x=true;
-        if (p.getNome().trim().length()==0)
-            x=true;
-        if (Password.trim().length()==0)
-            x=true;
-        if (p.getTesseraSan().trim().length()==0)
-            x=true;
-        return x;
+        return password.trim().length() == 0 || !p.isValid();
     }        
-    
-    
-    
-    
+    // </editor-fold>
  
 }
