@@ -11,36 +11,29 @@ public class Partecipante
 {
     //MODIFICA by ROS (12/07/2014) 
     private String mail;
-    //private String pass;
     private String nome;
     private String cognome;
     private String codfisc;
     private String indirizzo;
     private Date dataNascita;
-    //private SimpleDateFormat dataNascita = new SimpleDateFormat("yyyy-MM-dd");
     private char sesso;
     private String tesseraSan;
     private Date dataSrc;
-    //private SimpleDateFormat dataSrc = new SimpleDateFormat("yyyy-MM-dd");
     private String certSrc;
     
     public Partecipante(
             String mail,
-            //String pass,
             String nome,
             String cognome,
             String codfisc,
             String indirizzo,
             Date dataNascita,
-            //SimpleDateFormat dataNascita,
             char sesso,
             String tesseraSan,
             Date dataSrc,
-            //SimpleDateFormat dataSrc,
             String certSrc)
     {
         this.mail = mail;
-        //this.pass=pass;
         this.nome = nome;
         this.cognome = cognome;
         this.codfisc = codfisc;
@@ -73,7 +66,6 @@ public class Partecipante
         return indirizzo;
     }
     public Date getDataNascita()
-   //public SimpleDateFormat getDataNascita()
     {
         return dataNascita;
     }
@@ -131,10 +123,4 @@ public class Partecipante
     {
         return certSrc;
     }
-    
-    /*public String getPassword()
-    {
-        return pass;
-    }
-    */
 }

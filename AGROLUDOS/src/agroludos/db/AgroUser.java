@@ -48,9 +48,16 @@ public class AgroUser
             return 0;
     }
     
-    private void sendQuery(String query) throws SQLException
+    /**
+     * Esegue la query specificata e ritorna il risultato
+     * @param query da eseguire
+     * @return set di risultati
+     * @throws SQLException 
+     */
+    private ResultSet sendQuery(String query) throws SQLException
     {
         getStatement().executeQuery(query);
+        return getStatement().getResultSet();
     }
     private void sendUpdate(String query) throws SQLException
     {
@@ -140,6 +147,12 @@ public class AgroUser
         return comp;
     }        
     
+    // <editor-fold defaultstate="collapsed" desc="Parte dedicata agli optional">
+    /**
+     * Ottiene l'intera lista degli optional
+     * @return array di optional
+     * @throws SQLException 
+     */
     protected Optional[] _getOptional() throws SQLException
     {
         sendQuery("SELECT * FROM " + TABLE_OPTIONAL);
@@ -165,6 +178,39 @@ public class AgroUser
         return opt;
 
     }
+    /**
+     * Aggiorna i valori di uno specifico optional
+     * @param optional da scrivere
+     * @throws SQLException 
+     */
+    protected void _setOptional(Optional optional) throws SQLException
+    {
+        sendUpdate("UPDATE " + TABLE_OPTIONAL +
+                " SET descrizione='" + optional.getDescrizione() + "'" +
+                ", prezzo=" + optional.getPrezzo() +
+                " WHERE nome='" + optional.getNome() + "'");
+    }
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Parte dedicata agli utenti">
+    /**
+     * Ottiene una lista di soli nomi e cognomi di tutti i partecipanti iscritti
+     * sin dall'inizio.
+     * @return
+     * @throws SQLException 
+     */
+    protected String[] _getPartecipantiNome() throws SQLException
+    {
+        String query = "SELECT nome, cognome FROM partecipante";
+        ResultSet rs = sendQuery(query);
+        String[] str = new String[getResultSetLength(rs)];
+        for (int i = 0; i < str.length; i++, rs.next())
+        {
+            str[i] = rs.getString("nome") + " " + rs.getString("cognome");
+        }
+        return str;
+    }
+    // </editor-fold>
     
     protected int _getNPartecipanti (int id) throws SQLException
     {
@@ -243,13 +289,6 @@ public class AgroUser
         return x;
     }        
     
-    protected void _setOptional(Optional optional) throws SQLException
-    {
-        sendUpdate("UPDATE " + TABLE_OPTIONAL +
-                " SET descrizione='" + optional.getDescrizione() + "'" +
-                ", prezzo=" + optional.getPrezzo() +
-                " WHERE nome='" + optional.getNome() + "'");
-    }
     
     
     

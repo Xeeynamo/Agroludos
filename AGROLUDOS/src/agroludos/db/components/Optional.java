@@ -25,4 +25,9 @@ public class Optional
     {
         return price;
     }
+    
+    @Override public String toString()
+    {
+        return getNome();
+    }
 }
