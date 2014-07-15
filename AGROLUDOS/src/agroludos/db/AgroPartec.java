@@ -11,7 +11,7 @@ public class AgroPartec extends AgroUser
         super(statement, mail);
     }
     
-    public Competizione [] getCompetizioniDisponibili () throws SQLException, CampiVuotiException
+    public Competizione [] getCompetizioniDisponibili () throws SQLException
     {
         return super._getCompetizioniDisponibili();
     }

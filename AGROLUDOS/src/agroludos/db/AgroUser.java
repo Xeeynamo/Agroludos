@@ -107,7 +107,7 @@ public class AgroUser
             return new Partecipante(email,rs.getString("nome"),rs.getString("cognome"),rs.getString("codfisc"),rs.getString("indirizzo"),rs.getDate("datanascita"),(char)rs.getInt("sesso"),rs.getString("tes_san"),rs.getDate("data_src"),rs.getString("src"));  
     }
             
-    protected Competizione[] _getCompetizioniDisponibili() throws SQLException, CampiVuotiException
+    protected Competizione[] _getCompetizioniDisponibili() throws SQLException
     {
         String s1;
         ResultSet rs;
@@ -152,10 +152,9 @@ public class AgroUser
         return opt;
     }
     
-    protected Optional[] _getOptional(int id) throws CampiVuotiException //da scambiare cn mysqlexception
+    protected Optional[] _getOptional(int id) throws  SQLException 
     {
-        try
-        {    
+  
         sendQuery("SELECT * FROM " + TABLE_OPTIONAL +" join opt_comp on optional.nome=opt_comp.opt where opt_comp.comp="+id);
         ResultSet rs = getStatement().getResultSet();
         Optional[] opt = new Optional[getResultSetLength(rs)];
@@ -164,11 +163,7 @@ public class AgroUser
             opt[i] = new Optional(rs.getString("nome"), rs.getString("descrizione"), rs.getFloat("opt_comp.prezzo"));
         }
         return opt;
-        }
-        catch(SQLException e)
-        {
-            throw new CampiVuotiException();
-        }
+
     }
     
     protected int _getNPartecipanti (int id) throws SQLException

@@ -56,11 +56,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
             jFrame.pack();
             jFrame.setVisible(true);
         }
-        catch (CampiVuotiException e) 
-        {
-            JOptionPane.showMessageDialog(null, e.toString(),
-                    "Errore", JOptionPane.ERROR_MESSAGE);
-        }
+
         catch (Exception e)
         {
             JOptionPane.showMessageDialog(null, "Impossibile stabilire una connessione col database\n" +
