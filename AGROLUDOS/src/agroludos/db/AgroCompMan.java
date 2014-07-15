@@ -6,9 +6,9 @@ import java.sql.*;
 
 public class AgroCompMan extends AgroUser
 {
-    public AgroCompMan(Statement statement)
+    public AgroCompMan(Statement statement, String mail)
     {
-        super(statement);
+        super(statement, mail);
     }
     
     public Optional[] getOptional() throws SQLException

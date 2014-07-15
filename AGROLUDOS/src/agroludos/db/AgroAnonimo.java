@@ -10,7 +10,7 @@ public class AgroAnonimo extends AgroUser
 {
     public AgroAnonimo(Statement statement)
     {
-        super(statement);
+        super(statement, null);
     }
     
     public void addPartec(Partecipante p) throws SQLException, DefEmailException, DefCodFiscException, CampiVuotiException

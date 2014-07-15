@@ -16,15 +16,21 @@ public class AgroUser
     
     
     Statement statement;
+    String mail;
     
-    public AgroUser(Statement statement)
+    public AgroUser(Statement statement, String mail)
     {
         this.statement = statement;
+        this.mail = mail;
     }
     
     protected Statement getStatement()
     {
         return statement;
+    }
+    protected String getMail()
+    {
+        return mail;
     }
     protected int getResultSetLength(ResultSet rs) throws SQLException
     {

@@ -44,11 +44,11 @@ public class AgroConnect
             switch (tipo)
             {
                 case 0:
-                    return new AgroPartec(s);
+                    return new AgroPartec(s, user);
                 case 1:
-                    return new AgroCompMan(s);
+                    return new AgroCompMan(s, user);
                 case 2:
-                    return new AgroSysMan(s);
+                    return new AgroSysMan(s, user);
                 case 3:
                     return new AgroAnonimo(s);
                 default:
