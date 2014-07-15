@@ -517,6 +517,17 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    void CreateList(JList jList, Object[] list)
+    {
+        DefaultListModel listModel = new DefaultListModel();
+        jList.removeAll();
+        for (Object o : list)
+        {
+            listModel.addElement(o.toString());
+        }
+        jList.setModel(listModel);
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda gli optional">
     /**
      * Ricarica completamente la scheda Optional
@@ -525,13 +536,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     void ReloadOpitonalTab() throws SQLException
     {
         listOptional = agro.getOptional();
-        DefaultListModel listModel = new DefaultListModel();
-        jListOptional.removeAll();
-        for (Optional opt : listOptional)
-        {
-            listModel.addElement(opt.getNome());
-        }
-        jListOptional.setModel(listModel);
+        CreateList(jListOptional, listOptional);
     }
     /**
      * Aggiorna tutte le proprietà annesse ad uno specifico optional
@@ -558,6 +563,15 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         ReloadOptional(index);
     }
     // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda gli utenti">
+    /**
+     * Inserisce nella lista, i nomi di tutti i partecipanti
+     */
+    void PartecipantiLoadList() throws SQLException
+    {
+        CreateList(jListaUtenti, agro.getPartecipantiNome());
+    }
+    // </editor-fold>
     
     /**
      * Chiamata quando si cambia scheda
@@ -569,6 +583,8 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         {
             if (name == "jPanelOptional")
                 ReloadOpitonalTab();
+            else if (name == "jPanelPartecipanti")
+                PartecipantiLoadList();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Impossibile caricare gli optional\n" +
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);

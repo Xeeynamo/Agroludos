@@ -19,4 +19,8 @@ public class AgroSysMan extends AgroUser
     {
         super._setOptional(optional);
     }
+    public String[] getPartecipantiNome() throws SQLException
+    {
+        return super._getPartecipantiNome();
+    }
 }

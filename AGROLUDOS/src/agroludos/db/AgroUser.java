@@ -48,23 +48,17 @@ public class AgroUser
             return 0;
     }
     
-    private void sendQuery(String query) throws SQLException
+
+    private ResultSet sendQuery(String query) throws SQLException
     {
         getStatement().executeQuery(query);
+        return getStatement().getResultSet();
     }
     private void sendUpdate(String query) throws SQLException
     {
         getStatement().executeUpdate(query);
     }
-    /**
-     * 
-     * @param password
-     * @param p
-     * @throws SQLException
-     * @throws DefEmailException
-     * @throws DefCodFiscException
-     * @throws CampiVuotiException 
-     */
+
     protected void _addPartec(String password,Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
         //MODIFICA by ROS (13/07/2014)
@@ -103,12 +97,7 @@ public class AgroUser
         sendUpdate(s1);
         sendUpdate(s2);
     }
-    /**
-     * 
-     * @param email
-     * @return
-     * @throws SQLException 
-     */
+
     protected Partecipante _getPartecipante(String email) throws SQLException
     {
         String s1="SELECT * from "+ TABLE_UTENTE +" join "+ TABLE_PARTECIPANTE +" on "+ TABLE_UTENTE +".mail="+ TABLE_PARTECIPANTE +".mail where "+ TABLE_UTENTE +".mail="+email+" and "+ TABLE_UTENTE +" and "+ TABLE_UTENTE +".tipo=0";
@@ -119,11 +108,7 @@ public class AgroUser
         else
             return new Partecipante(email,rs.getString("nome"),rs.getString("cognome"),rs.getString("codfisc"),rs.getString("indirizzo"),rs.getDate("datanascita"),(char)rs.getInt("sesso"),rs.getString("tes_san"),rs.getDate("data_src"),rs.getString("src"));  
     }
-    /**
-     * 
-     * @return
-     * @throws SQLException 
-     */     
+   
     protected Competizione[] _getCompetizioniDisponibili() throws SQLException
     {
         String s1;
@@ -156,11 +141,7 @@ public class AgroUser
         }  
         return comp;
     }        
-    /**
-     * 
-     * @return
-     * @throws SQLException 
-     */
+
     protected Optional[] _getOptional() throws SQLException
     {
         sendQuery("SELECT * FROM " + TABLE_OPTIONAL);
@@ -173,12 +154,7 @@ public class AgroUser
         return opt;
     }
     
-    /**
-     * 
-     * @param id
-     * @return
-     * @throws SQLException 
-     */
+
     protected Optional[] _getOptional(int id) throws  SQLException 
     {
   
@@ -192,7 +168,27 @@ public class AgroUser
         return opt;
 
     }
-    
+
+    protected void _setOptional(Optional optional) throws SQLException
+    {
+        sendUpdate("UPDATE " + TABLE_OPTIONAL +
+                " SET descrizione='" + optional.getDescrizione() + "'" +
+                ", prezzo=" + optional.getPrezzo() +
+                " WHERE nome='" + optional.getNome() + "'");
+    }
+ 
+    protected String[] _getPartecipantiNome() throws SQLException
+    {
+        String query = "SELECT nome, cognome FROM partecipante";
+        ResultSet rs = sendQuery(query);
+        String[] str = new String[getResultSetLength(rs)];
+        for (int i = 0; i < str.length; i++, rs.next())
+        {
+            str[i] = rs.getString("nome") + " " + rs.getString("cognome");
+        }
+        return str;
+    }
+
     protected int _getNPartecipanti (int id) throws SQLException
     {
         sendQuery("select count(*) from competizione join prenotazione on competizione.id=prenotazione.comp where competizione.id="+id);
@@ -270,13 +266,6 @@ public class AgroUser
         return x;
     }        
     
-    protected void _setOptional(Optional optional) throws SQLException
-    {
-        sendUpdate("UPDATE " + TABLE_OPTIONAL +
-                " SET descrizione='" + optional.getDescrizione() + "'" +
-                ", prezzo=" + optional.getPrezzo() +
-                " WHERE nome='" + optional.getNome() + "'");
-    }
     
     
     
