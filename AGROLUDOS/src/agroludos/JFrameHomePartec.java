@@ -48,14 +48,6 @@ public class JFrameHomePartec extends javax.swing.JFrame
             jListDisponibili=new JList();
             jListDisponibili.setModel(ListModel);
         } 
-        catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Impossibile visualizzare le competizioni disponibili.\n" + e.toString(),
-                    "Errore", JOptionPane.ERROR_MESSAGE);
-            jFrame=new JFrameLogin();
-            this.setVisible(false);
-            jFrame.pack();
-            jFrame.setVisible(true);
-        }
 
         catch (Exception e)
         {

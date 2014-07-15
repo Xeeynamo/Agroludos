@@ -56,7 +56,15 @@ public class AgroUser
     {
         getStatement().executeUpdate(query);
     }
-    
+    /**
+     * 
+     * @param password
+     * @param p
+     * @throws SQLException
+     * @throws DefEmailException
+     * @throws DefCodFiscException
+     * @throws CampiVuotiException 
+     */
     protected void _addPartec(String password,Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
         //MODIFICA by ROS (13/07/2014)
@@ -95,7 +103,12 @@ public class AgroUser
         sendUpdate(s1);
         sendUpdate(s2);
     }
-    
+    /**
+     * 
+     * @param email
+     * @return
+     * @throws SQLException 
+     */
     protected Partecipante _getPartecipante(String email) throws SQLException
     {
         String s1="SELECT * from "+ TABLE_UTENTE +" join "+ TABLE_PARTECIPANTE +" on "+ TABLE_UTENTE +".mail="+ TABLE_PARTECIPANTE +".mail where "+ TABLE_UTENTE +".mail="+email+" and "+ TABLE_UTENTE +" and "+ TABLE_UTENTE +".tipo=0";
@@ -106,7 +119,11 @@ public class AgroUser
         else
             return new Partecipante(email,rs.getString("nome"),rs.getString("cognome"),rs.getString("codfisc"),rs.getString("indirizzo"),rs.getDate("datanascita"),(char)rs.getInt("sesso"),rs.getString("tes_san"),rs.getDate("data_src"),rs.getString("src"));  
     }
-            
+    /**
+     * 
+     * @return
+     * @throws SQLException 
+     */     
     protected Competizione[] _getCompetizioniDisponibili() throws SQLException
     {
         String s1;
@@ -139,7 +156,11 @@ public class AgroUser
         }  
         return comp;
     }        
-    
+    /**
+     * 
+     * @return
+     * @throws SQLException 
+     */
     protected Optional[] _getOptional() throws SQLException
     {
         sendQuery("SELECT * FROM " + TABLE_OPTIONAL);
@@ -152,6 +173,12 @@ public class AgroUser
         return opt;
     }
     
+    /**
+     * 
+     * @param id
+     * @return
+     * @throws SQLException 
+     */
     protected Optional[] _getOptional(int id) throws  SQLException 
     {
   
