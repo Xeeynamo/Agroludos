@@ -22,6 +22,7 @@ public class Competizione
     private String tipo;
     private String nome_mc;
     private String cognome_mc;
+    private String email_mc;
     private Date data_comp;
     private Optional [] opt_comp;
     
@@ -33,6 +34,7 @@ public class Competizione
         String tipo,
         String nome_mc,
         String cognome_mc,
+        String email_mc,
         Date data_comp,
         Optional [] opt_comp)
     {
@@ -43,6 +45,7 @@ public class Competizione
         this.tipo=tipo;
         this.nome_mc=nome_mc;
         this.cognome_mc=cognome_mc;
+        this.email_mc=email_mc;
         this.data_comp=data_comp;
         this.opt_comp=opt_comp;
     }
@@ -75,6 +78,11 @@ public class Competizione
     public String getCognomeMC()
     {
         return this.cognome_mc;
+    }
+    
+    public String getEmailMC()
+    {
+        return this.email_mc;
     }
     
     public Date getDataComp ()

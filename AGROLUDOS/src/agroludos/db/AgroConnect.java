@@ -1,5 +1,6 @@
 package agroludos.db;
 
+//import agroludos.db.components.Partecipante;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.*;

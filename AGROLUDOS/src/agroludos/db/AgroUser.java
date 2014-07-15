@@ -13,7 +13,8 @@ public class AgroUser
     private static final String TABLE_PARTECIPANTE = "partecipante";
     private static final String TABLE_OPTIONAL = "optional";
     private static final String TABLE_UTENTE = "utente";
-    
+    private static final String TABLE_COMPETIZIONE = "competizione";
+    private static final String TABLE_MAN_COMP = "mc";
     
     Statement statement;
     
@@ -50,21 +51,21 @@ public class AgroUser
         getStatement().executeUpdate(query);
     }
     
-    protected void _addPartec(Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
+    protected void _addPartec(String password,Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
         //MODIFICA by ROS (13/07/2014)
         if (!_checkMailExists(p.getMail()))
             throw new DefEmailException();
         if (!_checkCodFiscExists(p.getCodiceFiscale()))
             throw new DefCodFiscException();
-        if (_checkCampiVuotiPart(p))
+        if (_checkCampiVuotiPart(password,p))
             throw new CampiVuotiException();
         SimpleDateFormat d = new SimpleDateFormat("yyyy-MM-dd");
         String date=d.format(p.getDataNascita());
         String dateSrc=d.format(p.getDataSrc());
         String s1 = "INSERT INTO " + TABLE_UTENTE + " VALUES (" +
                 "\"" + p.getMail()+ "\"," +
-                "PASSWORD(\"" + p.getPassword()+ "\")," +
+                "PASSWORD(\"" + password+ "\")," +
                 0 + ");";
         String s2 = "INSERT INTO " + TABLE_PARTECIPANTE + " VALUES (" +
                 "\"" + p.getCodiceFiscale()+ "\"," +
@@ -89,6 +90,50 @@ public class AgroUser
         sendUpdate(s2);
     }
     
+    protected Partecipante _getPartecipante(String email) throws SQLException
+    {
+        String s1="SELECT * from "+ TABLE_UTENTE +" join "+ TABLE_PARTECIPANTE +" on "+ TABLE_UTENTE +".mail="+ TABLE_PARTECIPANTE +".mail where "+ TABLE_UTENTE +".mail="+email+" and "+ TABLE_UTENTE +" and "+ TABLE_UTENTE +".tipo=0";
+        sendQuery(s1);
+        ResultSet rs = getStatement().getResultSet();
+        if (getResultSetLength(rs)!=1)
+            throw new SQLException();
+        else
+            return new Partecipante(email,rs.getString("nome"),rs.getString("cognome"),rs.getString("codfisc"),rs.getString("indirizzo"),rs.getDate("datanascita"),(char)rs.getInt("sesso"),rs.getString("tes_san"),rs.getDate("data_src"),rs.getString("src"));  
+    }
+            
+    protected Competizione[] _getCompetizioniDisponibili() throws SQLException, CampiVuotiException
+    {
+        String s1;
+        ResultSet rs;
+        /*
+        s1="Select id from "+ TABLE_COMPETIZIONE;
+        sendQuery(s1);
+        rs = getStatement().getResultSet();
+        int [] id_comp=new int [getResultSetLength(rs)];
+        for (int i=0; i<id_comp.length;i++,rs.next())
+            id_comp[i]=rs.getInt("id");
+        //ResultSet rs1;
+                */
+        int [] id_comp=new int [2];
+        id_comp [0]=0;
+        id_comp [1]=1;
+        Competizione [] comp=new Competizione [id_comp.length];
+        for (int i=0; i<id_comp.length;i++)
+        {
+            //s1=new String ("Select * from (optional join opt_comp on optional.nome=opt_comp.opt) where comp="+rs.getInt("id"));
+            //rs1 = getStatement().getResultSet();
+            //Optional [] opt=_getOptional(rs.getInt("id"));
+            //int nparts=_getNPartecipanti(rs.getInt("id"));
+            Optional [] opt=_getOptional(id_comp[i]);
+            int nparts=/*_getNPartecipanti(id_comp[i])*/1;
+            s1=new String("Select * from competizione join mc on competizione.manager_comp=mc.id where competizione.id="+id_comp[i]);
+            sendQuery(s1);
+            rs = getStatement().getResultSet();
+            comp[i]=new Competizione (rs.getFloat("competizione.prezzo"),rs.getInt("competizione.nmin"),rs.getInt("competizione.nmax"),nparts,rs.getString("competizione.tipo"),rs.getString("mc.nome"),rs.getString("mc.cognome"),rs.getString("mc.mail"),rs.getDate("competizione.data_comp"),opt);
+        }  
+        return comp;
+    }        
+    
     protected Optional[] _getOptional() throws SQLException
     {
         sendQuery("SELECT * FROM " + TABLE_OPTIONAL);
@@ -99,6 +144,32 @@ public class AgroUser
             opt[i] = new Optional(rs.getString("nome"), rs.getString("descrizione"), rs.getFloat("prezzo"));
         }
         return opt;
+    }
+    
+    protected Optional[] _getOptional(int id) throws CampiVuotiException //da scambiare cn mysqlexception
+    {
+        try
+        {    
+        sendQuery("SELECT * FROM " + TABLE_OPTIONAL +" join opt_comp on optional.nome=opt_comp.opt where opt_comp.comp="+id);
+        ResultSet rs = getStatement().getResultSet();
+        Optional[] opt = new Optional[getResultSetLength(rs)];
+        for (int i = 0; i < opt.length; i++, rs.next())
+        {
+            opt[i] = new Optional(rs.getString("nome"), rs.getString("descrizione"), rs.getFloat("opt_comp.prezzo"));
+        }
+        return opt;
+        }
+        catch(SQLException e)
+        {
+            throw new CampiVuotiException();
+        }
+    }
+    
+    protected int _getNPartecipanti (int id) throws SQLException
+    {
+        sendQuery("select count(*) from competizione join prenotazione on competizione.id=prenotazione.comp where competizione.id="+id);
+        ResultSet rs = getStatement().getResultSet();
+        return rs.getInt(1);
     }
     
     private boolean _checkMailExists(String email) throws SQLException
@@ -147,7 +218,7 @@ public class AgroUser
         
     }
     
-    protected boolean _checkCampiVuotiPart (Partecipante p)
+    protected boolean _checkCampiVuotiPart (String Password,Partecipante p)
     {
         boolean x=false;
         if (p.getCodiceFiscale().trim().length()==0)
@@ -164,7 +235,7 @@ public class AgroUser
             x=true;
         if (p.getNome().trim().length()==0)
             x=true;
-        if (p.getPassword().trim().length()==0)
+        if (Password.trim().length()==0)
             x=true;
         if (p.getTesseraSan().trim().length()==0)
             x=true;
@@ -178,6 +249,8 @@ public class AgroUser
                 ", prezzo=" + optional.getPrezzo() +
                 " WHERE nome='" + optional.getNome() + "'");
     }
+    
+    
     
  
 }

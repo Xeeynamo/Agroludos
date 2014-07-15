@@ -11,7 +11,7 @@ public class Partecipante
 {
     //MODIFICA by ROS (12/07/2014) 
     private String mail;
-    private String pass;
+    //private String pass;
     private String nome;
     private String cognome;
     private String codfisc;
@@ -26,7 +26,7 @@ public class Partecipante
     
     public Partecipante(
             String mail,
-            String pass,
+            //String pass,
             String nome,
             String cognome,
             String codfisc,
@@ -40,7 +40,7 @@ public class Partecipante
             String certSrc)
     {
         this.mail = mail;
-        this.pass=pass;
+        //this.pass=pass;
         this.nome = nome;
         this.cognome = cognome;
         this.codfisc = codfisc;
@@ -132,8 +132,9 @@ public class Partecipante
         return certSrc;
     }
     
-    public String getPassword()
+    /*public String getPassword()
     {
         return pass;
     }
+    */
 }

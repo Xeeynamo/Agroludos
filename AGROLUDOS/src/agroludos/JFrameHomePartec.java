@@ -7,6 +7,8 @@
 package agroludos;
 
 import agroludos.db.*;
+import agroludos.db.components.CampiVuotiException;
+import agroludos.db.components.Competizione;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -22,15 +24,49 @@ public class JFrameHomePartec extends javax.swing.JFrame
     AgroConnect db;
     AgroPartec agro;
     
+ 
     public JFrameHomePartec()
     {
         initComponents();
-        this.agro = null;
+ 
     }
+
     public JFrameHomePartec(AgroPartec agro)
     {
+        
+        JFrame jFrame;
         initComponents();
-        this.agro = agro;
+        DefaultListModel ListModel=null;
+        Competizione [] comp;
+        try 
+        {
+            db=Agroludos.agroConnect;
+            this.agro=agro;
+            comp=this.agro.getCompetizioniDisponibili();
+            for (int i=0;i<comp.length;i++)
+                ListModel.addElement(comp[i].getTipoComp()+comp[i].getDataCompString());
+            jListDisponibili=new JList();
+            jListDisponibili.setModel(ListModel);
+        } 
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Impossibile visualizzare le competizioni disponibili.\n" + e.toString(),
+                    "Errore", JOptionPane.ERROR_MESSAGE);
+            jFrame=new JFrameLogin();
+            this.setVisible(false);
+            jFrame.pack();
+            jFrame.setVisible(true);
+        }
+        catch (CampiVuotiException e) 
+        {
+            JOptionPane.showMessageDialog(null, e.toString(),
+                    "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Impossibile stabilire una connessione col database\n" +
+                    e.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+            
+        }
     }
 
     /**

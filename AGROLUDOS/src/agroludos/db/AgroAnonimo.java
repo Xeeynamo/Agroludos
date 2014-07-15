@@ -13,8 +13,8 @@ public class AgroAnonimo extends AgroUser
         super(statement);
     }
     
-    public void addPartec(Partecipante p) throws SQLException, DefEmailException, DefCodFiscException, CampiVuotiException
+    public void addPartec(String password,Partecipante p) throws SQLException, DefEmailException, DefCodFiscException, CampiVuotiException
     {
-        super._addPartec(p);
+        super._addPartec(password,p);
     }
 }

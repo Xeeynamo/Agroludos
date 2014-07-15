@@ -78,4 +78,6 @@ alter table partecipante drop src;
 
 alter table partecipante add src varchar (255) NOT NULL;
 
+alter table competizione add data_comp date NOT NULL;
+
 

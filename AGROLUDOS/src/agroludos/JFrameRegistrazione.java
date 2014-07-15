@@ -317,7 +317,6 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
             FileSRC=DefineSourceFileSrc(jRegistraCodFisc.getText());
             Partecipante p = new Partecipante(
                 jRegistraMail.getText(),
-                Password,
                 jRegistraNome.getText(),
                 jRegistraCognome.getText(),
                 //"",
@@ -334,7 +333,7 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
                 //jRegistraCertificatoSrc.getText());
                 FileSRC);
             
-            Agroludos.agroConnect.LoginAnonimo().addPartec(p);
+            Agroludos.agroConnect.LoginAnonimo().addPartec(Password,p);
             createFileSrc(FileSRC,jRegistraCertificatoSrc.getText());
             jFrame=new JFrameLogin();
             this.setVisible(false);
