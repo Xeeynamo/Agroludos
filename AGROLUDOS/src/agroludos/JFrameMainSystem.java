@@ -517,6 +517,11 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda gli optional">
+    /**
+     * Ricarica completamente la scheda Optional
+     * @throws SQLException 
+     */
     void ReloadOpitonalTab() throws SQLException
     {
         listOptional = agro.getOptional();
@@ -528,11 +533,21 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         }
         jListOptional.setModel(listModel);
     }
+    /**
+     * Aggiorna tutte le proprietà annesse ad uno specifico optional
+     * @param index indice dell'optional selezionato
+     * @throws SQLException 
+     */
     void ReloadOptional(int index) throws SQLException
     {
         jOptionalPrice.setValue(listOptional[index].getPrezzo());
         jOptionalDescription.setText(listOptional[index].getDescrizione());
     }
+    /**
+     * Scrive nel database i valori impostati dall'interfaccia
+     * @param index indice dell'optional selezionato
+     * @throws SQLException 
+     */
     void UpdateOptional(int index) throws SQLException
     {
         Optional opt = new Optional(listOptional[index].getNome(),
@@ -542,6 +557,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         listOptional[index] = opt;
         ReloadOptional(index);
     }
+    // </editor-fold>
     
     /**
      * Chiamata quando si cambia scheda
