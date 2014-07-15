@@ -17,15 +17,21 @@ public class AgroUser
     private static final String TABLE_MAN_COMP = "mc";
     
     Statement statement;
+    String mail;
     
-    public AgroUser(Statement statement)
+    public AgroUser(Statement statement, String mail)
     {
         this.statement = statement;
+        this.mail = mail;
     }
     
     protected Statement getStatement()
     {
         return statement;
+    }
+    protected String getMail()
+    {
+        return mail;
     }
     protected int getResultSetLength(ResultSet rs) throws SQLException
     {
