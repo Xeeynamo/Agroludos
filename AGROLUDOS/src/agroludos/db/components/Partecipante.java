@@ -22,6 +22,22 @@ public class Partecipante
     private String certSrc;
     
     public Partecipante(
+        String mail,
+        String nome,
+        String cognome)
+    {
+        this.mail = mail.trim();
+        this.nome = nome.trim();
+        this.cognome = cognome.trim();
+        this.codfisc = null;
+        this.indirizzo = null;
+        this.dataNascita = null;
+        this.sesso = '-';
+        this.tesseraSan = null;
+        this.dataSrc = null;
+        this.certSrc = null;
+    }
+    public Partecipante(
             String mail,
             String nome,
             String cognome,
@@ -142,5 +158,14 @@ public class Partecipante
                 getTesseraSan().length() == 0)
             return false;
         return true;
+    }
+    
+    /**
+     * Ottiene una stringa contenente cognome e nome del partecipante
+     * @return 
+     */
+    @Override public String toString()
+    {
+        return getNome() + " " + getCognome();
     }
 }

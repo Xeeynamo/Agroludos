@@ -97,17 +97,6 @@ public class AgroUser
         sendUpdate(s1);
         sendUpdate(s2);
     }
-
-    protected Partecipante _getPartecipante(String email) throws SQLException
-    {
-        String s1="SELECT * from "+ TABLE_UTENTE +" join "+ TABLE_PARTECIPANTE +" on "+ TABLE_UTENTE +".mail="+ TABLE_PARTECIPANTE +".mail where "+ TABLE_UTENTE +".mail="+email+" and "+ TABLE_UTENTE +" and "+ TABLE_UTENTE +".tipo=0";
-        sendQuery(s1);
-        ResultSet rs = getStatement().getResultSet();
-        if (getResultSetLength(rs)!=1)
-            throw new SQLException();
-        else
-            return new Partecipante(email,rs.getString("nome"),rs.getString("cognome"),rs.getString("codfisc"),rs.getString("indirizzo"),rs.getDate("datanascita"),(char)rs.getInt("sesso"),rs.getString("tes_san"),rs.getDate("data_src"),rs.getString("src"));  
-    }
    
     protected Competizione[] _getCompetizioniDisponibili() throws SQLException
     {
@@ -142,6 +131,7 @@ public class AgroUser
         return comp;
     }        
 
+    // <editor-fold defaultstate="collapsed" desc="Parte dedicata agli optional">
     protected Optional[] _getOptional() throws SQLException
     {
         sendQuery("SELECT * FROM " + TABLE_OPTIONAL);
@@ -176,25 +166,75 @@ public class AgroUser
                 ", prezzo=" + optional.getPrezzo() +
                 " WHERE nome='" + optional.getNome() + "'");
     }
+    // </editor-fold>
  
-    protected String[] _getPartecipantiNome() throws SQLException
+    // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai partecipanti">
+    /**
+     * Ottiene le informazioni base di un partecipante, quali mail nome e cognome.
+     * Questa funzione serve per permettere di restituire una lista di partecipanti,
+     * ma senza appesantire troppo le query ed il client. Infatti non vi sarà
+     * bisogno di dover caricare tutti i partecipanti insieme, ma solo caricare le
+     * informazioni strettamente necessarie per poi entrare nel dettaglio di un
+     * partecipante uno alla volta. Si noti che ogni partecipante restituito da
+     * questa funzione, presenterà isValid() sempre falso poiché gli altri campi
+     * vengono lasciati vuoti. Si noti come la lista sia ordinata per cognome.
+     * @return lista dei partecipanti
+     * @throws SQLException 
+     */
+    protected Partecipante[] _getPartecipantiMinimal() throws SQLException
     {
-        String query = "SELECT nome, cognome FROM partecipante";
+        String query = "SELECT " + TABLE_PARTECIPANTE + ".mail, nome, cognome\n" +
+                "FROM " + TABLE_UTENTE + " JOIN " + TABLE_PARTECIPANTE + " on " + TABLE_UTENTE + ".mail=" + TABLE_PARTECIPANTE + ".mail\n" +
+                "WHERE " + TABLE_UTENTE + ".tipo=0\n" +
+                "ORDER BY cognome\n";
         ResultSet rs = sendQuery(query);
-        String[] str = new String[getResultSetLength(rs)];
-        for (int i = 0; i < str.length; i++, rs.next())
+        Partecipante[] p = new Partecipante[getResultSetLength(rs)];
+        for (int i = 0; i < p.length; i++, rs.next())
         {
-            str[i] = rs.getString("nome") + " " + rs.getString("cognome");
+            p[i] = new Partecipante(
+                rs.getString("mail"),
+                rs.getString("nome"),
+                rs.getString("cognome"));
         }
-        return str;
+        return p;
     }
 
+    /**
+     * Ottiene un partecipante a partire dal suo indirizzo mail
+     * @param email indirizzo mail specificato
+     * @return struttura del partecipante
+     * @throws SQLException 
+     */
+    protected Partecipante _getPartecipante(String email) throws SQLException
+    {
+        String query = "SELECT *\n" +
+                "FROM " + TABLE_UTENTE + " JOIN " + TABLE_PARTECIPANTE + " on " + TABLE_UTENTE + ".mail=" + TABLE_PARTECIPANTE + ".mail\n" +
+                "WHERE "+ TABLE_UTENTE + ".mail=\"" + email + "\" and " + TABLE_UTENTE + ".tipo=0\n";
+        System.out.println(query);
+        ResultSet rs = sendQuery(query);
+        if (getResultSetLength(rs) != 1)
+            throw new SQLException();
+        else
+            return new Partecipante(email,
+                    rs.getString("nome"),
+                    rs.getString("cognome"),
+                    rs.getString("codfisc"),
+                    rs.getString("indirizzo"),
+                    rs.getDate("datanascita"),
+                    (char)rs.getString("sesso").charAt(0),
+                    rs.getString("tes_san"),
+                    rs.getDate("data_src"),
+                    rs.getString("src"));  
+    }
+    
     protected int _getNPartecipanti (int id) throws SQLException
     {
         sendQuery("select count(*) from competizione join prenotazione on competizione.id=prenotazione.comp where competizione.id="+id);
         ResultSet rs = getStatement().getResultSet();
         return rs.getInt(1);
     }
+    // </editor-fold>
+
     
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai controlli sui campi">
     /**

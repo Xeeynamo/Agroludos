@@ -8,9 +8,12 @@ package agroludos;
 
 import agroludos.db.components.Optional;
 import agroludos.db.*;
+import agroludos.db.components.Partecipante;
 import java.awt.*;
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,6 +23,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
 
     private final AgroSysMan agro;
     private Optional[] listOptional;
+    private Partecipante[] listPartec;
     
     public JFrameMainSystem() {
         initComponents();
@@ -476,6 +480,11 @@ public class JFrameMainSystem extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        jListaUtenti.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListaUtentiValueChanged(evt);
+            }
+        });
         jScrollPane5.setViewportView(jListaUtenti);
 
         javax.swing.GroupLayout jPanelPartecipantiLayout = new javax.swing.GroupLayout(jPanelPartecipanti);
@@ -572,7 +581,20 @@ public class JFrameMainSystem extends javax.swing.JFrame {
      */
     void PartecipantiLoadList() throws SQLException
     {
-        CreateList(jListaUtenti, agro.getPartecipantiNome());
+        CreateList(jListaUtenti, listPartec = agro.getPartecipantiMinimal());
+    }
+    void PartecipanteLoad(int index) throws SQLException
+    {
+        Partecipante p = agro.getPartecipante(listPartec[index].getMail());
+        jUtenteNome.setText(p.getNome());
+        jUtenteCognome.setText(p.getCognome());
+        jUtenteIndirizzo.setText(p.getIndirizzo());
+        jUtenteNascita.setText(p.getDataNascitaString());
+        jUtenteSesso.setText(String.valueOf(p.getSesso()));
+        jUtenteTesseraSan.setText(p.getTesseraSan());
+        jUtenteMail.setText(p.getMail());
+        jUtenteDataSrc.setText(p.getDataSrcString());
+        jUtenteCertificatoSrc.setText(p.getDirSrc());
     }
     // </editor-fold>
     
@@ -623,6 +645,15 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jOptionalCancelActionPerformed
+
+    private void jListaUtentiValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListaUtentiValueChanged
+        try {
+            PartecipanteLoad(jListaUtenti.getSelectedIndex());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile caricare il partecipante\n" +
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jListaUtentiValueChanged
 
     /**
      * @param args the command line arguments

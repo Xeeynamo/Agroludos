@@ -19,8 +19,12 @@ public class AgroSysMan extends AgroUser
     {
         super._setOptional(optional);
     }
-    public String[] getPartecipantiNome() throws SQLException
+    public Partecipante[] getPartecipantiMinimal() throws SQLException
     {
-        return super._getPartecipantiNome();
+        return super._getPartecipantiMinimal();
+    }
+    public Partecipante getPartecipante(String email) throws SQLException
+    {
+        return super._getPartecipante(email);
     }
 }
