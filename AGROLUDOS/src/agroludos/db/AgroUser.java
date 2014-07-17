@@ -134,7 +134,7 @@ public class AgroUser
             Competizione [] comp=new Competizione[nRis];
             for (int i=0;i<nRis;i++,rs.next())
             {
-                Optional [] opt=getOptional(rs,rs.getInt("competizione.id"));
+                Optional [] opt=AgroUser.this.getOptional(rs,rs.getInt("competizione.id"));
                 comp[i]=new Competizione (rs.getInt(1),rs.getFloat(2),rs.getInt(3),rs.getInt(4),rs.getInt(5)
                         ,rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getDate(10),opt);
             }
@@ -159,7 +159,7 @@ public class AgroUser
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata agli optional">
-    protected Optional[] _getOptional() throws SQLException
+    protected Optional[] getOptional() throws SQLException
     {
         sendQuery("SELECT * FROM " + TABLE_OPTIONAL);
         ResultSet rs = getStatement().getResultSet();

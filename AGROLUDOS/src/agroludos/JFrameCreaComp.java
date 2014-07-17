@@ -12,10 +12,8 @@ package agroludos;
  */
 public class JFrameCreaComp extends javax.swing.JFrame {
 
-    /**
-     * Creates new form JFrameCreaComp
-     */
-    public JFrameCreaComp() {
+    public JFrameCreaComp()
+    {
         initComponents();
     }
 
