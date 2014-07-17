@@ -648,31 +648,11 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    void CreateList(JList jList, Object[] list)
-    {
-        DefaultListModel listModel = new DefaultListModel();
-        jList.removeAll();
-        for (Object o : list)
-        {
-            listModel.addElement(o.toString());
-        }
-        jList.setModel(listModel);
-    }
-    void CreateList(JComboBox jList, Object[] list)
-    {
-        DefaultComboBoxModel listModel = new DefaultComboBoxModel();
-        jList.removeAll();
-        for (Object o : list)
-        {
-            listModel.addElement(o.toString());
-        }
-        jList.setModel(listModel);
-    }
     
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda i manager">
     private void ManagerLoadList() throws SQLException
     {
-        CreateList(jListaManager, listManager = agro.getManagers());
+        Shared.CreateList(jListaManager, listManager = agro.getManagers());
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda gli optional">
@@ -683,7 +663,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     void ReloadOpitonalTab() throws SQLException
     {
         listOptional = agro.getOptional();
-        CreateList(jListOptional, listOptional);
+        Shared.CreateList(jListOptional, listOptional);
     }
     /**
      * Aggiorna tutte le proprietà annesse ad uno specifico optional
@@ -716,7 +696,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
      */
     void PartecipantiLoadList() throws SQLException
     {
-        CreateList(jListaUtenti, listPartec = agro.getPartecipantiMinimal());
+        Shared.CreateList(jListaUtenti, listPartec = agro.getPartecipantiMinimal());
     }
     void PartecipanteLoad(int index) throws SQLException
     {
