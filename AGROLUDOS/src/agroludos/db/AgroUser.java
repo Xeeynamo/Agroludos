@@ -151,47 +151,11 @@ public class AgroUser
             System.out.println("Errore");
             throw new SQLException();
         }
-        /*
-        String s1;
-        ResultSet rs;
-        s1="Select id from "+ TABLE_COMPETIZIONE;
-        System.out.println(s1+"\n");    
-        rs = sendQuery(s1);
-        int [] id_comp=new int [getResultSetLength(rs)];
-        for (int i=0; i<id_comp.length;i++,rs.next())
-            id_comp[i]=rs.getInt("id");
-        Competizione [] comp=new Competizione [id_comp.length];
-        for (int i=0; i<id_comp.length;i++)
-        {
-            Optional [] opt=_getOptional(id_comp[i]);
-            System.out.println("Passo "+i+"\n");
-            int nparts=_getNPartecipanti(id_comp[i]);
-            System.out.println("ID comp = "+id_comp[i]+" n partec. = "+ nparts+"\n");
-            s1=new String("Select * from competizione join mc on competizione.manager_comp=mc.id where competizione.id="+id_comp[i]);
-            System.out.println(s1+"\n"); 
-            rs=sendQuery(s1);
-            comp[i]=new Competizione (id_comp[i],rs.getFloat("competizione.prezzo"),rs.getInt("competizione.nmin"),rs.getInt("competizione.nmax"),nparts,rs.getString("competizione.tipo"),rs.getString("mc.nome"),rs.getString("mc.cognome"),rs.getString("mc.mail"),rs.getDate("competizione.data_comp"),opt);
-        }  
-        return comp;
-        */
+
     }        
 
-    protected Competizione _getCompetizione(int id) throws SQLException
-    {
-        String s1;
-        ResultSet rs;
-        Competizione comp;
-        Optional [] opt=_getOptional(id);
-        int nparts=_getNPartecipanti(id);
-        s1=new String("Select * from competizione join mc on competizione.manager_comp=mc.id where competizione.id="+id);
-        rs=sendQuery(s1);
-        comp=new Competizione (id,rs.getFloat("competizione.prezzo"),rs.getInt("competizione.nmin"),rs.getInt("competizione.nmax"),nparts,rs.getString("competizione.tipo"),rs.getString("mc.nome"),rs.getString("mc.cognome"),rs.getString("mc.mail"),rs.getDate("competizione.data_comp"),opt);
-
-        return comp;
-    }   
-    
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata agli optional">
-    protected Optional[] _getOptional() throws SQLException
+    protected Optional[] getOptional() throws SQLException
     {
         sendQuery("SELECT * FROM " + TABLE_OPTIONAL);
         ResultSet rs = getStatement().getResultSet();
@@ -203,7 +167,7 @@ public class AgroUser
         return opt;
     }
 
-    private Optional[] _getOptional(ResultSet rs, int id) throws SQLException
+    private Optional[] getOptional(ResultSet rs, int id) throws SQLException
     {
         boolean End;
         int NOpt;
@@ -240,7 +204,7 @@ public class AgroUser
     }
     
 
-    protected Optional[] _getOptional(int id) throws  SQLException 
+    protected Optional[] getOptional(int id) throws  SQLException 
     {
   
         sendQuery("SELECT * FROM " + TABLE_OPTIONAL +" join opt_comp on optional.nome=opt_comp.opt where opt_comp.comp="+id);
@@ -254,7 +218,7 @@ public class AgroUser
 
     }
 
-    protected void _setOptional(Optional optional) throws SQLException
+    protected void setOptional(Optional optional) throws SQLException
     {
         sendUpdate("UPDATE " + TABLE_OPTIONAL +
                 " SET descrizione='" + optional.getDescrizione() + "'" +
@@ -262,7 +226,6 @@ public class AgroUser
                 " WHERE nome='" + optional.getNome() + "'");
     }
     // </editor-fold>
- 
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai partecipanti">
     /**
      * Ottiene le informazioni base di un partecipante, quali mail nome e cognome.
@@ -276,7 +239,7 @@ public class AgroUser
      * @return lista dei partecipanti
      * @throws SQLException 
      */
-    protected Partecipante[] _getPartecipantiMinimal() throws SQLException
+    protected Partecipante[] getPartecipantiMinimal() throws SQLException
     {
         String query = "SELECT " + TABLE_PARTECIPANTE + ".mail, nome, cognome\n" +
                 "FROM " + TABLE_UTENTE + " JOIN " + TABLE_PARTECIPANTE + " on " + TABLE_UTENTE + ".mail=" + TABLE_PARTECIPANTE + ".mail\n" +
@@ -300,12 +263,11 @@ public class AgroUser
      * @return struttura del partecipante
      * @throws SQLException 
      */
-    protected Partecipante _getPartecipante(String email) throws SQLException
+    protected Partecipante getPartecipante(String email) throws SQLException
     {
         String query = "SELECT *\n" +
                 "FROM " + TABLE_UTENTE + " JOIN " + TABLE_PARTECIPANTE + " on " + TABLE_UTENTE + ".mail=" + TABLE_PARTECIPANTE + ".mail\n" +
                 "WHERE "+ TABLE_UTENTE + ".mail=\"" + email + "\" and " + TABLE_UTENTE + ".tipo=0\n";
-        System.out.println(query);
         ResultSet rs = sendQuery(query);
         if (getResultSetLength(rs) != 1)
             throw new SQLException();
@@ -322,7 +284,7 @@ public class AgroUser
                     rs.getString("src"));  
     }
     
-    protected int _getNPartecipanti (int id) throws SQLException
+    protected int getNPartecipanti (int id) throws SQLException
     {
         int n;
         String s="select count(*) from competizione join prenotazione on competizione.id=prenotazione.comp where competizione.id="+id;
@@ -333,8 +295,25 @@ public class AgroUser
         return n;
     }
     // </editor-fold>
-
-    
+    // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai manager di competizione">
+    protected Manager[] getManagers() throws SQLException
+    {
+        String query = "SELECT *\n" +
+                "FROM " + TABLE_UTENTE + " JOIN " + TABLE_MAN_COMP + " on " + TABLE_UTENTE + ".mail=" + TABLE_MAN_COMP + ".mail\n" +
+                "WHERE tipo=1\n" +
+                "ORDER BY cognome\n";
+        ResultSet rs = sendQuery(query);
+        Manager [] man = new Manager[getResultSetLength(rs)];
+        for (int i = 0; i < man.length; i++, rs.next())
+        {
+            man[i] = new Manager(
+                    rs.getString("nome"),
+                    rs.getString("cognome"),
+                    rs.getString("mail"));
+        }
+        return man;
+    }
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai controlli sui campi">
     /**
      * Controlla se l'indirizzo mail specificato è presente nel sistema
