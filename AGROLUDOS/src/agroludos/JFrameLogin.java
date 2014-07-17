@@ -7,6 +7,8 @@
 package agroludos;
 
 import agroludos.db.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -19,6 +21,13 @@ public class JFrameLogin extends javax.swing.JFrame {
      * Creates new form JFrameLogin
      */
     public JFrameLogin() {
+        
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Exception e)
+        {
+            
+        }
         initComponents();
         try
         {

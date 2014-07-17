@@ -21,12 +21,12 @@ public class AgroPartec extends AgroUser
         return super._getCompetizione(id);
     }
     
-    public Optional[] getOptional() throws SQLException
+    @Override public Optional[] getOptional() throws SQLException
     {
-        return super._getOptional();
+        return super.getOptional();
     }
-    public void setOptional(Optional optional) throws SQLException
+    @Override public void setOptional(Optional optional) throws SQLException
     {
-        super._setOptional(optional);
+        super.setOptional(optional);
     }
 }

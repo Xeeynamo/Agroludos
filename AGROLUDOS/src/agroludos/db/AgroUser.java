@@ -129,33 +129,24 @@ public class AgroUser
         int nRis=getResultSetLength(rs);
         if (nRis!=0)
         {
+
             Competizione [] comp=new Competizione[nRis];
             for (int i=0;i<nRis;i++,rs.next())
             {
-                Optional [] opt=_getOptional(rs,rs.getInt("competizione.id"));
+                Optional [] opt=getOptional(rs,rs.getInt("competizione.id"));
                 comp[i]=new Competizione (rs.getInt(1),rs.getFloat(2),rs.getInt(3),rs.getInt(4),rs.getInt(5)
                         ,rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getDate(10),opt);
             }
             return comp;
-            /*
-            rs.next();
-            System.out.println("Corretto\n");
-            System.out.println("Optional="+rs.getString("optional_competizione.optional"));
-            rs.previous();
-            System.out.println("Optional="+rs.getString("optional_competizione.optional"));
-            */
         }
             
         else
-        {
-            System.out.println("Errore");
             throw new SQLException();
-        }
 
-    }        
+    }       
 
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata agli optional">
-    protected Optional[] getOptional() throws SQLException
+    protected Optional[] _getOptional() throws SQLException
     {
         sendQuery("SELECT * FROM " + TABLE_OPTIONAL);
         ResultSet rs = getStatement().getResultSet();
@@ -314,6 +305,11 @@ public class AgroUser
         return man;
     }
     // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai manager di competizione">
+
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai controlli sui campi">
     /**
      * Controlla se l'indirizzo mail specificato è presente nel sistema
