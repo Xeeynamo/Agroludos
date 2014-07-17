@@ -211,6 +211,9 @@
                       </StringArray>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="jListDisponibiliValueChanged"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

@@ -13,9 +13,13 @@ public class AgroPartec extends AgroUser
     
     public Competizione [] getCompetizioniDisponibili () throws SQLException
     {
-        return super._getCompetizioniDisponibili();
+       return super._getCompetizioniDisponibili(); 
     }
-
+     
+    public Competizione getCompetizione (int id) throws SQLException
+    {
+        return super._getCompetizione(id);
+    }
     
     public Optional[] getOptional() throws SQLException
     {

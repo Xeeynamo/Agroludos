@@ -9,6 +9,7 @@ package agroludos;
 import agroludos.db.*;
 import agroludos.db.components.CampiVuotiException;
 import agroludos.db.components.Competizione;
+import agroludos.db.components.Optional;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -21,40 +22,46 @@ import javax.swing.*;
  */
 public class JFrameHomePartec extends javax.swing.JFrame
 {
-    AgroConnect db;
     AgroPartec agro;
-    
+    Competizione [] listComp;
+    Optional [] listOpt;
  
     public JFrameHomePartec()
     {
         initComponents();
+        agro=null;
  
     }
 
     public JFrameHomePartec(AgroPartec agro)
     {
-        
-        JFrame jFrame;
-        initComponents();
-        DefaultListModel ListModel=null;
-        Competizione [] comp;
         try 
         {
-            db=Agroludos.agroConnect;
+            initComponents();
             this.agro=agro;
-            comp=this.agro.getCompetizioniDisponibili();
-            for (int i=0;i<comp.length;i++)
-                ListModel.addElement(comp[i].getTipoComp()+comp[i].getDataCompString());
-            jListDisponibili=new JList();
-            jListDisponibili.setModel(ListModel);
+            CompetizioniDisponibiliLoadList();
         } 
-
-        catch (Exception e)
+        catch (SQLException ex) 
         {
-            JOptionPane.showMessageDialog(null, "Impossibile stabilire una connessione col database\n" +
-                    e.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-            
+            JOptionPane.showMessageDialog(null, "Impossibile caricare le competizioni\n" +
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    void CompetizioniDisponibiliLoadList() throws SQLException
+    {
+        CreateList(jListDisponibili,listComp=agro.getCompetizioniDisponibili());
+    }
+
+    void CreateList(JList jList, Object[] list)
+    {
+        DefaultListModel listModel = new DefaultListModel();
+        jList.removeAll();
+        for (Object o : list)
+        {
+            listModel.addElement(o.toString());
+        }
+        jList.setModel(listModel);
     }
 
     /**
@@ -139,6 +146,11 @@ public class JFrameHomePartec extends javax.swing.JFrame
             String[] strings = { "Tiro con l'arco (DATA)", "Corsa campestre (GG/MM/AAAA)" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+        });
+        jListDisponibili.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListDisponibiliValueChanged(evt);
+            }
         });
         jScrollPane3.setViewportView(jListDisponibili);
 
@@ -525,6 +537,15 @@ public class JFrameHomePartec extends javax.swing.JFrame
         setMyManagerName(db.getManagerNome());
         setMyManagerMail(db.getManagerMail());
     }//GEN-LAST:event_jListMyIscrizioniValueChanged
+
+    void CompetizioneLoad (int index) throws SQLException
+    {
+        Competizione c=agro.getCompetizione(listComp[index].getId());
+        
+    }        
+    private void jListDisponibiliValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListDisponibiliValueChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jListDisponibiliValueChanged
 
     /**
      * @param args the command line arguments

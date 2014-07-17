@@ -15,6 +15,7 @@ import java.util.Date;
  */
 public class Competizione 
 {
+    private int id;
     private float prezzo;
     private int nmin;
     private int nmax;
@@ -27,6 +28,7 @@ public class Competizione
     private Optional [] opt_comp;
     
     public Competizione(
+        int id,
         float prezzo,
         int nmin,
         int nmax,
@@ -38,6 +40,7 @@ public class Competizione
         Date data_comp,
         Optional [] opt_comp)
     {
+        this.id=id;
         this.prezzo=prezzo;
         this.nmin=nmin;
         this.nmax=nmax;
@@ -48,6 +51,11 @@ public class Competizione
         this.email_mc=email_mc;
         this.data_comp=data_comp;
         this.opt_comp=opt_comp;
+    }
+    
+    public int getId()
+    {
+        return this.id;
     }
     
     public float getPrezzo()
@@ -99,5 +107,10 @@ public class Competizione
     public Optional [] getOptComp ()
     {
         return this.opt_comp;
-    }       
+    }
+    
+    public String toString()
+    {
+        return getTipoComp()+"   ("+getDataCompString()+")";
+    }        
 }

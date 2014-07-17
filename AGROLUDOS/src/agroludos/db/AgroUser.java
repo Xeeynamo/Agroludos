@@ -100,37 +100,96 @@ public class AgroUser
    
     protected Competizione[] _getCompetizioniDisponibili() throws SQLException
     {
+        String s1="drop view if exists n_partecipanti,optional_competizione,manager_competizioni;";
+        sendUpdate(s1);
+        s1=new String("create view n_partecipanti as "
+                + "select competizione.id as id_comp, count(prenotazione.part) as n_part "
+                + "from competizione join prenotazione on competizione.id=prenotazione.comp "
+                + "group by competizione.id;");
+        sendUpdate(s1);
+        s1=new String("create view optional_competizione as "
+                +"select competizione.id as id_comp,optional.nome as optional,optional.descrizione as descrizione,opt_comp.prezzo as prezzo "
+                +"from (competizione left join opt_comp on competizione.id=opt_comp.comp) "
+                +"left join optional on opt_comp.opt=optional.nome "
+                +"order by competizione.id;");
+        sendUpdate(s1);
+        s1=new String ("create view manager_competizioni as "
+                +"select competizione.id as id_comp, mc.cognome as cognome_mc, mc.nome as nome_mc, mc.mail as mail_mc "
+                +"from competizione join mc on competizione.manager_comp=mc.id "
+                +"order by mc.cognome, mc.nome;");
+        sendUpdate(s1);
+        s1=new String ("select competizione.id,competizione.prezzo,competizione.nmin,competizione.nmax,n_partecipanti.n_part,competizione.tipo, "
+                +"manager_competizioni.nome_mc,manager_competizioni.cognome_mc,manager_competizioni.mail_mc,competizione.data_comp, "
+                +"optional_competizione.optional,optional_competizione.descrizione,optional_competizione.prezzo "
+                +"from ((competizione join n_partecipanti on competizione.id=n_partecipanti.id_comp) "
+                +"join manager_competizioni on competizione.id=manager_competizioni.id_comp) "
+                +"join optional_competizione on competizione.id=optional_competizione.id_comp "
+                +"order by competizione.id;");
+        ResultSet rs=sendQuery(s1);
+        int nRis=getResultSetLength(rs);
+        if (nRis!=0)
+        {
+            Competizione [] comp=new Competizione[nRis];
+            for (int i=0;i<nRis;i++,rs.next())
+            {
+                Optional [] opt=_getOptional(rs,rs.getInt("competizione.id"));
+                comp[i]=new Competizione (rs.getInt(1),rs.getFloat(2),rs.getInt(3),rs.getInt(4),rs.getInt(5)
+                        ,rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getDate(10),opt);
+            }
+            return comp;
+            /*
+            rs.next();
+            System.out.println("Corretto\n");
+            System.out.println("Optional="+rs.getString("optional_competizione.optional"));
+            rs.previous();
+            System.out.println("Optional="+rs.getString("optional_competizione.optional"));
+            */
+        }
+            
+        else
+        {
+            System.out.println("Errore");
+            throw new SQLException();
+        }
+        /*
         String s1;
         ResultSet rs;
-        /*
         s1="Select id from "+ TABLE_COMPETIZIONE;
-        sendQuery(s1);
-        rs = getStatement().getResultSet();
+        System.out.println(s1+"\n");    
+        rs = sendQuery(s1);
         int [] id_comp=new int [getResultSetLength(rs)];
         for (int i=0; i<id_comp.length;i++,rs.next())
             id_comp[i]=rs.getInt("id");
-        //ResultSet rs1;
-                */
-        int [] id_comp=new int [2];
-        id_comp [0]=0;
-        id_comp [1]=1;
         Competizione [] comp=new Competizione [id_comp.length];
         for (int i=0; i<id_comp.length;i++)
         {
-            //s1=new String ("Select * from (optional join opt_comp on optional.nome=opt_comp.opt) where comp="+rs.getInt("id"));
-            //rs1 = getStatement().getResultSet();
-            //Optional [] opt=_getOptional(rs.getInt("id"));
-            //int nparts=_getNPartecipanti(rs.getInt("id"));
             Optional [] opt=_getOptional(id_comp[i]);
-            int nparts=/*_getNPartecipanti(id_comp[i])*/1;
+            System.out.println("Passo "+i+"\n");
+            int nparts=_getNPartecipanti(id_comp[i]);
+            System.out.println("ID comp = "+id_comp[i]+" n partec. = "+ nparts+"\n");
             s1=new String("Select * from competizione join mc on competizione.manager_comp=mc.id where competizione.id="+id_comp[i]);
-            sendQuery(s1);
-            rs = getStatement().getResultSet();
-            comp[i]=new Competizione (rs.getFloat("competizione.prezzo"),rs.getInt("competizione.nmin"),rs.getInt("competizione.nmax"),nparts,rs.getString("competizione.tipo"),rs.getString("mc.nome"),rs.getString("mc.cognome"),rs.getString("mc.mail"),rs.getDate("competizione.data_comp"),opt);
+            System.out.println(s1+"\n"); 
+            rs=sendQuery(s1);
+            comp[i]=new Competizione (id_comp[i],rs.getFloat("competizione.prezzo"),rs.getInt("competizione.nmin"),rs.getInt("competizione.nmax"),nparts,rs.getString("competizione.tipo"),rs.getString("mc.nome"),rs.getString("mc.cognome"),rs.getString("mc.mail"),rs.getDate("competizione.data_comp"),opt);
         }  
         return comp;
+        */
     }        
 
+    protected Competizione _getCompetizione(int id) throws SQLException
+    {
+        String s1;
+        ResultSet rs;
+        Competizione comp;
+        Optional [] opt=_getOptional(id);
+        int nparts=_getNPartecipanti(id);
+        s1=new String("Select * from competizione join mc on competizione.manager_comp=mc.id where competizione.id="+id);
+        rs=sendQuery(s1);
+        comp=new Competizione (id,rs.getFloat("competizione.prezzo"),rs.getInt("competizione.nmin"),rs.getInt("competizione.nmax"),nparts,rs.getString("competizione.tipo"),rs.getString("mc.nome"),rs.getString("mc.cognome"),rs.getString("mc.mail"),rs.getDate("competizione.data_comp"),opt);
+
+        return comp;
+    }   
+    
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata agli optional">
     protected Optional[] _getOptional() throws SQLException
     {
@@ -142,6 +201,42 @@ public class AgroUser
             opt[i] = new Optional(rs.getString("nome"), rs.getString("descrizione"), rs.getFloat("prezzo"));
         }
         return opt;
+    }
+
+    private Optional[] _getOptional(ResultSet rs, int id) throws SQLException
+    {
+        boolean End;
+        int NOpt;
+        Optional [] opt=new Optional [3];
+        String optional=rs.getString("optional_competizione.optional");
+        if (optional!=null)
+        {
+            NOpt=1;
+            opt[NOpt]=new Optional(rs.getString("optional_competizione.optional"),rs.getString("optional_competizione.descrizione"),rs.getFloat("optional_competizione.prezzo"));
+            End=false;
+            while ((!rs.isLast())&&(!End))
+            {
+                rs.next();
+                if(rs.getInt("competizione.id")==id)
+                {
+                    NOpt++;
+                    if (NOpt<=3)
+                        opt[NOpt]=new Optional(rs.getString("optional_competizione.optional"),rs.getString("optional_competizione.descrizione"),rs.getFloat("optional_competizione.prezzo"));
+                }
+                else
+                {
+                    rs.previous();
+                    End=true;
+                }   
+                
+            }
+            Optional[] opt_ris=new Optional [NOpt];
+            for (int i=0;i<NOpt;i++)
+                opt_ris[i]=opt[i];
+            return opt_ris;
+        }
+        else
+            return null;
     }
     
 
@@ -229,9 +324,13 @@ public class AgroUser
     
     protected int _getNPartecipanti (int id) throws SQLException
     {
-        sendQuery("select count(*) from competizione join prenotazione on competizione.id=prenotazione.comp where competizione.id="+id);
-        ResultSet rs = getStatement().getResultSet();
-        return rs.getInt(1);
+        int n;
+        String s="select count(*) from competizione join prenotazione on competizione.id=prenotazione.comp where competizione.id="+id;
+        System.out.println(s+"\n");
+        ResultSet rs = sendQuery(s);
+        n=rs.getInt(1);
+        System.out.println("Riuscito" + n +"\n");
+        return n;
     }
     // </editor-fold>
 
