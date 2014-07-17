@@ -6,14 +6,11 @@
 
 package agroludos;
 
-import agroludos.db.components.Optional;
 import agroludos.db.*;
-import agroludos.db.components.Partecipante;
+import agroludos.db.components.*;
 import java.awt.*;
 import javax.swing.*;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -22,12 +19,14 @@ import java.util.logging.Logger;
 public class JFrameMainSystem extends javax.swing.JFrame {
 
     private final AgroSysMan agro;
+    private Manager[] listManager;
     private Optional[] listOptional;
     private Partecipante[] listPartec;
     
     public JFrameMainSystem() {
         initComponents();
         agro = null;
+        System.out.println("WARNING: agro = null");
     }
     public JFrameMainSystem(AgroSysMan agroSysMan) {
         initComponents();
@@ -45,7 +44,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
 
         jLabel10 = new javax.swing.JLabel();
         jTabbedPane = new javax.swing.JTabbedPane();
-        jPanel7 = new javax.swing.JPanel();
+        jPanelManager = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
@@ -59,6 +58,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -122,6 +122,8 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                 jTabbedPaneStateChanged(evt);
             }
         });
+
+        jPanelManager.setName("jPanelManager"); // NOI18N
 
         jLabel3.setText("Manager di competizione selezionato");
 
@@ -187,30 +189,33 @@ public class JFrameMainSystem extends javax.swing.JFrame {
 
         jLabel19.setText("-");
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane6)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(0, 97, Short.MAX_VALUE))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        javax.swing.GroupLayout jPanelManagerLayout = new javax.swing.GroupLayout(jPanelManager);
+        jPanelManager.setLayout(jPanelManagerLayout);
+        jPanelManagerLayout.setHorizontalGroup(
+            jPanelManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelManagerLayout.createSequentialGroup()
+                .addGroup(jPanelManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelManagerLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanelManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane6)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanelManagerLayout.createSequentialGroup()
+                                .addGroup(jPanelManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(0, 97, Short.MAX_VALUE))
+                            .addGroup(jPanelManagerLayout.createSequentialGroup()
+                                .addComponent(jLabel18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(jSeparator1))
                 .addContainerGap())
         );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+        jPanelManagerLayout.setVerticalGroup(
+            jPanelManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelManagerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -221,14 +226,16 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
                     .addComponent(jLabel19))
                 .addContainerGap())
         );
 
-        jTabbedPane.addTab("Manager", jPanel7);
+        jTabbedPane.addTab("Manager", jPanelManager);
 
         jLabel1.setBackground(new java.awt.Color(255, 153, 153));
         jLabel1.setText("Tutte le competizioni");
@@ -646,6 +653,65 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Chiamata quando si cambia scheda
+     */
+    private void jTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneStateChanged
+        Component c = jTabbedPane.getSelectedComponent();
+        String name = c.getName();
+        try
+        {
+            if (name.equals("jPanelManager"))
+            ManagerLoadList();
+            else if (name.equals("jPanelOptional"))
+            OptionalLoadList();
+            else if (name.equals("jPanelPartecipanti"))
+            PartecipantiLoadList();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile caricare gli optional\n" +
+                ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jTabbedPaneStateChanged
+
+    private void jListaUtentiValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListaUtentiValueChanged
+        try {
+            PartecipanteLoad(jListaUtenti.getSelectedIndex());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile caricare il partecipante\n" +
+                ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jListaUtentiValueChanged
+
+    private void jOptionalCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOptionalCancelActionPerformed
+        try {
+            ReloadOptional(jListOptional.getSelectedIndex());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile ricaricare gli optional\n" +
+                ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jOptionalCancelActionPerformed
+
+    private void jOptionalApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOptionalApplyActionPerformed
+        try {
+            UpdateOptional(jListOptional.getSelectedIndex());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile applicare le modifiche\n" +
+                ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jOptionalApplyActionPerformed
+
+    /**
+     * Chiamata quando si seleziona un optional
+     */
+    private void jListOptionalValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListOptionalValueChanged
+        try {
+            ReloadOptional(jListOptional.getSelectedIndex());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile caricare l'optional selezionato\n" +
+                ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jListOptionalValueChanged
+
     void CreateList(JList jList, Object[] list)
     {
         DefaultListModel listModel = new DefaultListModel();
@@ -657,12 +723,20 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         jList.setModel(listModel);
     }
     
+    
+    // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda i manager">
+    void ManagerLoadList() throws SQLException
+    {
+        agro.getManagers();
+        //CreateList(jListaManager, listManager = agro.getManagers());
+    }
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda gli optional">
     /**
      * Ricarica completamente la scheda Optional
      * @throws SQLException 
      */
-    void ReloadOpitonalTab() throws SQLException
+    void OptionalLoadList() throws SQLException
     {
         listOptional = agro.getOptional();
         CreateList(jListOptional, listOptional);
@@ -698,7 +772,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
      */
     void PartecipantiLoadList() throws SQLException
     {
-        CreateList(jListaUtenti, listPartec = agro.getPartecipantiMinimal());
+        //CreateList(jListaUtenti, listPartec = agro.getPartecipantiMinimal());
     }
     void PartecipanteLoad(int index) throws SQLException
     {
@@ -715,63 +789,6 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     }
     // </editor-fold>
     
-    /**
-     * Chiamata quando si cambia scheda
-     */
-    private void jTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneStateChanged
-        Component c = jTabbedPane.getSelectedComponent();
-        String name = c.getName();
-        try
-        {
-            if (name == "jPanelOptional")
-                ReloadOpitonalTab();
-            else if (name == "jPanelPartecipanti")
-                PartecipantiLoadList();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Impossibile caricare gli optional\n" +
-                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jTabbedPaneStateChanged
-
-    /**
-     * Chiamata quando si seleziona un optional
-     */
-    private void jListOptionalValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListOptionalValueChanged
-        try {
-            ReloadOptional(jListOptional.getSelectedIndex());
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Impossibile caricare l'optional selezionato\n" +
-                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jListOptionalValueChanged
-
-    private void jOptionalApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOptionalApplyActionPerformed
-        try {
-            UpdateOptional(jListOptional.getSelectedIndex());
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Impossibile applicare le modifiche\n" +
-                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jOptionalApplyActionPerformed
-
-    private void jOptionalCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOptionalCancelActionPerformed
-        try {
-            ReloadOptional(jListOptional.getSelectedIndex());
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Impossibile ricaricare gli optional\n" +
-                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jOptionalCancelActionPerformed
-
-    private void jListaUtentiValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListaUtentiValueChanged
-        try {
-            PartecipanteLoad(jListaUtenti.getSelectedIndex());
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Impossibile caricare il partecipante\n" +
-                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jListaUtentiValueChanged
-
     /**
      * @param args the command line arguments
      */
@@ -856,8 +873,8 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JPanel jPanelManager;
     private javax.swing.JPanel jPanelOptional;
     private javax.swing.JPanel jPanelPartecipanti;
     private javax.swing.JScrollPane jScrollPane1;
@@ -866,6 +883,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane;
     private javax.swing.JTextArea jUtenteCertificatoSrc;
     private javax.swing.JLabel jUtenteCognome;
