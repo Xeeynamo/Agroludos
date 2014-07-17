@@ -237,10 +237,11 @@ public class AgroUser
     {
         String query = "SELECT *\n" +
                 "FROM " + TABLE_UTENTE + " JOIN " + TABLE_MAN_COMP + " on " + TABLE_UTENTE + ".mail=" + TABLE_MAN_COMP + ".mail\n" +
-                "WHERE tipo=1\n";
+                "WHERE tipo=1\n" +
+                "ORDER BY cognome\n";
         ResultSet rs = sendQuery(query);
         Manager [] man = new Manager[getResultSetLength(rs)];
-        for (int i = 0; i < man.length; i++)
+        for (int i = 0; i < man.length; i++, rs.next())
         {
             man[i] = new Manager(
                     rs.getString("nome"),

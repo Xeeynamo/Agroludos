@@ -6,9 +6,8 @@
 
 package agroludos;
 
-import agroludos.db.components.Optional;
 import agroludos.db.*;
-import agroludos.db.components.Partecipante;
+import agroludos.db.components.*;
 import java.awt.*;
 import javax.swing.*;
 import java.sql.SQLException;
@@ -22,6 +21,7 @@ import java.util.logging.Logger;
 public class JFrameMainSystem extends javax.swing.JFrame {
 
     private final AgroSysMan agro;
+    private Manager[] listManager;
     private Optional[] listOptional;
     private Partecipante[] listPartec;
     
@@ -30,8 +30,8 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         agro = null;
     }
     public JFrameMainSystem(AgroSysMan agroSysMan) {
-        initComponents();
         agro = agroSysMan;
+        initComponents();
     }
 
     /**
@@ -45,9 +45,9 @@ public class JFrameMainSystem extends javax.swing.JFrame {
 
         jLabel10 = new javax.swing.JLabel();
         jTabbedPane = new javax.swing.JTabbedPane();
-        jPanel7 = new javax.swing.JPanel();
+        jPanelManager = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        jListaManager = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList();
@@ -123,9 +123,11 @@ public class JFrameMainSystem extends javax.swing.JFrame {
             }
         });
 
+        jPanelManager.setName("jPanelManager"); // NOI18N
+
         jLabel3.setText("Manager di competizione selezionato");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jListaManager.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel4.setText("Lista delle sue competizioni");
 
@@ -187,34 +189,34 @@ public class JFrameMainSystem extends javax.swing.JFrame {
 
         jLabel19.setText("-");
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelManagerLayout = new javax.swing.GroupLayout(jPanelManager);
+        jPanelManager.setLayout(jPanelManagerLayout);
+        jPanelManagerLayout.setHorizontalGroup(
+            jPanelManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelManagerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jListaManager, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane6)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelManagerLayout.createSequentialGroup()
+                        .addGroup(jPanelManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4))
                         .addGap(0, 97, Short.MAX_VALUE))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
+                    .addGroup(jPanelManagerLayout.createSequentialGroup()
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+        jPanelManagerLayout.setVerticalGroup(
+            jPanelManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelManagerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jListaManager, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -222,13 +224,13 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
                     .addComponent(jLabel19))
                 .addContainerGap())
         );
 
-        jTabbedPane.addTab("Manager", jPanel7);
+        jTabbedPane.addTab("Manager", jPanelManager);
 
         jLabel1.setBackground(new java.awt.Color(255, 153, 153));
         jLabel1.setText("Tutte le competizioni");
@@ -656,7 +658,23 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         }
         jList.setModel(listModel);
     }
+    void CreateList(JComboBox jList, Object[] list)
+    {
+        DefaultComboBoxModel listModel = new DefaultComboBoxModel();
+        jList.removeAll();
+        for (Object o : list)
+        {
+            listModel.addElement(o.toString());
+        }
+        jList.setModel(listModel);
+    }
     
+    // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda i manager">
+    private void ManagerLoadList() throws SQLException
+    {
+        CreateList(jListaManager, listManager = agro.getManagers());
+    }
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda gli optional">
     /**
      * Ricarica completamente la scheda Optional
@@ -723,12 +741,14 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         String name = c.getName();
         try
         {
-            if (name == "jPanelOptional")
+            if (name == "jPanelManager")
+                ManagerLoadList();
+            else if (name == "jPanelOptional")
                 ReloadOpitonalTab();
             else if (name == "jPanelPartecipanti")
                 PartecipantiLoadList();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Impossibile caricare gli optional\n" +
+            JOptionPane.showMessageDialog(null, "Impossibile caricare la pagina\n" +
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jTabbedPaneStateChanged
@@ -812,7 +832,6 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
     private javax.swing.JComboBox jComboBox4;
@@ -847,6 +866,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     private javax.swing.JList jList1;
     private javax.swing.JList jList2;
     private javax.swing.JList jListOptional;
+    private javax.swing.JComboBox jListaManager;
     private javax.swing.JList jListaUtenti;
     private javax.swing.JButton jOptionalApply;
     private javax.swing.JButton jOptionalCancel;
@@ -856,8 +876,8 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JPanel jPanelManager;
     private javax.swing.JPanel jPanelOptional;
     private javax.swing.JPanel jPanelPartecipanti;
     private javax.swing.JScrollPane jScrollPane1;
