@@ -11,6 +11,10 @@ public class AgroSysMan extends AgroUser
         super(statement, mail);
     }
     
+    @Override public TipoCompetizione[] getCompetizioneTipi() throws SQLException
+    {
+        return super.getCompetizioneTipi();
+    }
     @Override public Optional[] getOptional() throws SQLException
     {
         return super.getOptional();

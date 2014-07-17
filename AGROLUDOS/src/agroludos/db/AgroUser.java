@@ -15,6 +15,7 @@ public class AgroUser
     private static final String TABLE_UTENTE = "utente";
     private static final String TABLE_COMPETIZIONE = "competizione";
     private static final String TABLE_MAN_COMP = "mc";
+    private static final String TABLE_COMP_TYPE = "tipo_comp";
     
     Statement statement;
     String mail;
@@ -145,6 +146,18 @@ public class AgroUser
 
     }       
 
+    // <editor-fold defaultstate="collapsed" desc="Parte dedicata alle competizioni">
+    protected TipoCompetizione[] getCompetizioneTipi() throws SQLException
+    {
+        ResultSet rs = sendQuery("SELECT * FROM " + TABLE_COMP_TYPE);
+        TipoCompetizione[] tcomp = new TipoCompetizione[getResultSetLength(rs)];
+        for (int i = 0; i < tcomp.length; i++, rs.next())
+        {
+            tcomp[i] = new TipoCompetizione(rs.getString("nome"), rs.getString("descrizione"));
+        }
+        return tcomp;
+    }
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata agli optional">
     protected Optional[] _getOptional() throws SQLException
     {
