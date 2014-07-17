@@ -166,6 +166,6 @@ public class Partecipante
      */
     @Override public String toString()
     {
-        return getNome() + " " + getCognome();
+        return getCognome() + " " + getNome();
     }
 }
