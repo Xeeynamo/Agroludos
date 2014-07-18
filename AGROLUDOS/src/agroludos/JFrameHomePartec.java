@@ -653,7 +653,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
             }
         }
         try {
-            agro.setIscrizioneCompetizione(listComp[jListDisponibili.getSelectedIndex()],opt_scelti);
+            agro.addIscrizioneCompetizione(listComp[jListDisponibili.getSelectedIndex()],opt_scelti);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Impossibile caricare le competizioni\n" +
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);

@@ -349,7 +349,7 @@ public class AgroUser
         return n;
     }
     
-    protected void _setIscrizioneCompetizione(Partecipante p, Competizione c,Optional [] opt) throws SQLException
+    protected void _addIscrizioneCompetizione(Partecipante p, Competizione c,Optional [] opt) throws SQLException
     {
         System.out.println("insert into prenotazione values (\""+p.getCodiceFiscale()+"\","+c.getId()+");");
         
@@ -446,20 +446,32 @@ public class AgroUser
     
     
     /**
-     * Controlla che la data inserita non antecedi quella odierna
-     * di almeno 'gg' giorni 
+     * Controlla che alla data inserita, rispetto a quella attuale
+     * non manchino meno di 'gg' giorni 
      * @param data data inserita
-     * @param gg entro quanti giorni prima della data odierna la data inserita non è scaduto
-     * @return true se non è scaduto, altrimenti false
+     * @param gg giorni che al massimo mancano prima dell'avvento della data 
+     * inserita per parametro
+     * @return true se mancano meno di 'gg' giorni, altrimenti false
      */
     protected boolean isScaduto(Date data,int gg)
     {
-        Date gc=(Date)new GregorianCalendar().getTime();
+        int gg_ris=0;
+        Date gc=Calendar.getInstance().getTime();
+        //Date gc=new GregorianCalendar().getTime();
         if (data.after(gc))
         {
+            /*
             if ((gc.getYear()==data.getYear())&&(gc.getMonth()==data.getMonth())&&(data.getDay()+gg>=gc.getDay()))
                 return true;
             else return false;
+                    */
+            gg_ris+=365*(data.getYear()-gc.getYear());
+            gg_ris+=30*(data.getMonth()-gc.getMonth());
+            gg_ris+=data.getDate()-gc.getDate();
+            if (gg_ris<=gg)
+                return true;
+            else
+                return false;
         }
         else
             return true;

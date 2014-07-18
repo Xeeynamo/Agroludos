@@ -36,9 +36,9 @@ public class AgroPartec extends AgroUser
             
     }
     
-    public void setIscrizioneCompetizione(Competizione c, Optional [] opt) throws SQLException
+    public void addIscrizioneCompetizione(Competizione c, Optional [] opt) throws SQLException
     {
-        super._setIscrizioneCompetizione(super.getPartecipante(mail), c, opt);
+        super._addIscrizioneCompetizione(super.getPartecipante(mail), c, opt);
     }
      
     public Competizione getCompetizione (int id) throws SQLException
