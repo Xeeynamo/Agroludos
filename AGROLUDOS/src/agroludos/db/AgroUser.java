@@ -67,9 +67,9 @@ public class AgroUser
     protected void _addPartec(String password,Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
         //MODIFICA by ROS (13/07/2014)
-        if (!isMailExists(p.getMail()))
+        if (isMailExists(p.getMail()))
             throw new DefEmailException();
-        if (!_checkCodFiscExists(p.getCodiceFiscale()))
+        if (_checkCodFiscExists(p.getCodiceFiscale()))
             throw new DefCodFiscException();
         if (isCampiVuoti(password,p))
             throw new CampiVuotiException();
@@ -404,6 +404,7 @@ public class AgroUser
         }
         for (String s : mailList)
         {
+            System.out.println("email 1= "+s+" email 2= "+email);
             if (s.compareTo(email) == 0)
                 return true;
         }

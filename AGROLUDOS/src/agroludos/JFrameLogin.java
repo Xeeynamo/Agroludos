@@ -142,6 +142,7 @@ public class JFrameLogin extends javax.swing.JFrame {
 
     private void jLoginRegistratiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginRegistratiActionPerformed
         new JFrameRegistrazione().setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_jLoginRegistratiActionPerformed
 
     /**
