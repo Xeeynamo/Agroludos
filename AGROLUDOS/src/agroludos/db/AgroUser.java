@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class AgroUser
 {
@@ -128,16 +130,28 @@ public class AgroUser
         s1=new String ("select competizione.id,competizione.prezzo,competizione.nmin,competizione.nmax,n_partecipanti.n_part,competizione.tipo, "
                 +"manager_competizioni.nome_mc,manager_competizioni.cognome_mc,manager_competizioni.mail_mc,competizione.data_comp, "
                 +"optional_competizione.optional,optional_competizione.descrizione,optional_competizione.prezzo,tipo_comp.descrizione "
-                +"from (((competizione join n_partecipanti on competizione.id=n_partecipanti.id_comp) "
+                +"from (((competizione left join n_partecipanti on competizione.id=n_partecipanti.id_comp) "
                 +"join manager_competizioni on competizione.id=manager_competizioni.id_comp) "
                 +"join optional_competizione on competizione.id=optional_competizione.id_comp) "
                 +"join tipo_comp on tipo_comp.nome=competizione.tipo "
+                +"group by competizione.id,optional_competizione.optional "
                 +"order by competizione.id;");
         ResultSet rs=sendQuery(s1);
-        int nRis=getResultSetLength(rs);
-        if (nRis!=0)
+        if (getResultSetLength(rs)!=0)
         {
-
+            int nRis=1;
+            int id=rs.getInt("competizione.id");
+            while(!rs.isLast())
+            {
+                rs.next();
+                if(id!=rs.getInt("competizione.id"))
+                {
+                    nRis++;
+                    id=rs.getInt("competizione.id");
+                }    
+            }
+            while (!rs.isFirst())
+                rs.previous();
             Competizione [] comp=new Competizione[nRis];
             for (int i=0;i<nRis;i++,rs.next())
             {
@@ -386,7 +400,28 @@ public class AgroUser
     protected boolean isCampiVuoti (String password, Partecipante p)
     {
         return password.trim().length() == 0 || !p.isValid();
-    }        
+    }
+    
+    
+    /**
+     * Controlla che la data inserita non antecedi quella odierna
+     * di almeno 'gg' giorni 
+     * @param data data inserita
+     * @param gg entro quanti giorni prima della data odierna la data inserita non è scaduto
+     * @return true se non è scaduto, altrimenti false
+     */
+    protected boolean isScaduto(Date data,int gg)
+    {
+        Date gc=(Date)new GregorianCalendar().getTime();
+        if (data.before(gc))
+        {
+            if ((gc.getYear()==data.getYear())&&(gc.getMonth()==data.getMonth())&&(data.getDay()+gg>=gc.getDay()))
+                return true;
+            else return false;
+        }
+        else
+            return true;
+    }
     // </editor-fold>
  
 }

@@ -62,7 +62,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jSeparator2" alignment="1" max="32767" attributes="0"/>
                           <Component id="jScrollPane3" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jButton7" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jIscrizioneCompetizione" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
@@ -135,7 +135,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabelMailMC" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton7" min="-2" max="-2" attributes="0"/>
+                      <Component id="jIscrizioneCompetizione" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -152,7 +152,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelNPart">
               <Properties>
-                <Property name="text" type="java.lang.String" value="28"/>
+                <Property name="text" type="java.lang.String" value="-"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel12">
@@ -167,7 +167,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelPrezzo_Comp">
               <Properties>
-                <Property name="text" type="java.lang.String" value="10&#x20ac;"/>
+                <Property name="text" type="java.lang.String" value="-"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel26">
@@ -177,13 +177,16 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelMC">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Marco Rossi"/>
+                <Property name="text" type="java.lang.String" value="-"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton7">
+            <Component class="javax.swing.JButton" name="jIscrizioneCompetizione">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Iscriviti alla competizione"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jIscrizioneCompetizioneActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel17">
               <Properties>
@@ -192,7 +195,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelPrezzoTot">
               <Properties>
-                <Property name="text" type="java.lang.String" value="10&#x20ac;"/>
+                <Property name="text" type="java.lang.String" value="-"/>
               </Properties>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane3">
@@ -205,10 +208,7 @@
                 <Component class="javax.swing.JList" name="jListDisponibili">
                   <Properties>
                     <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="2">
-                        <StringItem index="0" value="Tiro con l&apos;arco (DATA)"/>
-                        <StringItem index="1" value="Corsa campestre (GG/MM/AAAA)"/>
-                      </StringArray>
+                      <StringArray count="0"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -242,7 +242,7 @@
                               <Component id="jLabelPrezzoOpt1" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelPrezzoOpt3" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="84" max="32767" attributes="0"/>
+                          <EmptySpace pref="140" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -270,32 +270,35 @@
               <SubComponents>
                 <Component class="javax.swing.JCheckBox" name="jCheckBoxOpt1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Colazione"/>
+                    <Property name="text" type="java.lang.String" value="-"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="jCheckBoxOpt3">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Pernotto"/>
+                    <Property name="text" type="java.lang.String" value="-"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="jCheckBoxOpt2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Pranzo"/>
+                    <Property name="text" type="java.lang.String" value="-"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBoxOpt2ActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabelPrezzoOpt1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="5&#x20ac;"/>
+                    <Property name="text" type="java.lang.String" value="-"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabelPrezzoOpt2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="10&#x20ac;"/>
+                    <Property name="text" type="java.lang.String" value="-"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabelPrezzoOpt3">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="25&#x20ac;"/>
+                    <Property name="text" type="java.lang.String" value="-"/>
                   </Properties>
                 </Component>
               </SubComponents>

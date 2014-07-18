@@ -50,7 +50,9 @@ public class JFrameHomePartec extends javax.swing.JFrame
     
     void CompetizioniDisponibiliLoadList() throws SQLException
     {
-        CreateList(jListDisponibili,listComp=agro.getCompetizioniDisponibili());
+        listComp=agro.getCompetizioniDisponibili();
+        System.out.println(listComp.length+"\n");
+        CreateList(jListDisponibili,listComp);
     }
 
     void CreateList(JList jList, Object[] list)
@@ -83,7 +85,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
         jLabelPrezzo_Comp = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jLabelMC = new javax.swing.JLabel();
-        jButton7 = new javax.swing.JButton();
+        jIscrizioneCompetizione = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
         jLabelPrezzoTot = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -124,29 +126,29 @@ public class JFrameHomePartec extends javax.swing.JFrame
         jLabel7.setText("Posti rimanenti");
         jLabel7.setToolTipText("");
 
-        jLabelNPart.setText("28");
+        jLabelNPart.setText("-");
 
         jLabel12.setText("Costo competizione");
 
         jLabelMailMC.setText("marco.rossi@agroludos.it");
 
-        jLabelPrezzo_Comp.setText("10€");
+        jLabelPrezzo_Comp.setText("-");
 
         jLabel26.setText("Manager");
 
-        jLabelMC.setText("Marco Rossi");
+        jLabelMC.setText("-");
 
-        jButton7.setText("Iscriviti alla competizione");
+        jIscrizioneCompetizione.setText("Iscriviti alla competizione");
+        jIscrizioneCompetizione.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jIscrizioneCompetizioneActionPerformed(evt);
+            }
+        });
 
         jLabel17.setText("Prezzo totale");
 
-        jLabelPrezzoTot.setText("10€");
+        jLabelPrezzoTot.setText("-");
 
-        jListDisponibili.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Tiro con l'arco (DATA)", "Corsa campestre (GG/MM/AAAA)" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jListDisponibili.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 jListDisponibiliValueChanged(evt);
@@ -156,17 +158,22 @@ public class JFrameHomePartec extends javax.swing.JFrame
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Scelta optional"));
 
-        jCheckBoxOpt1.setText("Colazione");
+        jCheckBoxOpt1.setText("-");
 
-        jCheckBoxOpt3.setText("Pernotto");
+        jCheckBoxOpt3.setText("-");
 
-        jCheckBoxOpt2.setText("Pranzo");
+        jCheckBoxOpt2.setText("-");
+        jCheckBoxOpt2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxOpt2ActionPerformed(evt);
+            }
+        });
 
-        jLabelPrezzoOpt1.setText("5€");
+        jLabelPrezzoOpt1.setText("-");
 
-        jLabelPrezzoOpt2.setText("10€");
+        jLabelPrezzoOpt2.setText("-");
 
-        jLabelPrezzoOpt3.setText("25€");
+        jLabelPrezzoOpt3.setText("-");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -183,7 +190,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
                     .addComponent(jLabelPrezzoOpt2)
                     .addComponent(jLabelPrezzoOpt1)
                     .addComponent(jLabelPrezzoOpt3))
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addContainerGap(140, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,7 +217,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane3)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jIscrizioneCompetizione, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -266,7 +273,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelMailMC)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton7)
+                .addComponent(jIscrizioneCompetizione)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -555,7 +562,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
         Optional [] opt=c.getOptional();
         if(opt!=null)
         {    
-        for (int i=opt.length-1;i>=0;i--)
+        for (int i=0;i<opt.length;i++)
         {
             if(opt[i].getNome().compareTo("Colazione")==0)
             {
@@ -589,6 +596,14 @@ public class JFrameHomePartec extends javax.swing.JFrame
             Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jListDisponibiliValueChanged
+
+    private void jIscrizioneCompetizioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jIscrizioneCompetizioneActionPerformed
+        
+    }//GEN-LAST:event_jIscrizioneCompetizioneActionPerformed
+
+    private void jCheckBoxOpt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxOpt2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxOpt2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -626,7 +641,6 @@ public class JFrameHomePartec extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButtonMyAnnullaIscrizione;
     private javax.swing.JButton jButtonMyOptionalAnnulla;
     private javax.swing.JButton jButtonMyOptionalConferma;
@@ -636,6 +650,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
     private javax.swing.JCheckBox jCheckBoxOpt1;
     private javax.swing.JCheckBox jCheckBoxOpt2;
     private javax.swing.JCheckBox jCheckBoxOpt3;
+    private javax.swing.JButton jIscrizioneCompetizione;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel17;
