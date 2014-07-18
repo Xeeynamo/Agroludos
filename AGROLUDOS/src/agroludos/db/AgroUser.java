@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class AgroUser
@@ -178,6 +179,34 @@ public class AgroUser
             tcomp[i] = new TipoCompetizione(rs.getString("nome"), rs.getString("descrizione"));
         }
         return tcomp;
+    }
+    /**
+     * Verifica se la competizione indicata come parametro
+     * è stato già prenotato dal partecipante
+     * @param mail email del partecipante 
+     * @param c competizione su cui si vuole controllare se è stata fatta una prenotazione
+     * @return true se il partecipante si è già prenotato a quella competizione, altrimenti false
+     * @throws SQLException 
+     */
+    protected boolean isPrenotato(String mail,Competizione c) throws SQLException
+    {
+        boolean trovato=false;
+        Partecipante p=getPartecipante(mail);
+        System.out.println("select comp from prenotazione where part=\""+p.getCodiceFiscale()+"\";");
+        ResultSet rs=sendQuery("select comp from prenotazione where part=\""+p.getCodiceFiscale()+"\";");
+        if (rs!=null)
+        {
+            while(rs.next())
+            {
+                System.out.println("Comp="+rs.getInt(1)+"\n");
+                if(rs.getInt(1)==c.getId())
+                {
+                    trovato=true;
+                    break;
+                }
+            }
+        }
+        return trovato;
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata agli optional">
@@ -413,7 +442,7 @@ public class AgroUser
     protected boolean isScaduto(Date data,int gg)
     {
         Date gc=(Date)new GregorianCalendar().getTime();
-        if (data.before(gc))
+        if (data.after(gc))
         {
             if ((gc.getYear()==data.getYear())&&(gc.getMonth()==data.getMonth())&&(data.getDay()+gg>=gc.getDay()))
                 return true;

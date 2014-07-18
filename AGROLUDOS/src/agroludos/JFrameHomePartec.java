@@ -50,9 +50,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
     
     void CompetizioniDisponibiliLoadList() throws SQLException
     {
-        listComp=agro.getCompetizioniDisponibili();
-        System.out.println(listComp.length+"\n");
-        CreateList(jListDisponibili,listComp);
+        CreateList(jListDisponibili,listComp=agro.getCompetizioniDisponibili());
     }
 
     void CreateList(JList jList, Object[] list)

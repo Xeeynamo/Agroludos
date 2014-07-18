@@ -13,7 +13,27 @@ public class AgroPartec extends AgroUser
     
     public Competizione [] getCompetizioniDisponibili () throws SQLException
     {
-       return super._getCompetizioni();
+       Competizione [] c= super._getCompetizioni();
+       int NComp=0;
+       for (int i=0;i<c.length;i++)
+       {
+           if((super.isScaduto((Date)c[i].getDataComp(),1))||(super.isPrenotato(mail, c[i])))
+               c[i]=null;
+           else
+                NComp++;
+       }
+       Competizione [] c1=new Competizione[NComp];
+       for (int i=0,j=0;i<c.length;i++)
+       {
+           if(c[i]!=null)
+           {
+               c1[j]=c[i];
+               j++;
+           }
+       }
+       return c1;
+       
+            
     }
      
     public Competizione getCompetizione (int id) throws SQLException
