@@ -552,7 +552,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
         jLabelPrezzoOpt1.setText("-");
         jLabelPrezzoOpt2.setText("-");
         jLabelPrezzoOpt3.setText("-");
-        Optional [] opt=c.getOptComp();
+        Optional [] opt=c.getOptional();
         if(opt!=null)
         {    
         for (int i=opt.length-1;i>=0;i--)
@@ -578,8 +578,8 @@ public class JFrameHomePartec extends javax.swing.JFrame
         }
         }
         jLabelPrezzoTot.setText(String.valueOf(c.getPrezzo()));
-        jLabelMC.setText(c.getNomeMC()+" "+c.getCognomeMC());
-        jLabelMailMC.setText(c.getEmailMC());
+        jLabelMC.setText(c.getManager().getNome()+" "+c.getManager().getCognome());
+        jLabelMailMC.setText(c.getManager().getMail());
     }        
     private void jListDisponibiliValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListDisponibiliValueChanged
         try {

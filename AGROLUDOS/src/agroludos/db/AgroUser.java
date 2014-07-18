@@ -15,6 +15,7 @@ public class AgroUser
     private static final String TABLE_UTENTE = "utente";
     private static final String TABLE_COMPETIZIONE = "competizione";
     private static final String TABLE_MAN_COMP = "mc";
+    private static final String TABLE_COMP_TYPE = "tipo_comp";
     
     Statement statement;
     String mail;
@@ -126,10 +127,11 @@ public class AgroUser
         sendUpdate(s1);
         s1=new String ("select competizione.id,competizione.prezzo,competizione.nmin,competizione.nmax,n_partecipanti.n_part,competizione.tipo, "
                 +"manager_competizioni.nome_mc,manager_competizioni.cognome_mc,manager_competizioni.mail_mc,competizione.data_comp, "
-                +"optional_competizione.optional,optional_competizione.descrizione,optional_competizione.prezzo "
-                +"from ((competizione join n_partecipanti on competizione.id=n_partecipanti.id_comp) "
+                +"optional_competizione.optional,optional_competizione.descrizione,optional_competizione.prezzo,tipo_comp.descrizione "
+                +"from (((competizione join n_partecipanti on competizione.id=n_partecipanti.id_comp) "
                 +"join manager_competizioni on competizione.id=manager_competizioni.id_comp) "
-                +"join optional_competizione on competizione.id=optional_competizione.id_comp "
+                +"join optional_competizione on competizione.id=optional_competizione.id_comp) "
+                +"join tipo_comp on tipo_comp.nome=competizione.tipo "
                 +"order by competizione.id;");
         ResultSet rs=sendQuery(s1);
         int nRis=getResultSetLength(rs);
@@ -139,9 +141,10 @@ public class AgroUser
             Competizione [] comp=new Competizione[nRis];
             for (int i=0;i<nRis;i++,rs.next())
             {
-                Optional [] opt=getOptional(rs,rs.getInt("competizione.id"));
-                comp[i]=new Competizione (rs.getInt(1),rs.getFloat(2),rs.getInt(3),rs.getInt(4),rs.getInt(5)
-                        ,rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getDate(10),opt);
+                Optional [] opt=AgroUser.this.getOptional(rs,rs.getInt("competizione.id"));
+                Manager m=new Manager(rs.getString(7),rs.getString(8),rs.getString(9));
+                TipoCompetizione t=new TipoCompetizione(rs.getString(6),rs.getString("tipo_comp.descrizione"));
+                comp[i]=new Competizione (rs.getInt(1),rs.getFloat(2),rs.getInt(3),rs.getInt(4),rs.getInt(5),t,m,rs.getDate(10),opt);
             }
             return comp;
         }
@@ -151,8 +154,20 @@ public class AgroUser
 
     }       
 
+    // <editor-fold defaultstate="collapsed" desc="Parte dedicata alle competizioni">
+    protected TipoCompetizione[] getCompetizioneTipi() throws SQLException
+    {
+        ResultSet rs = sendQuery("SELECT * FROM " + TABLE_COMP_TYPE);
+        TipoCompetizione[] tcomp = new TipoCompetizione[getResultSetLength(rs)];
+        for (int i = 0; i < tcomp.length; i++, rs.next())
+        {
+            tcomp[i] = new TipoCompetizione(rs.getString("nome"), rs.getString("descrizione"));
+        }
+        return tcomp;
+    }
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata agli optional">
-    protected Optional[] _getOptional() throws SQLException
+    protected Optional[] getOptional() throws SQLException
     {
         sendQuery("SELECT * FROM " + TABLE_OPTIONAL);
         ResultSet rs = getStatement().getResultSet();

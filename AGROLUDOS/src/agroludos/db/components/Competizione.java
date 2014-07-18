@@ -10,8 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- *
- * @author Luigi Rosini
+ * Questa classe rappresenta una competizione di sola lettura
  */
 public class Competizione 
 {
@@ -20,10 +19,8 @@ public class Competizione
     private int nmin;
     private int nmax;
     private int npart;
-    private String tipo;
-    private String nome_mc;
-    private String cognome_mc;
-    private String email_mc;
+    private TipoCompetizione tipo;
+    private Manager manager;
     private Date data_comp;
     private Optional [] opt_comp;
     
@@ -33,36 +30,30 @@ public class Competizione
         int nmin,
         int nmax,
         int npart,
-        String tipo,
-        String nome_mc,
-        String cognome_mc,
-        String email_mc,
+        TipoCompetizione tipo,
+        Manager manager,
         Date data_comp,
         Optional [] opt_comp)
     {
-        this.id=id;
-        this.prezzo=prezzo;
-        this.nmin=nmin;
-        this.nmax=nmax;
-        this.npart=npart;
-        this.tipo=tipo;
-        this.nome_mc=nome_mc;
-        this.cognome_mc=cognome_mc;
-        this.email_mc=email_mc;
-        this.data_comp=data_comp;
-        this.opt_comp=opt_comp;
+        this.id = id;
+        this.prezzo = prezzo;
+        this.nmin = nmin;
+        this.nmax = nmax;
+        this.npart = npart;
+        this.tipo = tipo;
+        this.manager = manager;
+        this.data_comp = data_comp;
+        this.opt_comp = opt_comp;
     }
     
     public int getId()
     {
         return this.id;
     }
-    
     public float getPrezzo()
     {
         return this.prezzo;
     }
-    
     public int getNMin()
     {
         return this.nmin;
@@ -77,45 +68,29 @@ public class Competizione
     {
         return this.npart;
     }
-    
-    public String getTipoComp()
+    public TipoCompetizione getTipoCompetizione()
     {
         return this.tipo;
     }
-    
-    public String getNomeMC()
+    public Manager getManager()
     {
-        return this.nome_mc;
+        return manager;
     }
-    
-    public String getCognomeMC()
-    {
-        return this.cognome_mc;
-    }
-    
-    public String getEmailMC()
-    {
-        return this.email_mc;
-    }
-    
     public Date getDataComp ()
     {
         return this.data_comp;
     }
-    
     public String getDataCompString ()
     {
         SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
         return d.format(getDataComp());
     }
-    
-    public Optional [] getOptComp ()
+    public Optional [] getOptional ()
     {
         return this.opt_comp;
     }
-    
     public String toString()
     {
-        return getTipoComp()+"   ("+getDataCompString()+")";
+        return getTipoCompetizione().getNome()+"   ("+getDataCompString()+")";
     }        
 }
