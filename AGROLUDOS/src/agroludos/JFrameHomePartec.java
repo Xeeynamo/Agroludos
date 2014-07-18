@@ -77,24 +77,24 @@ public class JFrameHomePartec extends javax.swing.JFrame
         jPanel2 = new javax.swing.JPanel();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        jLabelNPart = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        jLabelMailMC = new javax.swing.JLabel();
+        jLabelPrezzo_Comp = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
+        jLabelMC = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
+        jLabelPrezzoTot = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jListDisponibili = new javax.swing.JList();
         jPanel5 = new javax.swing.JPanel();
-        jCheckBox10 = new javax.swing.JCheckBox();
-        jCheckBox11 = new javax.swing.JCheckBox();
-        jCheckBox12 = new javax.swing.JCheckBox();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
+        jCheckBoxOpt1 = new javax.swing.JCheckBox();
+        jCheckBoxOpt3 = new javax.swing.JCheckBox();
+        jCheckBoxOpt2 = new javax.swing.JCheckBox();
+        jLabelPrezzoOpt1 = new javax.swing.JLabel();
+        jLabelPrezzoOpt2 = new javax.swing.JLabel();
+        jLabelPrezzoOpt3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListMyIscrizioni = new javax.swing.JList();
@@ -124,23 +124,23 @@ public class JFrameHomePartec extends javax.swing.JFrame
         jLabel7.setText("Posti rimanenti");
         jLabel7.setToolTipText("");
 
-        jLabel8.setText("28");
+        jLabelNPart.setText("28");
 
         jLabel12.setText("Costo competizione");
 
-        jLabel25.setText("marco.rossi@agroludos.it");
+        jLabelMailMC.setText("marco.rossi@agroludos.it");
 
-        jLabel13.setText("10€");
+        jLabelPrezzo_Comp.setText("10€");
 
         jLabel26.setText("Manager");
 
-        jLabel27.setText("Marco Rossi");
+        jLabelMC.setText("Marco Rossi");
 
         jButton7.setText("Iscriviti alla competizione");
 
         jLabel17.setText("Prezzo totale");
 
-        jLabel18.setText("10€");
+        jLabelPrezzoTot.setText("10€");
 
         jListDisponibili.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Tiro con l'arco (DATA)", "Corsa campestre (GG/MM/AAAA)" };
@@ -156,17 +156,17 @@ public class JFrameHomePartec extends javax.swing.JFrame
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Scelta optional"));
 
-        jCheckBox10.setText("Colazione");
+        jCheckBoxOpt1.setText("Colazione");
 
-        jCheckBox11.setText("Pernotto");
+        jCheckBoxOpt3.setText("Pernotto");
 
-        jCheckBox12.setText("Pranzo");
+        jCheckBoxOpt2.setText("Pranzo");
 
-        jLabel19.setText("5€");
+        jLabelPrezzoOpt1.setText("5€");
 
-        jLabel20.setText("10€");
+        jLabelPrezzoOpt2.setText("10€");
 
-        jLabel21.setText("25€");
+        jLabelPrezzoOpt3.setText("25€");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -175,30 +175,30 @@ public class JFrameHomePartec extends javax.swing.JFrame
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox10)
-                    .addComponent(jCheckBox12)
-                    .addComponent(jCheckBox11))
+                    .addComponent(jCheckBoxOpt1)
+                    .addComponent(jCheckBoxOpt2)
+                    .addComponent(jCheckBoxOpt3))
                 .addGap(24, 24, 24)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel20)
-                    .addComponent(jLabel19)
-                    .addComponent(jLabel21))
+                    .addComponent(jLabelPrezzoOpt2)
+                    .addComponent(jLabelPrezzoOpt1)
+                    .addComponent(jLabelPrezzoOpt3))
                 .addContainerGap(84, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox10)
-                    .addComponent(jLabel19))
+                    .addComponent(jCheckBoxOpt1)
+                    .addComponent(jLabelPrezzoOpt1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox12)
-                    .addComponent(jLabel20))
+                    .addComponent(jCheckBoxOpt2)
+                    .addComponent(jLabelPrezzoOpt2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox11)
-                    .addComponent(jLabel21)))
+                    .addComponent(jCheckBoxOpt3)
+                    .addComponent(jLabelPrezzoOpt3)))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -220,19 +220,19 @@ public class JFrameHomePartec extends javax.swing.JFrame
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGap(19, 19, 19)
-                                        .addComponent(jLabel8))
+                                        .addComponent(jLabelNPart))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
-                                        .addComponent(jLabel13))))
+                                        .addComponent(jLabelPrezzo_Comp))))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel17)
                                 .addGap(50, 50, 50)
-                                .addComponent(jLabel18))
+                                .addComponent(jLabelPrezzoTot))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(68, 68, 68)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel25)
-                                    .addComponent(jLabel27)))
+                                    .addComponent(jLabelMailMC)
+                                    .addComponent(jLabelMC)))
                             .addComponent(jLabel26))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -246,25 +246,25 @@ public class JFrameHomePartec extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jLabel8))
+                    .addComponent(jLabelNPart))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jLabel13))
+                    .addComponent(jLabelPrezzo_Comp))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
-                    .addComponent(jLabel18))
+                    .addComponent(jLabelPrezzoTot))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel26)
-                    .addComponent(jLabel27))
+                    .addComponent(jLabelMC))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel25)
+                .addComponent(jLabelMailMC)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton7)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -541,10 +541,53 @@ public class JFrameHomePartec extends javax.swing.JFrame
     void CompetizioneLoad (int index) throws SQLException
     {
         Competizione c=agro.getCompetizione(listComp[index].getId());
-        
+        jLabelNPart.setText(String.valueOf(c.getNMax()-c.getNPart()));
+        jLabelPrezzo_Comp.setText(String.valueOf(c.getPrezzo())+"€");
+        jCheckBoxOpt1.setEnabled(false);
+        jCheckBoxOpt2.setEnabled(false);
+        jCheckBoxOpt3.setEnabled(false);
+        jCheckBoxOpt1.setText("-");
+        jCheckBoxOpt2.setText("-");
+        jCheckBoxOpt3.setText("-");
+        jLabelPrezzoOpt1.setText("-");
+        jLabelPrezzoOpt2.setText("-");
+        jLabelPrezzoOpt3.setText("-");
+        Optional [] opt=c.getOptComp();
+        if(opt!=null)
+        {    
+        for (int i=opt.length-1;i>=0;i--)
+        {
+            if(opt[i].getNome().compareTo("Colazione")==0)
+            {
+                jCheckBoxOpt1.setEnabled(true);
+                jCheckBoxOpt1.setText(opt[i].getNome()); 
+                jLabelPrezzoOpt1.setText(String.valueOf(opt[i].getPrezzo())+"€");
+            }
+            else if(opt[i].getNome().compareTo("Pranzo")==0)
+                {  
+                   jCheckBoxOpt2.setEnabled(true);
+                   jCheckBoxOpt2.setText(opt[i].getNome()); 
+                   jLabelPrezzoOpt2.setText(String.valueOf(opt[i].getPrezzo())+"€");
+                }
+                else
+                {
+                   jCheckBoxOpt3.setEnabled(true);
+                   jCheckBoxOpt3.setText(opt[i].getNome()); 
+                   jLabelPrezzoOpt3.setText(String.valueOf(opt[i].getPrezzo())+"€");
+                }               
+        }
+        }
+        jLabelPrezzoTot.setText(String.valueOf(c.getPrezzo()));
+        jLabelMC.setText(c.getNomeMC()+" "+c.getCognomeMC());
+        jLabelMailMC.setText(c.getEmailMC());
     }        
     private void jListDisponibiliValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListDisponibiliValueChanged
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            CompetizioneLoad(jListDisponibili.getSelectedIndex());
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jListDisponibiliValueChanged
 
     /**
@@ -587,28 +630,22 @@ public class JFrameHomePartec extends javax.swing.JFrame
     private javax.swing.JButton jButtonMyAnnullaIscrizione;
     private javax.swing.JButton jButtonMyOptionalAnnulla;
     private javax.swing.JButton jButtonMyOptionalConferma;
-    private javax.swing.JCheckBox jCheckBox10;
-    private javax.swing.JCheckBox jCheckBox11;
-    private javax.swing.JCheckBox jCheckBox12;
     private javax.swing.JCheckBox jCheckBoxMyOptional1;
     private javax.swing.JCheckBox jCheckBoxMyOptional2;
     private javax.swing.JCheckBox jCheckBoxMyOptional3;
+    private javax.swing.JCheckBox jCheckBoxOpt1;
+    private javax.swing.JCheckBox jCheckBoxOpt2;
+    private javax.swing.JCheckBox jCheckBoxOpt3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabelMC;
+    private javax.swing.JLabel jLabelMailMC;
     private javax.swing.JLabel jLabelMyCosto;
     private javax.swing.JLabel jLabelMyManagerMail;
     private javax.swing.JLabel jLabelMyManagerNome;
@@ -617,6 +654,12 @@ public class JFrameHomePartec extends javax.swing.JFrame
     private javax.swing.JLabel jLabelMyOptionalCosto3;
     private javax.swing.JLabel jLabelMyPartecipante;
     private javax.swing.JLabel jLabelMyPrezzoTotale;
+    private javax.swing.JLabel jLabelNPart;
+    private javax.swing.JLabel jLabelPrezzoOpt1;
+    private javax.swing.JLabel jLabelPrezzoOpt2;
+    private javax.swing.JLabel jLabelPrezzoOpt3;
+    private javax.swing.JLabel jLabelPrezzoTot;
+    private javax.swing.JLabel jLabelPrezzo_Comp;
     private javax.swing.JList jListDisponibili;
     private javax.swing.JList jListMyIscrizioni;
     private javax.swing.JPanel jPanel1;

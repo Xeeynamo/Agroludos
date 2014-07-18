@@ -58,7 +58,8 @@ public class AgroUser
     {
         getStatement().executeUpdate(query);
     }
-
+    
+    
     protected void _addPartec(String password,Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
         //MODIFICA by ROS (13/07/2014)
@@ -98,7 +99,12 @@ public class AgroUser
         sendUpdate(s2);
     }
    
-    protected Competizione[] _getCompetizioniDisponibili() throws SQLException
+    /**
+     * riporta la lista di TUTTE le competizioni presenti nel sistema
+     * @return Lista delle competizioni se c'è almeno una competizione nel sistema, altrimenti lancia l'eccezione
+     * @throws SQLException 
+     */
+    protected Competizione[] _getCompetizioni() throws SQLException
     {
         String s1="drop view if exists n_partecipanti,optional_competizione,manager_competizioni;";
         sendUpdate(s1);
@@ -158,6 +164,7 @@ public class AgroUser
         return opt;
     }
 
+
     private Optional[] getOptional(ResultSet rs, int id) throws SQLException
     {
         boolean End;
@@ -167,7 +174,7 @@ public class AgroUser
         if (optional!=null)
         {
             NOpt=1;
-            opt[NOpt]=new Optional(rs.getString("optional_competizione.optional"),rs.getString("optional_competizione.descrizione"),rs.getFloat("optional_competizione.prezzo"));
+            opt[NOpt-1]=new Optional(rs.getString("optional_competizione.optional"),rs.getString("optional_competizione.descrizione"),rs.getFloat("optional_competizione.prezzo"));
             End=false;
             while ((!rs.isLast())&&(!End))
             {
@@ -176,7 +183,7 @@ public class AgroUser
                 {
                     NOpt++;
                     if (NOpt<=3)
-                        opt[NOpt]=new Optional(rs.getString("optional_competizione.optional"),rs.getString("optional_competizione.descrizione"),rs.getFloat("optional_competizione.prezzo"));
+                        opt[NOpt-1]=new Optional(rs.getString("optional_competizione.optional"),rs.getString("optional_competizione.descrizione"),rs.getFloat("optional_competizione.prezzo"));
                 }
                 else
                 {

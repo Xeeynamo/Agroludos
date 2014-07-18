@@ -68,6 +68,11 @@ public class Competizione
         return this.nmin;
     }
     
+    public int getNMax()
+    {
+        return this.nmax;
+    }
+    
     public int getNPart()
     {
         return this.npart;

@@ -11,23 +11,23 @@ public class AgroSysMan extends AgroUser
         super(statement, mail);
     }
     
-    @Override public Optional[] getOptional() throws SQLException
+    public Optional[] getOptional() throws SQLException
     {
-        return super.getOptional();
+        return super._getOptional();
     }
-    @Override public void setOptional(Optional optional) throws SQLException
+    public void setOptional(Optional optional) throws SQLException
     {
         super.setOptional(optional);
     }
-    @Override public Partecipante[] getPartecipantiMinimal() throws SQLException
+    public Partecipante[] getPartecipantiMinimal() throws SQLException
     {
         return super.getPartecipantiMinimal();
     }
-    @Override public Partecipante getPartecipante(String email) throws SQLException
+    public Partecipante getPartecipante(String email) throws SQLException
     {
         return super.getPartecipante(email);
     }
-    @Override public Manager[] getManagers() throws SQLException
+    public Manager[] getManagers() throws SQLException
     {
         return super.getManagers();
     }

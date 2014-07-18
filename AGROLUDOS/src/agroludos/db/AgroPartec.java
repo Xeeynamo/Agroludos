@@ -13,19 +13,33 @@ public class AgroPartec extends AgroUser
     
     public Competizione [] getCompetizioniDisponibili () throws SQLException
     {
-       return super._getCompetizioniDisponibili(); 
+       return super._getCompetizioni();
     }
      
     public Competizione getCompetizione (int id) throws SQLException
     {
-        return super._getCompetizione(id);
-    }
+        int i;
+        boolean trovato=false;
+        Competizione [] comp=super._getCompetizioni();
+        for (i=0;i<comp.length;i++)
+        {
+            if (comp[i].getId()==id)
+            {
+                trovato=true;
+                break;
+            }    
+        }
+        if (trovato)
+            return comp[i];
+        else
+            throw new SQLException();
+}
     
-    @Override public Optional[] getOptional() throws SQLException
+    public Optional[] getOptional() throws SQLException
     {
-        return super.getOptional();
+        return super._getOptional();
     }
-    @Override public void setOptional(Optional optional) throws SQLException
+    public void setOptional(Optional optional) throws SQLException
     {
         super.setOptional(optional);
     }

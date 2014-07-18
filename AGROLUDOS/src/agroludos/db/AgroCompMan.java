@@ -11,11 +11,11 @@ public class AgroCompMan extends AgroUser
         super(statement, mail);
     }
     
-    @Override public Optional[] getOptional() throws SQLException
+    public Optional[] getOptional() throws SQLException
     {
-        return super.getOptional();
+        return super._getOptional();
     }
-    @Override public void setOptional(Optional optional) throws SQLException
+    public void setOptional(Optional optional) throws SQLException
     {
         super.setOptional(optional);
     }
