@@ -17,7 +17,7 @@ public class AgroPartec extends AgroUser
        int NComp=0;
        for (int i=0;i<c.length;i++)
        {
-           if((super.isScaduto((Date)c[i].getDataComp(),1))||(super.isPrenotato(mail, c[i])))
+           if((super.getNGiorniMancanti((Date)c[i].getDataComp())<=1)||(super.isPrenotato(mail, c[i])))
                c[i]=null;
            else
                 NComp++;
@@ -36,7 +36,7 @@ public class AgroPartec extends AgroUser
             
     }
     
-    public void addIscrizioneCompetizione(Competizione c, Optional [] opt) throws SQLException
+    public void addIscrizioneCompetizione(Competizione c, Optional [] opt) throws SQLException, SrcScadutaException
     {
         super._addIscrizioneCompetizione(super.getPartecipante(mail), c, opt);
     }

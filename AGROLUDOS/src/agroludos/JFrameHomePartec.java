@@ -10,6 +10,7 @@ import agroludos.db.*;
 import agroludos.db.components.CampiVuotiException;
 import agroludos.db.components.Competizione;
 import agroludos.db.components.Optional;
+import agroludos.db.components.SrcScadutaException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -654,16 +655,22 @@ public class JFrameHomePartec extends javax.swing.JFrame
         }
         try {
             agro.addIscrizioneCompetizione(listComp[jListDisponibili.getSelectedIndex()],opt_scelti);
+                    JOptionPane.showMessageDialog(null, "Prenotazione effettuata\ncon successo!\n"
+                    , "Successo", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Impossibile caricare le competizioni\n" +
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        } catch (SrcScadutaException ex) {
+            JOptionPane.showMessageDialog(null,
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
-        JOptionPane.showMessageDialog(null, "Prenotazione effettuata\ncon successo!\n"
-                    , "Successo", JOptionPane.INFORMATION_MESSAGE);
-        JFrame jFrame=new JFrameHomePartec(agro);
-        this.setVisible(false);
-        jFrame.pack();
-        jFrame.setVisible(true);
+        finally
+        {
+            JFrame jFrame=new JFrameHomePartec(agro);
+            this.setVisible(false);
+            jFrame.pack();
+            jFrame.setVisible(true);
+        }
     }//GEN-LAST:event_jIscrizioneCompetizioneActionPerformed
 
     private void jCheckBoxOpt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxOpt2ActionPerformed

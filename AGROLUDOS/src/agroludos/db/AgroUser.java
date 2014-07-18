@@ -349,8 +349,10 @@ public class AgroUser
         return n;
     }
     
-    protected void _addIscrizioneCompetizione(Partecipante p, Competizione c,Optional [] opt) throws SQLException
+    protected void _addIscrizioneCompetizione(Partecipante p, Competizione c,Optional [] opt) throws SQLException, SrcScadutaException
     {
+        if(getNGiorniMancanti(c.getDataComp(),p.getDataSrc())>=365)
+            throw new SrcScadutaException();
         System.out.println("insert into prenotazione values (\""+p.getCodiceFiscale()+"\","+c.getId()+");");
         
         sendUpdate("insert into prenotazione values (\""+p.getCodiceFiscale()+"\","+c.getId()+");");
@@ -446,35 +448,42 @@ public class AgroUser
     
     
     /**
-     * Controlla che alla data inserita, rispetto a quella attuale
-     * non manchino meno di 'gg' giorni 
-     * @param data data inserita
-     * @param gg giorni che al massimo mancano prima dell'avvento della data 
-     * inserita per parametro
-     * @return true se mancano meno di 'gg' giorni, altrimenti false
+     * Riporta il numero di giorni che mancano dalla data attuale a
+     * quella indicata nel parametro
+     * @param data la data cui si desidera verificare i giorni rimanenti prima dell'avvento
+     * @return gg_ris, sarà 0 se le due date corrispondono o la data attuale ha
+     * superato quella nel parametro; altrimenti avrà valore positivo
      */
-    protected boolean isScaduto(Date data,int gg)
+    protected int getNGiorniMancanti(Date data)
     {
         int gg_ris=0;
         Date gc=Calendar.getInstance().getTime();
-        //Date gc=new GregorianCalendar().getTime();
         if (data.after(gc))
         {
-            /*
-            if ((gc.getYear()==data.getYear())&&(gc.getMonth()==data.getMonth())&&(data.getDay()+gg>=gc.getDay()))
-                return true;
-            else return false;
-                    */
             gg_ris+=365*(data.getYear()-gc.getYear());
             gg_ris+=30*(data.getMonth()-gc.getMonth());
             gg_ris+=data.getDate()-gc.getDate();
-            if (gg_ris<=gg)
-                return true;
-            else
-                return false;
         }
-        else
-            return true;
+        return gg_ris;
+    }
+    /**
+     * Riporta il numero di giorni che mancano dalla data 'data2'
+     * alla data 'data1'
+     * @param data1 la data cui si desidera verificare i giorni rimanenti prima dell'avvento
+     * @param data2 la data da cui si desidera cominciare il conteggio dei giorni
+     * @return gg_ris, sarà 0 se le due date corrispondono o la data attuale ha
+     * superato quella nel parametro; altrimenti avrà valore positivo
+     */
+    protected int getNGiorniMancanti(Date data1,Date data2)
+    {
+        int gg_ris=0;
+        if (data1.after(data2))
+        {
+            gg_ris+=365*(data1.getYear()-data2.getYear());
+            gg_ris+=30*(data1.getMonth()-data2.getMonth());
+            gg_ris+=data1.getDate()-data2.getDate();
+        }
+        return gg_ris;
     }
     // </editor-fold>
  
