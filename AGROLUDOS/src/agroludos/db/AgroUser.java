@@ -192,13 +192,11 @@ public class AgroUser
     {
         boolean trovato=false;
         Partecipante p=getPartecipante(mail);
-        System.out.println("select comp from prenotazione where part=\""+p.getCodiceFiscale()+"\";");
         ResultSet rs=sendQuery("select comp from prenotazione where part=\""+p.getCodiceFiscale()+"\";");
         if (rs!=null)
         {
             while(rs.next())
             {
-                System.out.println("Comp="+rs.getInt(1)+"\n");
                 if(rs.getInt(1)==c.getId())
                 {
                     trovato=true;
@@ -349,6 +347,20 @@ public class AgroUser
         n=rs.getInt(1);
         System.out.println("Riuscito" + n +"\n");
         return n;
+    }
+    
+    protected void _setIscrizioneCompetizione(Partecipante p, Competizione c,Optional [] opt) throws SQLException
+    {
+        System.out.println("insert into prenotazione values (\""+p.getCodiceFiscale()+"\","+c.getId()+");");
+        
+        sendUpdate("insert into prenotazione values (\""+p.getCodiceFiscale()+"\","+c.getId()+");");
+        if (opt!=null)
+        {
+            for (int i=0;i<opt.length;i++)
+            {
+                System.out.println("insert into opt_pren values (\""+opt[i].getNome()+"\",\""+p.getCodiceFiscale()+"\","+c.getId()+");");
+                sendUpdate("insert into opt_pren values (\""+opt[i].getNome()+"\",\""+p.getCodiceFiscale()+"\","+c.getId()+");");
+        }   }
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai manager di competizione">

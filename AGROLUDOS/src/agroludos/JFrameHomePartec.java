@@ -157,8 +157,18 @@ public class JFrameHomePartec extends javax.swing.JFrame
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Scelta optional"));
 
         jCheckBoxOpt1.setText("-");
+        jCheckBoxOpt1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxOpt1ActionPerformed(evt);
+            }
+        });
 
         jCheckBoxOpt3.setText("-");
+        jCheckBoxOpt3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxOpt3ActionPerformed(evt);
+            }
+        });
 
         jCheckBoxOpt2.setText("-");
         jCheckBoxOpt2.addActionListener(new java.awt.event.ActionListener() {
@@ -557,28 +567,28 @@ public class JFrameHomePartec extends javax.swing.JFrame
         jLabelPrezzoOpt1.setText("-");
         jLabelPrezzoOpt2.setText("-");
         jLabelPrezzoOpt3.setText("-");
-        Optional [] opt=c.getOptional();
-        if(opt!=null)
+        listOpt=c.getOptional();
+        if(listOpt!=null)
         {    
-        for (int i=0;i<opt.length;i++)
+        for (int i=0;i<listOpt.length;i++)
         {
-            if(opt[i].getNome().compareTo("Colazione")==0)
+            if(listOpt[i].getNome().compareTo("Colazione")==0)
             {
                 jCheckBoxOpt1.setEnabled(true);
-                jCheckBoxOpt1.setText(opt[i].getNome()); 
-                jLabelPrezzoOpt1.setText(String.valueOf(opt[i].getPrezzo())+"€");
+                jCheckBoxOpt1.setText(listOpt[i].getNome()); 
+                jLabelPrezzoOpt1.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
             }
-            else if(opt[i].getNome().compareTo("Pranzo")==0)
+            else if(listOpt[i].getNome().compareTo("Pranzo")==0)
                 {  
                    jCheckBoxOpt2.setEnabled(true);
-                   jCheckBoxOpt2.setText(opt[i].getNome()); 
-                   jLabelPrezzoOpt2.setText(String.valueOf(opt[i].getPrezzo())+"€");
+                   jCheckBoxOpt2.setText(listOpt[i].getNome()); 
+                   jLabelPrezzoOpt2.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
                 }
                 else
                 {
                    jCheckBoxOpt3.setEnabled(true);
-                   jCheckBoxOpt3.setText(opt[i].getNome()); 
-                   jLabelPrezzoOpt3.setText(String.valueOf(opt[i].getPrezzo())+"€");
+                   jCheckBoxOpt3.setText(listOpt[i].getNome()); 
+                   jLabelPrezzoOpt3.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
                 }               
         }
         }
@@ -596,12 +606,116 @@ public class JFrameHomePartec extends javax.swing.JFrame
     }//GEN-LAST:event_jListDisponibiliValueChanged
 
     private void jIscrizioneCompetizioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jIscrizioneCompetizioneActionPerformed
-        
+        boolean [] opt =new boolean [3];
+        int nopt=0;
+        if (jCheckBoxOpt1.isSelected())
+            nopt++;
+        if (jCheckBoxOpt2.isSelected())
+            nopt++;
+        if (jCheckBoxOpt3.isSelected())
+            nopt++;
+        Optional [] opt_scelti=new Optional[nopt];
+        int j=0;
+        if (jCheckBoxOpt1.isSelected())
+        {
+            for (int i=0;i<listOpt.length;i++)
+            {
+                if(listOpt[i].getNome().compareTo("Colazione")==0)
+                {
+                    opt_scelti[j]=listOpt[i];
+                    j++;
+                    break;
+                }
+            }
+        }
+        if (jCheckBoxOpt2.isSelected())
+        {
+            for (int i=0;i<listOpt.length;i++)
+            {
+                if(listOpt[i].getNome().compareTo("Pranzo")==0)
+                {
+                    opt_scelti[j]=listOpt[i];
+                    j++;
+                    break;
+                }
+            }
+        }
+        if (jCheckBoxOpt3.isSelected())
+        {
+            for (int i=0;i<listOpt.length;i++)
+            {
+                if(listOpt[i].getNome().compareTo("Pernotto")==0)
+                {
+                    opt_scelti[j]=listOpt[i];
+                    j++;
+                    break;
+                }
+            }
+        }
+        try {
+            agro.setIscrizioneCompetizione(listComp[jListDisponibili.getSelectedIndex()],opt_scelti);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile caricare le competizioni\n" +
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+        JOptionPane.showMessageDialog(null, "Prenotazione effettuata\ncon successo!\n"
+                    , "Successo", JOptionPane.INFORMATION_MESSAGE);
+        JFrame jFrame=new JFrameHomePartec(agro);
+        this.setVisible(false);
+        jFrame.pack();
+        jFrame.setVisible(true);
     }//GEN-LAST:event_jIscrizioneCompetizioneActionPerformed
 
     private void jCheckBoxOpt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxOpt2ActionPerformed
-        // TODO add your handling code here:
+        float prezzo=0;
+        for (int i=0;i<listOpt.length;i++)
+        {
+            if(listOpt[i].getNome().compareTo("Pranzo")==0)
+            {
+                prezzo=listOpt[i].getPrezzo();
+                break;
+            }
+        }
+        if(jCheckBoxOpt2.isSelected())
+            jLabelPrezzoTot.setText(String.valueOf(Float.valueOf(jLabelPrezzoTot.getText())+prezzo));
+        else
+            jLabelPrezzoTot.setText(String.valueOf(Float.valueOf(jLabelPrezzoTot.getText())-prezzo));
     }//GEN-LAST:event_jCheckBoxOpt2ActionPerformed
+
+    private void jCheckBoxOpt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxOpt1ActionPerformed
+        // TODO add your handling code here:
+        float prezzo=0;
+        for (int i=0;i<listOpt.length;i++)
+        {
+            if(listOpt[i].getNome().compareTo("Colazione")==0)
+            {
+                prezzo=listOpt[i].getPrezzo();
+                break;
+            }
+      
+        }
+        if(jCheckBoxOpt1.isSelected())
+            jLabelPrezzoTot.setText(String.valueOf(Float.valueOf(jLabelPrezzoTot.getText())+prezzo));
+        else
+            jLabelPrezzoTot.setText(String.valueOf(Float.valueOf(jLabelPrezzoTot.getText())-prezzo));  
+    }//GEN-LAST:event_jCheckBoxOpt1ActionPerformed
+
+    private void jCheckBoxOpt3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxOpt3ActionPerformed
+        // TODO add your handling code here:
+        float prezzo=0;
+        for (int i=0;i<listOpt.length;i++)
+        {
+            if(listOpt[i].getNome().compareTo("Pernotto")==0)
+            {
+                prezzo=listOpt[i].getPrezzo();
+                break;
+            }
+        }
+        if(jCheckBoxOpt3.isSelected())
+            jLabelPrezzoTot.setText(String.valueOf(Float.valueOf(jLabelPrezzoTot.getText())+prezzo));
+        else
+            jLabelPrezzoTot.setText(String.valueOf(Float.valueOf(jLabelPrezzoTot.getText())-prezzo));  
+    }//GEN-LAST:event_jCheckBoxOpt3ActionPerformed
 
     /**
      * @param args the command line arguments
