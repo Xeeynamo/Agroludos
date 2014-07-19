@@ -26,10 +26,6 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     private Optional[] listOptional;
     private Partecipante[] listPartec;
     
-    public JFrameMainSystem() {
-        initComponents();
-        agro = null;
-    }
     public JFrameMainSystem(ManagerSistema agroSysMan) {
         agro = agroSysMan;
         initComponents();
@@ -116,6 +112,8 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         jLabel10.setText("jLabel10");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(317, 441));
+        setMinimumSize(new java.awt.Dimension(317, 441));
 
         jTabbedPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTabbedPane.setName("jPanelPartecipanti"); // NOI18N
@@ -226,7 +224,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                 .addGroup(jPanelManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
                     .addComponent(jLabel19))
@@ -805,7 +803,8 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFrameMainSystem(null).setVisible(true);
+                Agroludos.CreateAgroConnect();
+                new JFrameMainSystem((ManagerSistema)Agroludos.agroConnect.Login("a", "a")).setVisible(true);
             }
         });
     }
