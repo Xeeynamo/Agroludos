@@ -29,72 +29,35 @@ public class AgroConnect
         s = (Statement)db.createStatement();
     }
     
-    public int MySqlLogin(String username, String password) throws SQLException
+    public AgroController Login(String mail, String password)
     {
-        s.executeQuery("SELECT tipo FROM utente WHERE mail=\"" + username +
-                "\" AND password=PASSWORD('" + password + "');");
-        ResultSet rs = s.getResultSet();
-        if (rs.next() == false)
-            return -1;
-        else
-            return rs.getInt("tipo");
-    }
-    
-    public AgroController Login(String user, String password)
-    {
-        int tipo = -1;
         try
         {
-            tipo = MySqlLogin(user, password);
-            switch (tipo)
+            int tipo = LoginAnonimo().getUserType(mail, password);
+            switch (tipo) 
             {
-                case 0:
-                    return new Utente(s, user);
-                case 1:
-                    return new ManagerCompetizione(s, user);
-                case 2:
-                    return new ManagerSistema(s, user);
-                case 3:
-                    return new Anonimo(s);
-                default:
-                    JOptionPane.showMessageDialog(null, "Indirizzo E-mail o password errati\n",
-                            "Errore", JOptionPane.ERROR_MESSAGE);
-                    return null;
-            }
+                 case 0:
+                     return new Utente(s, mail);
+                 case 1:
+                     return new ManagerCompetizione(s, mail);
+                 case 2:
+                     return new ManagerSistema(s, mail);
+                 case 3:
+                     return new Anonimo(s);
+                 default:
+                     JOptionPane.showMessageDialog(null, "Indirizzo E-mail o password errati\n",
+                             "Errore", JOptionPane.ERROR_MESSAGE);
+                     return null;
+             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Impossibile stabilire una connessione col database\n" +
                     e.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
         return null;
     }
+    
     public Anonimo LoginAnonimo()
     {
         return new Anonimo(s);
-    }
-    
-    
-    public int getPartecipanteId()
-    {
-        return 0;
-    }
-    public int getCostoCompetizione()
-    {
-        return 0;
-    }
-    public int getOptionalPrezzo(int index)
-    {
-        return 0;
-    }
-    public boolean getOptionalScelti(int index)
-    {
-        return false;
-    }
-    public String getManagerNome()
-    {
-        return "-";
-    }
-    public String getManagerMail()
-    {
-        return "-";
     }
 }

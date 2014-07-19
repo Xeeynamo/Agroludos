@@ -67,6 +67,21 @@ public class AgroController
         getStatement().executeUpdate(query);
     }
     
+    protected int getUserType(String mail, String password) throws SQLException
+    {
+        Request q = new Request(
+                new String[] { "tipo" },
+                TABLE_UTENTE,
+                new Condition(
+                    new Condition("mail", "\"" + mail + "\"", Request.Operator.Equal).toString(),
+                    new Condition("password", "PASSWORD('" + password + "')", Request.Operator.Equal).toString(),
+                        Request.Operator.And)
+        );
+        ResultSet rs = sendQuery(q.toString());
+        if (rs.next())
+            return rs.getInt("tipo");
+        return -1;
+    }
     
     protected void _addPartec(String password,Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {

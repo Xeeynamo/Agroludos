@@ -14,6 +14,10 @@ public class Anonimo extends AgroController
         super(statement, null);
     }
     
+    @Override public int getUserType(String mail, String password) throws SQLException
+    {
+        return super.getUserType(mail, password);
+    }
     public void addPartec(String password,Partecipante p) throws SQLException, DefEmailException, DefCodFiscException, CampiVuotiException
     {
         super._addPartec(password,p);
