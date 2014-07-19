@@ -85,7 +85,6 @@ public class AgroController
     
     protected void _addPartec(String password,Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
-        
         if (isMailExists(p.getMail()))
             throw new DefEmailException();
         if (_checkCodFiscExists(p.getCodiceFiscale()))
@@ -128,124 +127,6 @@ public class AgroController
      */
     protected Competizione[] _getCompetizioni() throws SQLException
     {
-        /*
-        Manager man=null;
-        TipoCompetizione tipo=null;
-        Request q= new Request
-                (null,
-                 TABLE_COMPETIZIONE
-                );
-        System.out.println(q.toString()+"\n");
-        ResultSet rs=sendQuery(q.toString());
-        Competizione [] x=new Competizione [getResultSetLength(rs)];
-        if (x.length!=0)
-        {
-            Competizione [] comp=new Competizione[x.length];
-            if (!rs.isFirst())
-                rs.first();
-            for (int i=0;i<x.length;i++,rs.next())
-                x[i]=new Competizione(rs.getInt("idCompetizione"),rs.getFloat("prezzo"),rs.getInt("partMin"),rs.getInt("partMax"),getNPartecipanti(rs.getInt("idCompetizione")),tipo,man,rs.getDate("data"),opt);;
-            for (int i=0;i<x.length;i++)
-            {
-                Optional [] opt=AgroController.this.getOptional(x[i].getInt("idCompetizione"));
-                Manager M[]=getManagers();
-                for (Manager m:M)
-                    if(m.getMail().compareTo(x[i].getString("Manager"))==0)
-                    {
-                        man=m;
-                        break;
-                    }    
-                TipoCompetizione T[]=getCompetizioneTipi();
-                for (TipoCompetizione t:T)
-                    if (t.getNome().compareTo(x[i].getString("tipo"))==0)
-                    {
-                        tipo=t;
-                        break;
-                    }
-                Condition c1=new Condition ("idCompetizione",String.valueOf(x[i].getInt("idCompetizione")),Request.Operator.Equal);
-                Condition c2=new Condition ("manager","\""+x[i].getString("Manager")+"\"",Request.Operator.Equal);
-                Condition c3=new Condition ("tipo","\""+x[i].getString("tipo")+"\"",Request.Operator.Equal);
-                Condition c4=new Condition (c1.toString(),c2.toString(),Request.Operator.And);
-                Condition c5=new Condition (c4.toString(),c3.toString(),Request.Operator.And);
-                q=new Request (
-                      null,
-                      TABLE_COMPETIZIONE,
-                      c5);
-                rs=sendQuery(q.toString());
-                System.out.println(q.toString()+"\n");
-                rs.next();
-                comp[i]=new Competizione (rs.getInt("idCompetizione"),rs.getFloat("prezzo"),rs.getInt("partMin"),rs.getInt("partMax"),getNPartecipanti(rs.getInt("idCompetizione")),tipo,man,rs.getDate("data"),opt);
-            }
-            return comp;
-        }
-            
-        else
-            throw new SQLException();
-        */
-        
-        Manager man=null;
-        TipoCompetizione tipo=null;
-        Request q= new Request
-                (new String [] {"idCompetizione","manager","tipo"},
-                 TABLE_COMPETIZIONE
-                );
-        System.out.println(q.toString()+"\n");
-        ResultSet rs=sendQuery(q.toString());
-        int NRis=getResultSetLength(rs);
-        if (NRis!=0)
-        {
-            Competizione [] comp=new Competizione[NRis];
-            int [] id_c=new int [NRis];
-            String [] mail_mc=new String [NRis];
-            String [] tipo_comp=new String [NRis];
-            if (!rs.isFirst())
-                rs.first();
-            for (int i=0;i<NRis;i++,rs.next())
-            {
-                id_c[i]=rs.getInt("idCompetizione");
-                mail_mc[i]=rs.getString("manager");
-                System.out.println("mail_mc="+mail_mc[i]+"\n");
-                tipo_comp[i]=rs.getString("tipo");
-            }    
-            for (int i=0;i<id_c.length;i++)
-            {
-                Optional [] opt=AgroController.this.getOptional(id_c[i]);
-                Manager M[]=getManagers();
-                for (Manager m:M)
-                    if(m.getMail().compareTo(mail_mc[i])==0)
-                    {
-                        man=m;
-                        break;
-                    }    
-                TipoCompetizione T[]=getCompetizioneTipi();
-                for (TipoCompetizione t:T)
-                    if (t.getNome().compareTo(tipo_comp[i])==0)
-                    {
-                        tipo=t;
-                        break;
-                    }
-                int nPart=getNPartecipanti(id_c[i]);
-                Condition c1=new Condition ("idCompetizione",String.valueOf(id_c[i]),Request.Operator.Equal);
-                Condition c2=new Condition ("manager","\""+mail_mc[i]+"\"",Request.Operator.Equal);
-                Condition c3=new Condition ("tipo","\""+tipo_comp[i]+"\"",Request.Operator.Equal);
-                Condition c4=new Condition (c1.toString(),c2.toString(),Request.Operator.And);
-                Condition c5=new Condition (c4.toString(),c3.toString(),Request.Operator.And);
-                q=new Request (
-                      null,
-                      TABLE_COMPETIZIONE,
-                      c5);
-                rs=sendQuery(q.toString());
-                System.out.println(q.toString()+"\n");
-                rs.next();
-                comp[i]=new Competizione (rs.getInt("idCompetizione"),rs.getFloat("prezzo"),rs.getInt("partMin"),rs.getInt("partMax"),nPart,tipo,man,rs.getDate("data"),opt);
-            }
-            return comp;
-        }
-            
-        else
-            throw new SQLException();
-        
-        /*
         String s1="drop view if exists n_partecipanti,optional_competizione,manager_competizioni;";
         sendUpdate(s1);
         s1=new String("create view n_partecipanti as "
@@ -302,7 +183,6 @@ public class AgroController
             
         else
             throw new SQLException();
-        */
 
     }       
 
@@ -578,11 +458,11 @@ public class AgroController
                     new Join(TABLE_OPTIONAL_COMPETIZIONE,
                             new Condition(
                                     TABLE_OPTIONAL + ".nome",
-                                    TABLE_OPTIONAL_COMPETIZIONE + ".optional",
+                                    TABLE_OPTIONAL_COMPETIZIONE + ".opt",
                                     Request.Operator.Equal
                             ))
                 },
-                new Condition(TABLE_OPTIONAL_COMPETIZIONE + ".competizione", Integer.toString(competizioneId), Request.Operator.Equal)
+                new Condition(TABLE_OPTIONAL_COMPETIZIONE + ".comp", Integer.toString(competizioneId), Request.Operator.Equal)
         );
         
         ResultSet rs = sendQuery(q.toString());
@@ -710,19 +590,14 @@ public class AgroController
                 {
                     new Join(TABLE_PRENOTAZIONE,
                             new Condition(
-                                    TABLE_COMPETIZIONE + ".idCompetizione",
-                                    TABLE_PRENOTAZIONE + ".competizione",
+                                    TABLE_COMPETIZIONE + ".id",
+                                    TABLE_PRENOTAZIONE + ".id",
                                     Request.Operator.Equal
                             ))
                 },
-                new Condition(TABLE_COMPETIZIONE + ".idCompetizione", Integer.toString(competizioneId), Request.Operator.Equal)
+                new Condition(TABLE_COMPETIZIONE + ".id", Integer.toString(competizioneId), Request.Operator.Equal)
         );
-        //return sendQuery(q.toString()).getInt(1);
-        ResultSet rs=sendQuery(q.toString());
-        if (rs.next())
-            return rs.getInt(1);
-        else
-            throw new SQLException();
+        return sendQuery(q.toString()).getInt(1);
     }
     
     protected void _addIscrizioneCompetizione(Partecipante p, Competizione c,Optional [] opt) throws SQLException, SrcScadutaException
