@@ -16,9 +16,11 @@ public class Utente extends AgroController
     {
        Competizione [] c= super._getCompetizioni();
        int NComp=0;
+       System.out.println("nComp="+c.length+"\n");
        for (int i=0;i<c.length;i++)
        {
-           if((super.getNGiorniMancanti((Date)c[i].getDataComp())<=1)||(super.isPrenotato(getMail(), c[i])))
+           System.out.println("compId="+c[i].getId());
+           if((super.getNGiorniMancanti((Date)c[i].getDataComp())<=1)||(super.isPrenotato(super.getMail(), c[i].getId())))
                c[i]=null;
            else
                 NComp++;
@@ -41,7 +43,7 @@ public class Utente extends AgroController
        int NComp=0;
        for (int i=0;i<c.length;i++)
        {
-           if((super.getNGiorniMancanti((Date)c[i].getDataComp())==0)||(!super.isPrenotato(getMail(), c[i])))
+           if((super.getNGiorniMancanti((Date)c[i].getDataComp())==0)||(!super.isPrenotato(super.getMail(), c[i].getId())))
                c[i]=null;
            else
                 NComp++;
