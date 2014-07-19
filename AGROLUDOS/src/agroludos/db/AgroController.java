@@ -17,12 +17,12 @@ public class AgroController
     private static final String TABLE_PARTECIPANTE = "partecipante";
     private static final String TABLE_PRENOTAZIONE = "prenotazione";
     private static final String TABLE_OPTIONAL = "optional";
-    private static final String TABLE_OPTIONAL_COMPETIZIONE = "opt_comp";
-    private static final String TABLE_OPTIONAL_PRENOTAZIONE = "opt_pren";
+    private static final String TABLE_OPTIONAL_COMPETIZIONE = "optional_competizione";
+    private static final String TABLE_OPTIONAL_PRENOTAZIONE = "optional_prenotazione";
     private static final String TABLE_UTENTE = "utente";
     private static final String TABLE_COMPETIZIONE = "competizione";
-    private static final String TABLE_MAN_COMP = "mc";
-    private static final String TABLE_COMP_TYPE = "tipo_comp";
+    private static final String TABLE_MAN_COMP = "manager";
+    private static final String TABLE_COMP_TYPE = "tipocompetizione";
     
     Statement statement;
     String mail;
