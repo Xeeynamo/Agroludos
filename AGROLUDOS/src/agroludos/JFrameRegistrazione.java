@@ -30,7 +30,6 @@ import javax.swing.JOptionPane;
  * @author Luciano
  */
 public class JFrameRegistrazione extends javax.swing.JFrame {
-    private static final String DIR = "C:\\File SRC";
     /**
      * Creates new form JFrameRegistrazione
      */
@@ -49,40 +48,6 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
         else
             throw new DefPassException();
     }
-    private String DefineSourceFileSrc (String file_name)
-    {
-        File dir=new File (DIR);
-        if (!dir.isDirectory())
-            dir.mkdir();
-        String x=DIR+"\\"+file_name+".txt";
-        return x;
-    }
-    
-    private void createFileSrc (String file_name, String text) throws IOException
-    {
-        File dir=new File (DIR);
-        if (!dir.isDirectory())
-            dir.mkdir();
-        File f=new File (file_name);
-        FileWriter fr=new FileWriter (f);
-        fr.write(text);
-        fr.flush();
-        fr.close();
-    }
-   
-   public void deleteFileSrc (String file_name) throws IOException
-   {
-       File dir=new File (DIR);
-       if (dir.isDirectory())
-       {
-            String x=DIR+"\\"+file_name+".txt";
-            File f=new File (x);
-            if (f.isFile())
-                f.delete();
-       }
-
-       
-   }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -302,39 +267,27 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jRegistraConfermaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegistraConfermaActionPerformed
-        //MODIFICA by ROS (12/7/2014)
-        //SimpleDateFormat d1 = new SimpleDateFormat("dd/MM/yyyy");
-        //SimpleDateFormat d2 = new SimpleDateFormat("dd/MM/yyyy");
+
         SimpleDateFormat d1 = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat d2 = new SimpleDateFormat("dd/MM/yyyy");
         String Password;
-        String FileSRC;
         JFrame jFrame;
         try {
-            //d1.parse(jRegistraDatanascita.getText());
             d2.parse(jRegistraDataSrc.getText());
             Password=DefinePass (jRegistratiPwd.getPassword(),jRegistratiPwd2.getPassword());
-            FileSRC=DefineSourceFileSrc(jRegistraCodFisc.getText());
             Partecipante p = new Partecipante(
                 jRegistraMail.getText(),
                 jRegistraNome.getText(),
                 jRegistraCognome.getText(),
-                //"",
                 jRegistraCodFisc.getText(),
                 jRegistraIndirizzo.getText(),
-                //new Date(1, 2, 3),
-                //d1,
                 d1.parse(jRegistraDatanascita.getText()),    
                 jRegistraSesso.getSelectedIndex() == 0 ? 'M' : 'F',
                 jRegistraTesserasan.getText(),
-                //new Date(1, 2, 3),
-                //d2,
                 d2.parse(jRegistraDataSrc.getText()),
-                //jRegistraCertificatoSrc.getText());
-                FileSRC);
+                jRegistraCertificatoSrc.getText());
             
             Agroludos.agroConnect.LoginAnonimo().addPartec(Password,p);
-            createFileSrc(FileSRC,jRegistraCertificatoSrc.getText());
             jFrame=new JFrameLogin();
             this.setVisible(false);
             jFrame.pack();
@@ -353,9 +306,6 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
                     "Errore", JOptionPane.ERROR_MESSAGE);
         } catch (DefCodFiscException e) {
                         JOptionPane.showMessageDialog(null, e.toString(),
-                    "Errore", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException e) {
-                                    JOptionPane.showMessageDialog(null, "Errore con la creazione del file SRC.\n" + e.toString(),
                     "Errore", JOptionPane.ERROR_MESSAGE);
         } catch (CampiVuotiException e) {
             JOptionPane.showMessageDialog(null, e.toString(),

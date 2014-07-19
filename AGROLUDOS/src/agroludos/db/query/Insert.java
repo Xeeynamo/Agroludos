@@ -66,7 +66,7 @@ public class Insert
     
     private static String generateValues(String [] values)
     {
-        String s=" values (";
+        String s="values (";
         for (int i=0;i<values.length;i++)
         {
             s+=values[i];

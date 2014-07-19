@@ -135,7 +135,7 @@ public class Partecipante
         
         //return getDataSrc().toString();
     }
-    public String getDirSrc()
+    public String getSrc()
     {
         return certSrc;
     }

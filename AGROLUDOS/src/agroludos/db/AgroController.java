@@ -85,41 +85,39 @@ public class AgroController
     
     protected void _addPartec(String password,Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
-        //MODIFICA by ROS (13/07/2014)
         if (isMailExists(p.getMail()))
             throw new DefEmailException();
         if (_checkCodFiscExists(p.getCodiceFiscale()))
             throw new DefCodFiscException();
         if (isCampiVuoti(password,p))
             throw new CampiVuotiException();
+        Insert I;
         SimpleDateFormat d = new SimpleDateFormat("yyyy-MM-dd");
         String date=d.format(p.getDataNascita());
         String dateSrc=d.format(p.getDataSrc());
-        String s1 = "INSERT INTO " + TABLE_UTENTE + " VALUES (" +
-                "\"" + p.getMail()+ "\"," +
-                "PASSWORD(\"" + password+ "\")," +
-                0 + ");";
-        String s2 = "INSERT INTO " + TABLE_PARTECIPANTE + " VALUES (" +
-                "\"" + p.getCodiceFiscale()+ "\"," +
-                "\"" + p.getNome() + "\"," +
-                "\"" + p.getCognome() + "\"," +
-                "\"" + p.getIndirizzo() + "\"," +
-                //"'" + p.getDataNascita()+ "'" +
-                //"'" + p.getDataNascitaString()+ "'," +
-                "'" +date+ "'," +
-                "'" + p.getSesso()+ "'," +
-                "\"" + p.getTesseraSan()+ "\"," +
-                //"\"" + p.getCertSrc()+ "\"" +
-                //"'" + p.getDataSrc()+ "'";
-                //"'"+p.getDataSrcString()+"'," +
-                "'" + dateSrc+ "'," +
-                "'" + p.getMail()+ "'," +
-                "'" + p.getDirSrc()+ "');";
-        
-        //statement.executeUpdate(s1);
-        //statement.executeUpdate(s2);
-        sendUpdate(s1);
-        sendUpdate(s2);
+        I= new Insert (
+                TABLE_UTENTE,
+                new String [] {
+                "\""+p.getMail()+"\"",
+                "PASSWORD(\""+password+"\")",
+                "0"});
+        System.out.println(I.toString());
+        sendUpdate(I.toString());
+        I= new Insert (
+                TABLE_PARTECIPANTE,
+                new String [] {
+                "\""+p.getMail()+"\"",
+                "\""+p.getNome()+"\"",
+                "\""+p.getCognome()+"\"",
+                "\""+p.getIndirizzo()+"\"",
+                "'"+date+"'",
+                "\""+p.getCodiceFiscale()+"\"",
+                "\""+p.getSesso()+"\"",
+                "\""+p.getTesseraSan()+"\"",
+                "'"+dateSrc+"'",
+                "\""+p.getSrc()+"\""});
+        System.out.println(I.toString());
+        sendUpdate(I.toString());
     }
    
     /**
@@ -479,18 +477,16 @@ public class AgroController
      */
     private boolean isMailExists(String email) throws SQLException
     {
-        ResultSet rs = sendQuery("SELECT mail FROM " + TABLE_UTENTE);
+        Request q = new Request (
+                    new String [] {"mail"},
+                    TABLE_UTENTE);
+        ResultSet rs=sendQuery(q.toString());
         String[] mailList = new String[getResultSetLength(rs)];
         for (int i = 0; i < mailList.length; i++, rs.next())
-        {
             mailList [i] = new String (rs.getString("mail"));
-        }
         for (String s : mailList)
-        {
-            System.out.println("email 1= "+s+" email 2= "+email);
             if (s.compareTo(email) == 0)
                 return true;
-        }
         return false;
     }
     
@@ -502,17 +498,16 @@ public class AgroController
      */
     private boolean _checkCodFiscExists(String codfisc) throws SQLException
     {
-        ResultSet rs = sendQuery("SELECT codfisc FROM " + TABLE_PARTECIPANTE );
+        Request q = new Request (
+                    new String [] {"codicefiscale"},
+                    TABLE_PARTECIPANTE);
+        ResultSet rs=sendQuery(q.toString());
         String [] cfList = new String[getResultSetLength(rs)];
         for (int i = 0; i < cfList.length; i++, rs.next())
-        {
-            cfList[i]=new String (rs.getString("codfisc"));
-        }
+            cfList[i]=new String (rs.getString("codicefiscale"));
         for (String s : cfList)
-        {
             if (s.compareTo(codfisc) == 0)
                 return true;
-        }
         return false;
     }
     
