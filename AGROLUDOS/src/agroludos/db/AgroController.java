@@ -127,54 +127,6 @@ public class AgroController
      */
     protected Competizione[] _getCompetizioni() throws SQLException
     {
-        Manager man=null;
-        TipoCompetizione tipo=null;
-        Request q= new Request
-                (null,
-                 TABLE_COMPETIZIONE
-                );
-        ResultSet rs=sendQuery(q.toString());
-        if (getResultSetLength(rs)!=0)
-        {
-            int nRis=1;
-            int id=rs.getInt("idCompetizione");
-            while(!rs.isLast())
-            {
-                rs.next();
-                if(id!=rs.getInt("idCompetizione"))
-                {
-                    nRis++;
-                    id=rs.getInt("idCompetizione");
-                }    
-            }
-            while (!rs.isFirst())
-                rs.previous();
-            Competizione [] comp=new Competizione[nRis];
-            for (int i=0;i<nRis;i++,rs.next())
-            {
-                Optional [] opt=AgroController.this.getOptional(rs.getInt("idCompetizione"));
-                Manager M[]=getManagers();
-                for (Manager m:M)
-                    if(m.getMail().compareTo(rs.getString("manager"))==0)
-                    {
-                        man=m;
-                        break;
-                    }    
-                TipoCompetizione T[]=getCompetizioneTipi();
-                for (TipoCompetizione t:T)
-                    if (t.getNome().compareTo(rs.getString("tipo"))==0)
-                    {
-                        tipo=t;
-                        break;
-                    }
-                comp[i]=new Competizione (rs.getInt("idCompetizione"),rs.getFloat("prezzo"),rs.getInt("partMin"),rs.getInt("partMax"),getNPartecipanti(rs.getInt("idCompetizione")),tipo,man,rs.getDate("data"),opt);
-            }
-            return comp;
-        }
-            
-        else
-            throw new SQLException();
-        /*
         String s1="drop view if exists n_partecipanti,optional_competizione,manager_competizioni;";
         sendUpdate(s1);
         s1=new String("create view n_partecipanti as "
@@ -231,7 +183,6 @@ public class AgroController
             
         else
             throw new SQLException();
-        */
 
     }       
 
@@ -462,11 +413,11 @@ public class AgroController
                     new Join(TABLE_OPTIONAL_COMPETIZIONE,
                             new Condition(
                                     TABLE_OPTIONAL + ".nome",
-                                    TABLE_OPTIONAL_COMPETIZIONE + ".optional",
+                                    TABLE_OPTIONAL_COMPETIZIONE + ".opt",
                                     Request.Operator.Equal
                             ))
                 },
-                new Condition(TABLE_OPTIONAL_COMPETIZIONE + ".competizione", Integer.toString(competizioneId), Request.Operator.Equal)
+                new Condition(TABLE_OPTIONAL_COMPETIZIONE + ".comp", Integer.toString(competizioneId), Request.Operator.Equal)
         );
         
         ResultSet rs = sendQuery(q.toString());
@@ -637,7 +588,6 @@ public class AgroController
         }
         return man;
     }
-  
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai controlli sui campi">
