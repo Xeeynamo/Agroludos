@@ -197,31 +197,153 @@ public class AgroController
         }
         return tcomp;
     }
+    
     /**
-     * Verifica se la competizione indicata come parametro
-     * è stato già prenotato dal partecipante
+     * Ottiene una lista di competizioni gestite da uno specifico manager
+     * @param manager mail del manager di competizione
+     * @return lista delle competizioni gestite dal manager specificato
+     * @throws SQLException 
+     */
+    public Competizione[] getCompetizioni(String manager) throws SQLException
+    {
+        Request q = new Request(
+                new String[]
+                {
+                    "idCompetizione",
+                    "tipo",
+                    "data"
+                },
+                TABLE_COMPETIZIONE,
+                new Join[]
+                {
+                    new Join(TABLE_MAN_COMP,
+                            new Condition(
+                                    TABLE_MAN_COMP + ".mail",
+                                    TABLE_COMPETIZIONE + ".manager",
+                                    Request.Operator.Equal
+                            ))
+                },
+                new Condition(TABLE_MAN_COMP + ".mail", "\"" + manager + "\"", Request.Operator.Equal)
+        );
+        ResultSet rs = sendQuery(q + "ORDER BY data");
+        Competizione[] c = new Competizione[getResultSetLength(rs)];
+        for (int i = 0; i < c.length; i++, rs.next())
+        {
+            c[i] = new Competizione(
+                rs.getInt("idCompetizione"),
+                new TipoCompetizione(rs.getString("tipo")),
+                rs.getDate("data"));
+        }
+        return c;
+    }
+    
+    /**
+     * Ottiene una descrizione completa della competizione
+     * @param idCompetizione id della competizione da ottenere
+     * @return ritorna la competizione
+     * @throws SQLException 
+     */
+    public Competizione getCompetizione(int idCompetizione) throws SQLException
+    {
+        Request q = new Request(
+                new String[]
+                {
+                    "idCompetizione",
+                    "tipo",
+                    "manager",
+                    "data",
+                    "partMin",
+                    "partMax",
+                    "prezzo",
+                    "annullata",
+                    TABLE_COMPETIZIONE + ".descrizione",
+                    TABLE_MAN_COMP + ".mail",
+                    TABLE_MAN_COMP + ".nome",
+                    TABLE_MAN_COMP + ".cognome",
+                },
+                TABLE_COMPETIZIONE,
+                new Join[]
+                {
+                    new Join(TABLE_MAN_COMP,
+                            new Condition(
+                                TABLE_MAN_COMP + ".mail",
+                                TABLE_COMPETIZIONE + ".manager",
+                                Request.Operator.Equal
+                            )),
+                    new Join(TABLE_COMP_TYPE,
+                            new Condition(
+                                TABLE_COMP_TYPE + ".nome",
+                                TABLE_COMPETIZIONE + ".tipo",
+                                Request.Operator.Equal))
+                }
+        );
+        int nPart = getNPartecipanti(idCompetizione);
+        Optional[] opt = getOptional(idCompetizione);
+        ResultSet rs = sendQuery(q + "ORDER BY data");
+        Competizione c = new Competizione(
+                rs.getInt("idCompetizione"),
+                rs.getFloat("prezzo"),
+                rs.getInt("partMin"),
+                rs.getInt("partMax"),
+                nPart,
+                new TipoCompetizione(rs.getString("tipo"), rs.getString(TABLE_COMPETIZIONE + ".descrizione")),
+                new Manager(
+                        rs.getString(TABLE_MAN_COMP + ".nome"),
+                        rs.getString(TABLE_MAN_COMP + ".cognome"),
+                        rs.getString("manager")
+                ),
+                rs.getDate("data"),
+                opt);
+        return c;
+    }
+    
+    /**
+     * Ottiene una lista di id delle competizioni a cui un partecipante si è iscritto
      * @param mail email del partecipante 
-     * @param c competizione su cui si vuole controllare se è stata fatta una prenotazione
+     * @return lista di id di competizioni
+     * @throws SQLException 
+     */
+    protected int[] getPartecipanteCompetizioni(String mail) throws SQLException
+    {
+        Request q = new Request(
+                new String[]
+                {
+                    "competizione",
+                },
+                TABLE_PRENOTAZIONE,
+                new Condition("partecipante", "\"" + mail + "\"", Request.Operator.Equal)
+        );
+        ResultSet rs = sendQuery(q.toString());
+        int[] id = new int[getResultSetLength(rs)];
+        for (int i = 0; i < id.length; i++, rs.next())
+        {
+            id[i] = rs.getInt("competizione");
+        }
+        return id;
+    }
+    
+    /**
+     * Verifica se la competizione indicata come parametro è stata già prenotata dal partecipante
+     * @param mail email del partecipante 
+     * @param idCompetizione id competizione su cui si vuole controllare se è stata fatta una prenotazione
      * @return true se il partecipante si è già prenotato a quella competizione, altrimenti false
      * @throws SQLException 
      */
-    protected boolean isPrenotato(String mail,Competizione c) throws SQLException
+    protected boolean isPrenotato(String mail, int idCompetizione) throws SQLException
     {
-        boolean trovato=false;
-        Partecipante p=getPartecipante(mail);
-        ResultSet rs=sendQuery("select comp from prenotazione where part=\""+p.getCodiceFiscale()+"\";");
-        if (rs!=null)
-        {
-            while(rs.next())
-            {
-                if(rs.getInt(1)==c.getId())
+        Request q = new Request(
+                new String[]
                 {
-                    trovato=true;
-                    break;
-                }
-            }
-        }
-        return trovato;
+                    "competizione",
+                },
+                TABLE_PRENOTAZIONE,
+                new Condition(
+                    new Condition("partecipante", "\"" + mail + "\"", Request.Operator.Equal).toString(),
+                    new Condition("competizione", String.valueOf(idCompetizione), Request.Operator.Equal).toString(),
+                        Request.Operator.And)
+        );
+        ResultSet rs = sendQuery(q.toString());
+        return rs.next();
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata agli optional">
