@@ -26,6 +26,21 @@ public class Competizione
     
     public Competizione(
         int id,
+        TipoCompetizione tipo,
+        Date data_comp)
+    {
+        this.id = id;
+        this.prezzo = 0;
+        this.nmin = 0;
+        this.nmax = 0;
+        this.npart = 0;
+        this.tipo = tipo;
+        this.manager = null;
+        this.data_comp = data_comp;
+        this.opt_comp = null;
+    }
+    public Competizione(
+        int id,
         float prezzo,
         int nmin,
         int nmax,
@@ -89,8 +104,9 @@ public class Competizione
     {
         return this.opt_comp;
     }
-    public String toString()
+    
+    @Override public String toString()
     {
-        return getTipoCompetizione().getNome()+"   ("+getDataCompString()+")";
+        return getTipoCompetizione().getNome() + " (" + getDataCompString() + ")";
     }        
 }
