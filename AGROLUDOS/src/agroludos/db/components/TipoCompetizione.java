@@ -6,6 +6,10 @@ public class TipoCompetizione
     private String nome;
     private String descrizione;
     
+    public TipoCompetizione(String nome)
+    {
+        this.nome = nome;
+    }
     public TipoCompetizione(
         String nome,
         String descrizione)
@@ -21,5 +25,10 @@ public class TipoCompetizione
     public String getDescrizione()
     {
         return descrizione;
+    }
+    
+    @Override public String toString()
+    {
+        return getNome();
     }
 }
