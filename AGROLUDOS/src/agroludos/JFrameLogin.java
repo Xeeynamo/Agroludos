@@ -122,7 +122,7 @@ public class JFrameLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLoginEntraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginEntraActionPerformed
-        AgroUser user = Agroludos.agroConnect.Login(jTextMail.getText(), jTextPassword.getText());
+        AgroController user = Agroludos.agroConnect.Login(jTextMail.getText(), jTextPassword.getText());
         if (user != null)
         {
             JFrame jFrame;

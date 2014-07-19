@@ -4,7 +4,7 @@ import agroludos.db.*;
 import agroludos.db.components.*;
 import java.sql.*;
 
-public class AgroPartec extends AgroUser
+public class AgroPartec extends AgroController
 {
     public AgroPartec(Statement statement, String mail)
     {

@@ -36,7 +36,7 @@ public class AgroConnect
             return rs.getInt("tipo");
     }
     
-    public AgroUser Login(String user, String password)
+    public AgroController Login(String user, String password)
     {
         int tipo = -1;
         try
