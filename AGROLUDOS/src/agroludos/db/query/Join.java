@@ -13,6 +13,6 @@ public class Join
     
     @Override public String toString()
     {
-        return " (JOIN" + table + " ON " + statement + ") ";
+        return " JOIN " + table + " ON " + statement + " ";
     }
 }

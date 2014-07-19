@@ -53,6 +53,24 @@ public class Request
         this.join = null;
         this.where = null;
     }
+    public Request(String[] select,
+            String from,
+            Join[] join)
+    {
+        this.select = select;
+        this.from = from;
+        this.join = join;
+        this.where = null;
+    }
+    public Request(String[] select,
+            String from,
+            Condition where)
+    {
+        this.select = select;
+        this.from = from;
+        this.join = null;
+        this.where = where;
+    }
     
     /**
      * Crea una richiesta
@@ -94,10 +112,10 @@ public class Request
             s += "*\n";
         else
         {
-            for (int i = 0; i < s.length(); i++)
+            for (int i = 0; i < campi.length; i++)
             {
                 s += campi[i];
-                if (i + 1 < s.length())
+                if (i + 1 < campi.length)
                 {
                     s += ", ";
                 }
@@ -128,7 +146,7 @@ public class Request
     private static String generateWhere(Condition statement)
     {
         if (statement != null)
-            return statement.toString();
+            return "WHERE " + statement.toString() + "\n";
         return "";
     }
 }
