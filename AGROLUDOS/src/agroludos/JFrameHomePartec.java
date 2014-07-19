@@ -38,17 +38,17 @@ public class JFrameHomePartec extends javax.swing.JFrame
 
     public JFrameHomePartec(Utente agro)
     {
-        //try 
-        //{
+        try 
+        {
             initComponents();
             this.agro=agro;
-            //CompetizioniDisponibiliLoadList();
-        //} 
-        //catch (SQLException ex) 
-        //{
-            //JOptionPane.showMessageDialog(null, "Impossibile caricare le competizioni\n" +
-                   // ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-        //}
+            CompetizioniDisponibiliLoadList();
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Impossibile caricare le competizioni\n" +
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     void CompetizioniDisponibiliLoadList() throws SQLException
