@@ -23,6 +23,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
 
     private final ManagerSistema agro;
     private Manager[] listManager;
+    private Competizione[] listCompetizioni;
     private Optional[] listOptional;
     private Partecipante[] listPartec;
     
@@ -47,7 +48,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         jListaManager = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList();
+        jListManagerCompetizioni = new javax.swing.JList();
         jPanel3 = new javax.swing.JPanel();
         jComboBox4 = new javax.swing.JComboBox();
         jLabel13 = new javax.swing.JLabel();
@@ -129,19 +130,17 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         jLabel3.setText("Manager di competizione selezionato");
 
         jListaManager.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jListaManager.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jListaManagerActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Lista delle sue competizioni");
 
-        jList2.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane6.setViewportView(jList2);
+        jScrollPane6.setViewportView(jListManagerCompetizioni);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Optional attivati e prezzo"));
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel13.setText("Optional");
 
@@ -655,6 +654,11 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     {
         Shared.CreateList(jListaManager, listManager = agro.getManagers());
     }
+    private void ManagerLoadListCompetizioni(int index) throws SQLException
+    {
+        Shared.CreateList(jListManagerCompetizioni, listCompetizioni =
+                agro.getCompetizioni(listManager[index].getMail()));
+    }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda gli optional">
     /**
@@ -773,6 +777,15 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jListaUtentiValueChanged
 
+    private void jListaManagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jListaManagerActionPerformed
+        try {
+            ManagerLoadListCompetizioni(jListaManager.getSelectedIndex());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile caricare la lista delle competizioni\n" +
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jListaManagerActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -846,7 +859,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelMyManagerMail;
     private javax.swing.JLabel jLabelMyManagerNome;
     private javax.swing.JList jList1;
-    private javax.swing.JList jList2;
+    private javax.swing.JList jListManagerCompetizioni;
     private javax.swing.JList jListOptional;
     private javax.swing.JComboBox jListaManager;
     private javax.swing.JList jListaUtenti;
