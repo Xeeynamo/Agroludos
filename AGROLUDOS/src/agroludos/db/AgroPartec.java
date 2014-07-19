@@ -31,9 +31,30 @@ public class AgroPartec extends AgroUser
                j++;
            }
        }
-       return c1;
-       
-            
+       return c1;        
+    }
+    
+    public Competizione [] getCompetizioniPrenotate () throws SQLException
+    {
+       Competizione [] c= super._getCompetizioni();
+       int NComp=0;
+       for (int i=0;i<c.length;i++)
+       {
+           if((super.getNGiorniMancanti((Date)c[i].getDataComp())==0)||(!super.isPrenotato(mail, c[i])))
+               c[i]=null;
+           else
+                NComp++;
+       }
+       Competizione [] c1=new Competizione[NComp];
+       for (int i=0,j=0;i<c.length;i++)
+       {
+           if(c[i]!=null)
+           {
+               c1[j]=c[i];
+               j++;
+           }
+       }
+       return c1;        
     }
     
     public void addIscrizioneCompetizione(Competizione c, Optional [] opt) throws SQLException, SrcScadutaException

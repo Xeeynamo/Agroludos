@@ -11,6 +11,7 @@ import agroludos.db.components.CampiVuotiException;
 import agroludos.db.components.Competizione;
 import agroludos.db.components.Optional;
 import agroludos.db.components.SrcScadutaException;
+import java.awt.Component;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -53,6 +54,11 @@ public class JFrameHomePartec extends javax.swing.JFrame
     {
         CreateList(jListDisponibili,listComp=agro.getCompetizioniDisponibili());
     }
+    
+    void CompetizioniPrenotateLoadList() throws SQLException
+    {
+        CreateList(jListMyIscrizioni,listComp=agro.getCompetizioniPrenotate());
+    }
 
     void CreateList(JList jList, Object[] list)
     {
@@ -74,7 +80,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jTabsCompetizioni = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel7 = new javax.swing.JLabel();
@@ -114,13 +120,20 @@ public class JFrameHomePartec extends javax.swing.JFrame
         jButtonMyOptionalAnnulla = new javax.swing.JButton();
         jLabelMyManagerMail = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
-        jLabelMyManagerNome = new javax.swing.JLabel();
+        jLabelMyManager = new javax.swing.JLabel();
         jButtonMyAnnullaIscrizione = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabelMyPrezzoTotale = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTabsCompetizioni.setName(""); // NOI18N
+        jTabsCompetizioni.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabsCompetizioniStateChanged(evt);
+            }
+        });
 
         jLabel7.setText("Posti rimanenti");
         jLabel7.setToolTipText("");
@@ -286,13 +299,9 @@ public class JFrameHomePartec extends javax.swing.JFrame
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Competizioni disponibili", jPanel2);
+        jTabsCompetizioni.addTab("Competizioni disponibili", jPanel2);
+        jPanel2.setName("jPanelCompDisponibili");
 
-        jListMyIscrizioni.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Tiro con l'arco (DATA)", "Corsa campestre (GG/MM/AAAA)" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jListMyIscrizioni.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 jListMyIscrizioniValueChanged(evt);
@@ -306,21 +315,26 @@ public class JFrameHomePartec extends javax.swing.JFrame
 
         jLabel5.setText("Costo competizione");
 
-        jLabelMyCosto.setText("10€");
+        jLabelMyCosto.setText("-");
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Modifica optional"));
 
-        jCheckBoxMyOptional1.setText("Colazione");
+        jCheckBoxMyOptional1.setText("-");
+        jCheckBoxMyOptional1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMyOptional1ActionPerformed(evt);
+            }
+        });
 
-        jCheckBoxMyOptional3.setText("Pernotto");
+        jCheckBoxMyOptional3.setText("-");
 
-        jCheckBoxMyOptional2.setText("Pranzo");
+        jCheckBoxMyOptional2.setText("-");
 
-        jLabelMyOptionalCosto1.setText("5€");
+        jLabelMyOptionalCosto1.setText("-");
 
-        jLabelMyOptionalCosto2.setText("10€");
+        jLabelMyOptionalCosto2.setText("-");
 
-        jLabelMyOptionalCosto3.setText("25€");
+        jLabelMyOptionalCosto3.setText("-");
 
         jButtonMyOptionalConferma.setText("Conferma");
 
@@ -370,17 +384,17 @@ public class JFrameHomePartec extends javax.swing.JFrame
                     .addComponent(jButtonMyOptionalAnnulla)))
         );
 
-        jLabelMyManagerMail.setText("marco.rossi@agroludos.it");
+        jLabelMyManagerMail.setText("-");
 
         jLabel23.setText("Manager");
 
-        jLabelMyManagerNome.setText("Marco Rossi");
+        jLabelMyManager.setText("-");
 
         jButtonMyAnnullaIscrizione.setText("Annulla iscrizione");
 
         jLabel2.setText("Prezzo totale");
 
-        jLabelMyPrezzoTotale.setText("10€");
+        jLabelMyPrezzoTotale.setText("-");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -414,7 +428,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
                                 .addGap(68, 68, 68)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabelMyManagerMail)
-                                    .addComponent(jLabelMyManagerNome)))
+                                    .addComponent(jLabelMyManager)))
                             .addComponent(jLabel23))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -443,7 +457,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
-                    .addComponent(jLabelMyManagerNome))
+                    .addComponent(jLabelMyManager))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelMyManagerMail)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -451,7 +465,8 @@ public class JFrameHomePartec extends javax.swing.JFrame
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Le tue iscrizioni", jPanel1);
+        jTabsCompetizioni.addTab("Le tue iscrizioni", jPanel1);
+        jPanel1.setName("jPanelCompPrenotate");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -459,14 +474,14 @@ public class JFrameHomePartec extends javax.swing.JFrame
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTabsCompetizioni, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addComponent(jTabsCompetizioni)
                 .addContainerGap())
         );
 
@@ -527,7 +542,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
     }
     void setMyManagerName(String value)
     {
-        jLabelMyManagerNome.setText(value);
+        jLabelMyManager.setText(value);
     }
     void setMyManagerMail(String value)
     {
@@ -542,19 +557,58 @@ public class JFrameHomePartec extends javax.swing.JFrame
     }
     
     private void jListMyIscrizioniValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListMyIscrizioniValueChanged
-        setMyPartecipanteId(db.getPartecipanteId());
-        setCostoCompetizione(db.getCostoCompetizione());
-        for (int i = 0; i < 3; i++)
-        {
-            setMyOptional(i, db.getOptionalScelti(i));
-            setMyOptionalPrice(i, db.getOptionalPrezzo(i));
+        try {
+            // TODO add your handling code here:
+            CompetizionePrenotataLoad(jListMyIscrizioni.getSelectedIndex());
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
         }
-        setMyTotalPrice(getTotalPrice());
-        setMyManagerName(db.getManagerNome());
-        setMyManagerMail(db.getManagerMail());
     }//GEN-LAST:event_jListMyIscrizioniValueChanged
-
-    void CompetizioneLoad (int index) throws SQLException
+    
+    void CompetizionePrenotataLoad (int index) throws SQLException
+    {
+        Competizione c=agro.getCompetizione(listComp[index].getId());
+        jLabelMyCosto.setText(String.valueOf(c.getPrezzo())+"€");
+        jCheckBoxMyOptional1.setEnabled(false);
+        jCheckBoxMyOptional2.setEnabled(false);
+        jCheckBoxMyOptional3.setEnabled(false);
+        jCheckBoxMyOptional1.setText("-");
+        jCheckBoxMyOptional1.setText("-");
+        jCheckBoxMyOptional1.setText("-");
+        jLabelMyOptionalCosto1.setText("-");
+        jLabelMyOptionalCosto1.setText("-");
+        jLabelMyOptionalCosto1.setText("-");
+        listOpt=c.getOptional();
+        if(listOpt!=null)
+        {
+            for (int i=0;i<listOpt.length;i++)
+            {
+                if(listOpt[i].getNome().compareTo("Colazione")==0)
+                {
+                    jCheckBoxMyOptional1.setEnabled(true);
+                    jCheckBoxMyOptional1.setText(listOpt[i].getNome()); 
+                    jLabelMyOptionalCosto1.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
+                }
+                else if (listOpt[i].getNome().compareTo("Pranzo")==0)
+                    {
+                        jCheckBoxMyOptional2.setEnabled(true);
+                        jCheckBoxMyOptional2.setText(listOpt[i].getNome());
+                        jLabelMyOptionalCosto2.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
+                    }
+                    else
+                    {
+                        jCheckBoxMyOptional3.setEnabled(true);
+                        jCheckBoxMyOptional3.setText(listOpt[i].getNome());
+                        jLabelMyOptionalCosto3.setText(String.valueOf(listOpt[i].getPrezzo())+"€");                        
+                    }
+            }    
+        }
+        jLabelMyPrezzoTotale.setText(String.valueOf(c.getPrezzo()));
+        jLabelMyManager.setText(c.getManager().getNome()+" "+c.getManager().getCognome());
+        jLabelMyManagerMail.setText(c.getManager().getMail());
+    }
+    
+    void CompetizioneDisponibileLoad (int index) throws SQLException
     {
         Competizione c=agro.getCompetizione(listComp[index].getId());
         jLabelNPart.setText(String.valueOf(c.getNMax()-c.getNPart()));
@@ -600,7 +654,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
     private void jListDisponibiliValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListDisponibiliValueChanged
         try {
             // TODO add your handling code here:
-            CompetizioneLoad(jListDisponibili.getSelectedIndex());
+            CompetizioneDisponibileLoad(jListDisponibili.getSelectedIndex());
         } catch (SQLException ex) {
             Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -724,6 +778,31 @@ public class JFrameHomePartec extends javax.swing.JFrame
             jLabelPrezzoTot.setText(String.valueOf(Float.valueOf(jLabelPrezzoTot.getText())-prezzo));  
     }//GEN-LAST:event_jCheckBoxOpt3ActionPerformed
 
+    private void jTabsCompetizioniStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabsCompetizioniStateChanged
+        // TODO add your handling code here:
+        Component c=jTabsCompetizioni.getSelectedComponent();
+        String n=c.getName();
+        try
+        {
+            if (n!=null)
+            {
+            if (n.compareTo("jPanelCompDisponibili")==0)
+                CompetizioniDisponibiliLoadList();
+            else if (n.compareTo("jPanelCompPrenotate")==0)
+                    CompetizioniPrenotateLoadList();
+            }
+        }
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Impossibile caricare le competizioni\n" +
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jTabsCompetizioniStateChanged
+
+    private void jCheckBoxMyOptional1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMyOptional1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxMyOptional1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -781,8 +860,8 @@ public class JFrameHomePartec extends javax.swing.JFrame
     private javax.swing.JLabel jLabelMC;
     private javax.swing.JLabel jLabelMailMC;
     private javax.swing.JLabel jLabelMyCosto;
+    private javax.swing.JLabel jLabelMyManager;
     private javax.swing.JLabel jLabelMyManagerMail;
-    private javax.swing.JLabel jLabelMyManagerNome;
     private javax.swing.JLabel jLabelMyOptionalCosto1;
     private javax.swing.JLabel jLabelMyOptionalCosto2;
     private javax.swing.JLabel jLabelMyOptionalCosto3;
@@ -804,6 +883,6 @@ public class JFrameHomePartec extends javax.swing.JFrame
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane jTabsCompetizioni;
     // End of variables declaration//GEN-END:variables
 }
