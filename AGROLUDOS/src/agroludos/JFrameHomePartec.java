@@ -6,6 +6,7 @@
 
 package agroludos;
 
+import agroludos.db.user.Utente;
 import agroludos.db.*;
 import agroludos.db.components.CampiVuotiException;
 import agroludos.db.components.Competizione;
@@ -24,7 +25,7 @@ import javax.swing.*;
  */
 public class JFrameHomePartec extends javax.swing.JFrame
 {
-    AgroPartec agro;
+    Utente agro;
     Competizione [] listComp;
     Optional [] listOpt;
  
@@ -35,7 +36,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
  
     }
 
-    public JFrameHomePartec(AgroPartec agro)
+    public JFrameHomePartec(Utente agro)
     {
         try 
         {

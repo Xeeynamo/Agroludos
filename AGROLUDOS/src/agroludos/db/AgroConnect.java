@@ -1,6 +1,10 @@
 package agroludos.db;
 
 //import agroludos.db.components.Partecipante;
+import agroludos.db.user.ManagerCompetizione;
+import agroludos.db.user.ManagerSistema;
+import agroludos.db.user.Utente;
+import agroludos.db.user.Anonimo;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.*;
@@ -45,13 +49,13 @@ public class AgroConnect
             switch (tipo)
             {
                 case 0:
-                    return new AgroPartec(s, user);
+                    return new Utente(s, user);
                 case 1:
-                    return new AgroCompMan(s, user);
+                    return new ManagerCompetizione(s, user);
                 case 2:
-                    return new AgroSysMan(s, user);
+                    return new ManagerSistema(s, user);
                 case 3:
-                    return new AgroAnonimo(s);
+                    return new Anonimo(s);
                 default:
                     JOptionPane.showMessageDialog(null, "Indirizzo E-mail o password errati\n",
                             "Errore", JOptionPane.ERROR_MESSAGE);
@@ -63,9 +67,9 @@ public class AgroConnect
         }
         return null;
     }
-    public AgroAnonimo LoginAnonimo()
+    public Anonimo LoginAnonimo()
     {
-        return new AgroAnonimo(s);
+        return new Anonimo(s);
     }
     
     

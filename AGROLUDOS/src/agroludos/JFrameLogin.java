@@ -6,6 +6,9 @@
 
 package agroludos;
 
+import agroludos.db.user.ManagerCompetizione;
+import agroludos.db.user.Utente;
+import agroludos.db.user.ManagerSistema;
 import agroludos.db.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -126,12 +129,12 @@ public class JFrameLogin extends javax.swing.JFrame {
         if (user != null)
         {
             JFrame jFrame;
-            if (user instanceof  AgroSysMan)
-                jFrame = new JFrameMainSystem((AgroSysMan)user);
-            else if (user instanceof  AgroCompMan)
-                jFrame = new JFrameManComp((AgroCompMan)user);
-            else if (user instanceof  AgroPartec)
-                jFrame = new JFrameHomePartec((AgroPartec)user);
+            if (user instanceof  ManagerSistema)
+                jFrame = new JFrameMainSystem((ManagerSistema)user);
+            else if (user instanceof  ManagerCompetizione)
+                jFrame = new JFrameManComp((ManagerCompetizione)user);
+            else if (user instanceof  Utente)
+                jFrame = new JFrameHomePartec((Utente)user);
             else
                 return;
             this.setVisible(false);

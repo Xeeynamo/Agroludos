@@ -6,6 +6,7 @@
 
 package agroludos;
 
+import agroludos.db.user.ManagerSistema;
 import agroludos.db.*;
 import agroludos.db.components.*;
 import java.awt.*;
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class JFrameMainSystem extends javax.swing.JFrame {
 
-    private final AgroSysMan agro;
+    private final ManagerSistema agro;
     private Manager[] listManager;
     private Optional[] listOptional;
     private Partecipante[] listPartec;
@@ -29,7 +30,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         initComponents();
         agro = null;
     }
-    public JFrameMainSystem(AgroSysMan agroSysMan) {
+    public JFrameMainSystem(ManagerSistema agroSysMan) {
         agro = agroSysMan;
         initComponents();
     }

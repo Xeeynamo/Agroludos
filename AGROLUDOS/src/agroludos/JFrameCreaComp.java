@@ -6,8 +6,8 @@
 
 package agroludos;
 
-import agroludos.db.AgroCompMan;
-import agroludos.db.AgroSysMan;
+import agroludos.db.user.ManagerCompetizione;
+import agroludos.db.user.ManagerSistema;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,9 +15,9 @@ import javax.swing.JOptionPane;
 
 public class JFrameCreaComp extends javax.swing.JFrame
 {
-    private final AgroSysMan agro;
+    private final ManagerSistema agro;
     
-    public JFrameCreaComp(AgroSysMan agro)
+    public JFrameCreaComp(ManagerSistema agro)
     {
         this.agro = agro;
         initComponents();

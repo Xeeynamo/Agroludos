@@ -6,6 +6,7 @@
 
 package agroludos;
 
+import agroludos.db.user.ManagerCompetizione;
 import agroludos.db.*;
 import java.awt.*;
 import javax.swing.*;
@@ -17,13 +18,13 @@ import java.sql.SQLException;
  */
 public class JFrameManComp extends javax.swing.JFrame {
 
-    AgroCompMan agro;
+    ManagerCompetizione agro;
     
     public JFrameManComp() {
         initComponents();
         this.agro = null;
     }
-    public JFrameManComp(AgroCompMan agro) {
+    public JFrameManComp(ManagerCompetizione agro) {
         initComponents();
         this.agro = agro;
     }
