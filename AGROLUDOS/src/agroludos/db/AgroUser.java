@@ -1,6 +1,7 @@
 package agroludos.db;
 
 import agroludos.db.components.*;
+import agroludos.db.query.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -210,8 +211,7 @@ public class AgroUser
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata agli optional">
     protected Optional[] getOptional() throws SQLException
     {
-        sendQuery("SELECT * FROM " + TABLE_OPTIONAL);
-        ResultSet rs = getStatement().getResultSet();
+        ResultSet rs = sendQuery(new Request(null, TABLE_OPTIONAL).toString());
         Optional[] opt = new Optional[getResultSetLength(rs)];
         for (int i = 0; i < opt.length; i++, rs.next())
         {
@@ -260,7 +260,6 @@ public class AgroUser
 
     protected Optional[] getOptional(int id) throws  SQLException 
     {
-  
         sendQuery("SELECT * FROM " + TABLE_OPTIONAL +" join opt_comp on optional.nome=opt_comp.opt where opt_comp.comp="+id);
         ResultSet rs = getStatement().getResultSet();
         Optional[] opt = new Optional[getResultSetLength(rs)];
