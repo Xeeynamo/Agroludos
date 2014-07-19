@@ -23,9 +23,11 @@ public class JFrameMainSystem extends javax.swing.JFrame {
 
     private final ManagerSistema agro;
     private Manager[] listManager;
-    private Competizione[] listCompetizioni;
+    private Competizione[] listManagerCompetizioni;
+    private Optional[] listManagerCompetizioniOptional;
     private Optional[] listOptional;
-    private Partecipante[] listPartec;
+    private Partecipante[] listPartecipanti;
+    private Competizione[] listPartecipanteCompetizioni;
     
     public JFrameMainSystem(ManagerSistema agroSysMan) {
         agro = agroSysMan;
@@ -50,13 +52,12 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         jListManagerCompetizioni = new javax.swing.JList();
         jPanel3 = new javax.swing.JPanel();
-        jComboBox4 = new javax.swing.JComboBox();
+        jManagerOptionalList = new javax.swing.JComboBox();
         jLabel13 = new javax.swing.JLabel();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jLabel15 = new javax.swing.JLabel();
+        jLabelManagerOptionalPrice = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
+        jLabelManagerMail = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -105,7 +106,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jUtenteCertificatoSrc = new javax.swing.JTextArea();
         jLabel30 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        jListaUtentiIscrizioni = new javax.swing.JComboBox();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jListaUtenti = new javax.swing.JList();
@@ -138,16 +139,24 @@ public class JFrameMainSystem extends javax.swing.JFrame {
 
         jLabel4.setText("Lista delle sue competizioni");
 
+        jListManagerCompetizioni.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListManagerCompetizioniValueChanged(evt);
+            }
+        });
         jScrollPane6.setViewportView(jListManagerCompetizioni);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Optional attivati e prezzo"));
 
+        jManagerOptionalList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jManagerOptionalListActionPerformed(evt);
+            }
+        });
+
         jLabel13.setText("Optional");
 
-        jCheckBox4.setText("Abilitato");
-        jCheckBox4.setEnabled(false);
-
-        jLabel15.setText("--€");
+        jLabelManagerOptionalPrice.setText("--€");
 
         jLabel17.setText("Prezzo");
 
@@ -161,13 +170,12 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jManagerOptionalList, 0, 190, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jCheckBox4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel17)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabelManagerOptionalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -175,19 +183,18 @@ public class JFrameMainSystem extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jManagerOptionalList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox4)
-                    .addComponent(jLabel15)
+                    .addComponent(jLabelManagerOptionalPrice)
                     .addComponent(jLabel17))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         jLabel18.setText("E-mail del manager");
 
-        jLabel19.setText("-");
+        jLabelManagerMail.setText("-");
 
         javax.swing.GroupLayout jPanelManagerLayout = new javax.swing.GroupLayout(jPanelManager);
         jPanelManager.setLayout(jPanelManagerLayout);
@@ -207,7 +214,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                     .addGroup(jPanelManagerLayout.createSequentialGroup()
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLabelManagerMail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanelManagerLayout.setVerticalGroup(
@@ -226,7 +233,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                 .addGroup(jPanelManagerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
-                    .addComponent(jLabel19))
+                    .addComponent(jLabelManagerMail))
                 .addContainerGap())
         );
 
@@ -493,7 +500,11 @@ public class JFrameMainSystem extends javax.swing.JFrame {
 
         jLabel30.setText("Certificato SRC");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jListaUtentiIscrizioni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jListaUtentiIscrizioniActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Iscrizioni");
 
@@ -546,7 +557,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jListaUtentiIscrizioni, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -589,7 +600,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jListaUtentiIscrizioni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addGap(252, 252, 252))
         );
@@ -654,10 +665,17 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     {
         Shared.CreateList(jListaManager, listManager = agro.getManagers());
     }
-    private void ManagerLoadListCompetizioni(int index) throws SQLException
+    private void ManagerSelected(int index) throws SQLException
     {
-        Shared.CreateList(jListManagerCompetizioni, listCompetizioni =
-                agro.getCompetizioni(listManager[index].getMail()));
+        String mail = listManager[index].getMail();
+        Shared.CreateList(jListManagerCompetizioni, listManagerCompetizioni =
+                agro.getCompetizioni(mail));
+        jLabelManagerMail.setText(mail);
+    }
+    private void ManagerSelectedCompetition(int index) throws SQLException
+    {
+        listManagerCompetizioniOptional = agro.getCompetizioneOptional(listManagerCompetizioni[index].getId());
+        Shared.CreateList(jManagerOptionalList, listManagerCompetizioniOptional);
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda gli optional">
@@ -701,11 +719,11 @@ public class JFrameMainSystem extends javax.swing.JFrame {
      */
     void PartecipantiLoadList() throws SQLException
     {
-        Shared.CreateList(jListaUtenti, listPartec = agro.getPartecipantiMinimal());
+        Shared.CreateList(jListaUtenti, listPartecipanti = agro.getPartecipantiMinimal());
     }
     void PartecipanteLoad(int index) throws SQLException
     {
-        Partecipante p = agro.getPartecipante(listPartec[index].getMail());
+        Partecipante p = agro.getPartecipante(listPartecipanti[index].getMail());
         jUtenteNome.setText(p.getNome());
         jUtenteCognome.setText(p.getCognome());
         jUtenteIndirizzo.setText(p.getIndirizzo());
@@ -714,7 +732,13 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         jUtenteTesseraSan.setText(p.getTesseraSan());
         jUtenteMail.setText(p.getMail());
         jUtenteDataSrc.setText(p.getDataSrcString());
-        jUtenteCertificatoSrc.setText(p.getDirSrc());
+        jUtenteCertificatoSrc.setText(p.getSrc());
+        
+        /*int[] idCompetizioni = agro.getPartecipanteCompetizioni(p.getMail());
+        listPartecipanteCompetizioni = new Competizione[idCompetizioni.length];
+        for (Competizione c : listPartecipanteCompetizioni)
+            c = agro.getCompetizione(index);
+        Shared.CreateList(jListaUtentiIscrizioni, listPartecipanteCompetizioni);*/
     }
     // </editor-fold>
     
@@ -779,12 +803,33 @@ public class JFrameMainSystem extends javax.swing.JFrame {
 
     private void jListaManagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jListaManagerActionPerformed
         try {
-            ManagerLoadListCompetizioni(jListaManager.getSelectedIndex());
+            ManagerSelected(jListaManager.getSelectedIndex());
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Impossibile caricare la lista delle competizioni\n" +
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jListaManagerActionPerformed
+
+    private void jListManagerCompetizioniValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListManagerCompetizioniValueChanged
+        try {
+            ManagerSelectedCompetition(jListManagerCompetizioni.getSelectedIndex());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile caricare la lista degli optional\n" +
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jListManagerCompetizioniValueChanged
+
+    private void jManagerOptionalListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jManagerOptionalListActionPerformed
+        if (listManagerCompetizioniOptional != null)
+        {
+            float prezzo = listManagerCompetizioniOptional[jManagerOptionalList.getSelectedIndex()].getPrezzo();
+            jLabelManagerOptionalPrice.setText(String.valueOf(prezzo));
+        }
+    }//GEN-LAST:event_jManagerOptionalListActionPerformed
+
+    private void jListaUtentiIscrizioniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jListaUtentiIscrizioniActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jListaUtentiIscrizioniActionPerformed
 
     /**
      * @param args the command line arguments
@@ -826,21 +871,16 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JComboBox jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel22;
@@ -856,6 +896,8 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelManagerMail;
+    private javax.swing.JLabel jLabelManagerOptionalPrice;
     private javax.swing.JLabel jLabelMyManagerMail;
     private javax.swing.JLabel jLabelMyManagerNome;
     private javax.swing.JList jList1;
@@ -863,6 +905,8 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     private javax.swing.JList jListOptional;
     private javax.swing.JComboBox jListaManager;
     private javax.swing.JList jListaUtenti;
+    private javax.swing.JComboBox jListaUtentiIscrizioni;
+    private javax.swing.JComboBox jManagerOptionalList;
     private javax.swing.JButton jOptionalApply;
     private javax.swing.JButton jOptionalCancel;
     private javax.swing.JTextArea jOptionalDescription;

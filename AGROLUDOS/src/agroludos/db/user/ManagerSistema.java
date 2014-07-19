@@ -46,4 +46,53 @@ public class ManagerSistema extends AgroController
     {
         return super.getCompetizione(idCompetizione);
     }
+    @Override public int[] getPartecipanteCompetizioni(String mail) throws SQLException
+    {
+        return super.getPartecipanteCompetizioni(mail);
+    }
+        
+    /**
+     * Ottiene una lista di optional usata dalla competizione specificata
+     * @param idCompetizione da analizzare
+     * @return lista degli optional
+     * @throws SQLException 
+     */
+    public Optional[] getCompetizioneOptional(int idCompetizione) throws SQLException
+    {
+        Request q = new Request(
+                new String[]
+                {
+                    "nome",
+                    "descrizione",
+                    TABLE_OPTIONAL_COMPETIZIONE + "prezzo",
+                },
+                TABLE_OPTIONAL_COMPETIZIONE,
+                new Join[]
+                {
+                    new Join(TABLE_COMPETIZIONE,
+                            new Condition(
+                                TABLE_COMPETIZIONE + ".idCompetizione",
+                                TABLE_OPTIONAL_COMPETIZIONE + ".competizione",
+                                Request.Operator.Equal
+                            )),
+                    new Join(TABLE_OPTIONAL,
+                            new Condition(
+                                TABLE_OPTIONAL + ".nome",
+                                TABLE_OPTIONAL_COMPETIZIONE + ".optional",
+                                Request.Operator.Equal))
+                },
+                new Condition("competizione", String.valueOf(idCompetizione), Request.Operator.Equal)
+        );
+        ResultSet rs = sendQuery(q + "ORDER BY data");
+        Optional[] opt = new Optional[getResultSetLength(rs)];
+        for (Optional o : opt)
+        {
+            o = new Optional(
+                    rs.getString("nome"),
+                    rs.getString("descrizione"),
+                    rs.getFloat(TABLE_OPTIONAL_COMPETIZIONE + "prezzo")
+            );
+        }
+        return opt;
+    }
 }
