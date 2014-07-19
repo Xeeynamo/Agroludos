@@ -86,13 +86,12 @@ CREATE TABLE IF NOT EXISTS `agroludos`.`Optional` (
   PRIMARY KEY (`nome`)
 );
 
+
 CREATE TABLE IF NOT EXISTS `agroludos`.`Optional_Competizione` (
   `idOptionalCompetizione` INT NOT NULL AUTO_INCREMENT,
   `optional` VARCHAR(45) NOT NULL,
   `competizione` INT NOT NULL,
   `prezzo` FLOAT(5,2) NOT NULL,
-  UNIQUE INDEX `optional_idx` (`optional` ASC),
-  UNIQUE INDEX `competizione_idx` (`competizione` ASC),
   PRIMARY KEY (`optional`, `competizione`),
   UNIQUE INDEX `idOptionalCompetizione` (`idOptionalCompetizione` ASC),
   CONSTRAINT `optional`
@@ -107,6 +106,7 @@ CREATE TABLE IF NOT EXISTS `agroludos`.`Optional_Prenotazione` (
   `optional` INT NULL,
   `prenotazione` INT NULL,
   `selezionato` TINYINT(1) NULL,
+  PRIMARY KEY (`optional`,`prenotazione`),
   INDEX `optional_idx` (`optional` ASC),
   INDEX `prenotazione_idx` (`prenotazione` ASC),
   CONSTRAINT `idOptionalCompetizione`
@@ -116,5 +116,3 @@ CREATE TABLE IF NOT EXISTS `agroludos`.`Optional_Prenotazione` (
     FOREIGN KEY (`prenotazione`)
     REFERENCES `agroludos`.`Prenotazione` (`idPrenotazione`)
 );
-
-
