@@ -1,10 +1,10 @@
-package agroludos.db.request;
+package agroludos.db.query;
 
 /**
  * Libreria che gestisce le richieste per il databse
  * @author Luciano
  */
-public class Query
+public class Request
 {
     /**
      * Lista di operatori usate nelle condizioni
@@ -42,8 +42,18 @@ public class Query
     String[] select;
     String from;
     Join[] join;
-    Statement where;
+    Condition where;
         
+    
+    public Request(String[] select,
+            String from)
+    {
+        this.select = select;
+        this.from = from;
+        this.join = null;
+        this.where = null;
+    }
+    
     /**
      * Crea una richiesta
      * @param select lista di campi da ritirare
@@ -51,10 +61,10 @@ public class Query
      * @param join lista di join
      * @param where statement per il where
      */
-    public Query(String[] select,
+    public Request(String[] select,
             String from,
             Join[] join,
-            Statement where)
+            Condition where)
     {
         this.select = select;
         this.from = from;
@@ -94,7 +104,7 @@ public class Query
             }
             s += '\n';
         }
-        return "";
+        return s;
     }
     
     /**
@@ -115,7 +125,7 @@ public class Query
         return s + "\n";
     }
     
-    private static String generateWhere(Statement statement)
+    private static String generateWhere(Condition statement)
     {
         if (statement != null)
             return statement.toString();

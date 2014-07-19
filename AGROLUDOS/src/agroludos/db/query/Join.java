@@ -1,11 +1,11 @@
-package agroludos.db.request;
+package agroludos.db.query;
 
 public class Join
 {
     String table;
-    Statement statement;
+    Condition statement;
     
-    public Join(String table, Statement statement)
+    public Join(String table, Condition statement)
     {
         this.table = table;
         this.statement = statement;

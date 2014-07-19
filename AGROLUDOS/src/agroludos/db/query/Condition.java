@@ -1,15 +1,15 @@
-package agroludos.db.request;
+package agroludos.db.query;
 
 /**
  * Crea una singola dichiarazione
  */
-public class Statement
+public class Condition
 {
     String left;
     String right;
-    Query.Operator operator;
+    Request.Operator operator;
     
-    public Statement(String left, String right, Query.Operator operator)
+    public Condition(String left, String right, Request.Operator operator)
     {
         this.left = left;
         this.right = right;
