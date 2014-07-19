@@ -15,7 +15,10 @@ public class AgroController
 {
     private static final String DB_AGRO = "agroludos";
     private static final String TABLE_PARTECIPANTE = "partecipante";
+    private static final String TABLE_PRENOTAZIONE = "prenotazione";
     private static final String TABLE_OPTIONAL = "optional";
+    private static final String TABLE_OPTIONAL_COMPETIZIONE = "opt_comp";
+    private static final String TABLE_OPTIONAL_PRENOTAZIONE = "opt_pren";
     private static final String TABLE_UTENTE = "utente";
     private static final String TABLE_COMPETIZIONE = "competizione";
     private static final String TABLE_MAN_COMP = "mc";
@@ -258,14 +261,38 @@ public class AgroController
     }
     
 
-    protected Optional[] getOptional(int id) throws  SQLException 
+    /**
+     * Ottiene la lista degli optional di una determinata competizione
+     * @param competizioneId id della competizione scelta
+     * @return lista degli optional selezionabili
+     * @throws SQLException 
+     */
+    protected Optional[] getOptional(int competizioneId) throws  SQLException 
     {
-        sendQuery("SELECT * FROM " + TABLE_OPTIONAL +" join opt_comp on optional.nome=opt_comp.opt where opt_comp.comp="+id);
-        ResultSet rs = getStatement().getResultSet();
+        // "SELECT * FROM " + TABLE_OPTIONAL +" join opt_comp on optional.nome=opt_comp.opt where opt_comp.comp="+id
+        Request q = new Request(
+                (String[])null,
+                TABLE_OPTIONAL,
+                new Join[]
+                {
+                    new Join(TABLE_OPTIONAL_COMPETIZIONE,
+                            new Condition(
+                                    TABLE_OPTIONAL + ".nome",
+                                    TABLE_OPTIONAL_COMPETIZIONE + ".opt",
+                                    Request.Operator.Equal
+                            ))
+                },
+                new Condition(TABLE_OPTIONAL_COMPETIZIONE + ".comp", Integer.toString(competizioneId), Request.Operator.Equal)
+        );
+        
+        ResultSet rs = sendQuery(q.toString());
         Optional[] opt = new Optional[getResultSetLength(rs)];
         for (int i = 0; i < opt.length; i++, rs.next())
         {
-            opt[i] = new Optional(rs.getString("nome"), rs.getString("descrizione"), rs.getFloat("opt_comp.prezzo"));
+            opt[i] = new Optional(
+                    rs.getString("nome"),
+                    rs.getString("descrizione"),
+                    rs.getFloat(TABLE_OPTIONAL_COMPETIZIONE + ".prezzo"));
         }
         return opt;
 
@@ -294,11 +321,26 @@ public class AgroController
      */
     protected Partecipante[] getPartecipantiMinimal() throws SQLException
     {
-        String query = "SELECT " + TABLE_PARTECIPANTE + ".mail, nome, cognome\n" +
-                "FROM " + TABLE_UTENTE + " JOIN " + TABLE_PARTECIPANTE + " on " + TABLE_UTENTE + ".mail=" + TABLE_PARTECIPANTE + ".mail\n" +
-                "WHERE " + TABLE_UTENTE + ".tipo=0\n" +
-                "ORDER BY cognome\n";
-        ResultSet rs = sendQuery(query);
+        Request q = new Request(
+                new String[]
+                {
+                    TABLE_PARTECIPANTE + ".mail",
+                    "nome",
+                    "cognome"
+                },
+                TABLE_UTENTE,
+                new Join[]
+                {
+                    new Join(TABLE_PARTECIPANTE,
+                            new Condition(
+                                    TABLE_UTENTE + ".mail",
+                                    TABLE_PARTECIPANTE + ".mail",
+                                    Request.Operator.Equal
+                            ))
+                },
+                new Condition(TABLE_UTENTE + ".tipo", "0", Request.Operator.Equal)
+        );
+        ResultSet rs = sendQuery(q + "ORDER BY cognome");
         Partecipante[] p = new Partecipante[getResultSetLength(rs)];
         for (int i = 0; i < p.length; i++, rs.next())
         {
@@ -318,10 +360,24 @@ public class AgroController
      */
     protected Partecipante getPartecipante(String email) throws SQLException
     {
-        String query = "SELECT *\n" +
-                "FROM " + TABLE_UTENTE + " JOIN " + TABLE_PARTECIPANTE + " on " + TABLE_UTENTE + ".mail=" + TABLE_PARTECIPANTE + ".mail\n" +
-                "WHERE "+ TABLE_UTENTE + ".mail=\"" + email + "\" and " + TABLE_UTENTE + ".tipo=0\n";
-        ResultSet rs = sendQuery(query);
+        Request q = new Request(
+                (String[])null,
+                TABLE_UTENTE,
+                new Join[]
+                {
+                    new Join(TABLE_PARTECIPANTE,
+                            new Condition(
+                                    TABLE_UTENTE + ".mail",
+                                    TABLE_PARTECIPANTE + ".mail",
+                                    Request.Operator.Equal
+                            ))
+                },
+                new Condition(
+                        new Condition(TABLE_UTENTE + ".mail", "\"" + email + "\"", Request.Operator.Equal).toString(),
+                        new Condition(TABLE_UTENTE + ".tipo", "0", Request.Operator.Equal).toString(),
+                        Request.Operator.And)
+        );
+        ResultSet rs = sendQuery(q.toString());
         if (getResultSetLength(rs) != 1)
             throw new SQLException();
         else
@@ -337,15 +393,30 @@ public class AgroController
                     rs.getString("src"));  
     }
     
-    protected int getNPartecipanti (int id) throws SQLException
+    /**
+     * Ottiene il numero di partecipanti di una determinata competizione
+     * @param competizioneId id della competizione da verificare
+     * @return numero di partecipanti
+     * @throws SQLException 
+     */
+    protected int getNPartecipanti (int competizioneId) throws SQLException
     {
-        int n;
-        String s="select count(*) from competizione join prenotazione on competizione.id=prenotazione.comp where competizione.id="+id;
-        System.out.println(s+"\n");
-        ResultSet rs = sendQuery(s);
-        n=rs.getInt(1);
-        System.out.println("Riuscito" + n +"\n");
-        return n;
+        // "select count(*) from competizione join prenotazione on competizione.id=prenotazione.comp where competizione.id="+id;
+        Request q = new Request(
+                new String[]{ "count(*)" },
+                TABLE_COMPETIZIONE,
+                new Join[]
+                {
+                    new Join(TABLE_PRENOTAZIONE,
+                            new Condition(
+                                    TABLE_COMPETIZIONE + ".id",
+                                    TABLE_PRENOTAZIONE + ".id",
+                                    Request.Operator.Equal
+                            ))
+                },
+                new Condition(TABLE_COMPETIZIONE + ".id", Integer.toString(competizioneId), Request.Operator.Equal)
+        );
+        return sendQuery(q.toString()).getInt(1);
     }
     
     protected void _addIscrizioneCompetizione(Partecipante p, Competizione c,Optional [] opt) throws SQLException, SrcScadutaException
@@ -382,10 +453,6 @@ public class AgroController
         }
         return man;
     }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai manager di competizione">
-
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai controlli sui campi">
