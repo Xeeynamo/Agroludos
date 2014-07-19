@@ -18,7 +18,7 @@ public class Utente extends AgroController
        int NComp=0;
        for (int i=0;i<c.length;i++)
        {
-           if((super.getNGiorniMancanti((Date)c[i].getDataComp())<=1)||(super.isPrenotato(getMail(), c[i].getId())))
+           if((super.getNGiorniMancanti((Date)c[i].getDataComp())<=1)||(super.isPrenotato(getMail(), c[i])))
                c[i]=null;
            else
                 NComp++;
@@ -41,7 +41,7 @@ public class Utente extends AgroController
        int NComp=0;
        for (int i=0;i<c.length;i++)
        {
-           if((super.getNGiorniMancanti((Date)c[i].getDataComp())==0)||(!super.isPrenotato(getMail(), c[i].getId())))
+           if((super.getNGiorniMancanti((Date)c[i].getDataComp())==0)||(!super.isPrenotato(getMail(), c[i])))
                c[i]=null;
            else
                 NComp++;
