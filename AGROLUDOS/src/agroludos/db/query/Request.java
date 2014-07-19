@@ -16,7 +16,10 @@ public class Request
         Greater,
         GreaterEqual,
         Less,
-        LessEqual;
+        LessEqual,
+        Or,
+        And,
+        Not;
         
         @Override public String toString()
         {
@@ -34,6 +37,12 @@ public class Request
                     return "<";
                 case LessEqual:
                     return "<=";
+                case Or:
+                    return "OR";
+                case And:
+                    return "AND";
+                case Not:
+                    return "NOT";
             }
             return "";
         }
@@ -43,7 +52,6 @@ public class Request
     String from;
     Join[] join;
     Condition where;
-        
     
     public Request(String[] select,
             String from)
