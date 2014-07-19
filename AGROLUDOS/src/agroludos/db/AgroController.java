@@ -13,17 +13,17 @@ import java.util.GregorianCalendar;
 
 public class AgroController
 {
-    private static final String DB_AGRO = "agroludos";
-    private static final String TABLE_PARTECIPANTE = "partecipante";
-    private static final String TABLE_PRENOTAZIONE = "prenotazione";
-    private static final String TABLE_OPTIONAL = "optional";
-    private static final String TABLE_OPTIONAL_COMPETIZIONE = "optional_competizione";
-    private static final String TABLE_OPTIONAL_PRENOTAZIONE = "optional_prenotazione";
-    private static final String TABLE_UTENTE = "utente";
-    private static final String TABLE_COMPETIZIONE = "competizione";
-    private static final String TABLE_MAN_COMP = "manager";
+    protected static final String DB_AGRO = "agroludos";
+    protected static final String TABLE_PARTECIPANTE = "partecipante";
+    protected static final String TABLE_PRENOTAZIONE = "prenotazione";
+    protected static final String TABLE_OPTIONAL = "optional";
+    protected static final String TABLE_OPTIONAL_COMPETIZIONE = "optional_competizione";
+    protected static final String TABLE_OPTIONAL_PRENOTAZIONE = "optional_prenotazione";
+    protected static final String TABLE_UTENTE = "utente";
+    protected static final String TABLE_COMPETIZIONE = "competizione";
+    protected static final String TABLE_MAN_COMP = "manager";
     private static final String TABLE_COMP_TYPE = "tipocompetizione";
-    
+    protected
     Statement statement;
     String mail;
     
@@ -57,7 +57,7 @@ public class AgroController
     }
     
 
-    private ResultSet sendQuery(String query) throws SQLException
+    protected ResultSet sendQuery(String query) throws SQLException
     {
         getStatement().executeQuery(query);
         return getStatement().getResultSet();
@@ -298,6 +298,51 @@ public class AgroController
     }
     
     /**
+     * Ottiene una lista di optional usata dalla competizione specificata
+     * @param idCompetizione da analizzare
+     * @return lista degli optional
+     * @throws SQLException 
+     */
+    public Optional[] getCompetizioneOptional(int idCompetizione) throws SQLException
+    {
+        Request q = new Request(
+                new String[]
+                {
+                    "nome",
+                    "descrizione",
+                    TABLE_OPTIONAL_COMPETIZIONE + "prezzo",
+                },
+                TABLE_OPTIONAL_COMPETIZIONE,
+                new Join[]
+                {
+                    new Join(TABLE_COMPETIZIONE,
+                            new Condition(
+                                TABLE_COMPETIZIONE + ".idCompetizione",
+                                TABLE_OPTIONAL_COMPETIZIONE + ".competizione",
+                                Request.Operator.Equal
+                            )),
+                    new Join(TABLE_OPTIONAL,
+                            new Condition(
+                                TABLE_OPTIONAL + ".nome",
+                                TABLE_OPTIONAL_COMPETIZIONE + ".optional",
+                                Request.Operator.Equal))
+                },
+                new Condition("competizione", String.valueOf(idCompetizione), Request.Operator.Equal)
+        );
+        ResultSet rs = sendQuery(q + "ORDER BY data");
+        Optional[] opt = new Optional[getResultSetLength(rs)];
+        for (Optional o : opt)
+        {
+            o = new Optional(
+                    rs.getString("nome"),
+                    rs.getString("descrizione"),
+                    rs.getFloat(TABLE_OPTIONAL_COMPETIZIONE + "prezzo")
+            );
+        }
+        return opt;
+    }
+    
+    /**
      * Ottiene una lista di id delle competizioni a cui un partecipante si è iscritto
      * @param mail email del partecipante 
      * @return lista di id di competizioni
@@ -469,12 +514,13 @@ public class AgroController
                     new Join(TABLE_PARTECIPANTE,
                             new Condition(
                                     TABLE_UTENTE + ".mail",
-                                    TABLE_PARTECIPANTE + ".mail",
+                                    TABLE_PARTECIPANTE + ".email",
                                     Request.Operator.Equal
                             ))
                 },
                 new Condition(TABLE_UTENTE + ".tipo", "0", Request.Operator.Equal)
         );
+        String s = q.toString();
         ResultSet rs = sendQuery(q + "ORDER BY cognome");
         Partecipante[] p = new Partecipante[getResultSetLength(rs)];
         for (int i = 0; i < p.length; i++, rs.next())
