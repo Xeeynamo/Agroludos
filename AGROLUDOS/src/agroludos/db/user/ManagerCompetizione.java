@@ -82,4 +82,9 @@ public class ManagerCompetizione extends AgroController
     {
         super.dropOptionalCompetizione(c, o);
     }
+    
+    public void dropPrenotazione (Competizione c, Partecipante p) throws SQLException
+    {
+        super.dropPrenotazione(p, c);
+    }
 }
