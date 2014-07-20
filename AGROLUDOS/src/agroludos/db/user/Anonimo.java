@@ -7,6 +7,11 @@ import agroludos.db.exception.DefEmailException;
 import agroludos.db.components.Partecipante;
 import java.sql.*;
 
+/**
+ * Utente anonimo.
+ * Qui vengono gestite tutte quelle operazioni che può fare un qualsiasi utente non registrato.
+ * Le operazioni permesse, ovviamente, si limitano al login e alla registrazione
+ */
 public class Anonimo extends AgroController
 {
     public Anonimo(Statement statement)
