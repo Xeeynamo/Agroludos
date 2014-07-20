@@ -36,6 +36,10 @@ public class ManagerCompetizione extends AgroController
     {
         return super.getPartecipanti(idCompetizione);
     }
+    @Override public Partecipante getPartecipante(String email) throws SQLException
+    {
+        return super.getPartecipante(email);
+    }
     @Override public void annullaCompetizione(int idCompetizione) throws SQLException
     {
         super.annullaCompetizione(idCompetizione);

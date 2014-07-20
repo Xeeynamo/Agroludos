@@ -45,7 +45,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
         jListCompetizioni = new javax.swing.JList();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        jButtonApplica = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jLabelPartecCur = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -60,14 +60,33 @@ public final class JFrameManComp extends javax.swing.JFrame {
         jLabelOptional1Prezzo = new javax.swing.JLabel();
         jLabelOptional2Prezzo = new javax.swing.JLabel();
         jLabelOptional3Prezzo = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        jButtonAnnulla = new javax.swing.JButton();
         jButtonCreaCompetizione = new javax.swing.JButton();
         jButtonAnnullaCompetizione = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListPartecipanti = new javax.swing.JList();
+        jButtonCancellaPartecipante = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jUtenteNome = new javax.swing.JLabel();
+        jUtenteCognome = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jUtenteIndirizzo = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jUtenteNascita = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        jUtenteSesso = new javax.swing.JLabel();
+        jUtenteTesseraSan = new javax.swing.JLabel();
+        jUtenteMail = new javax.swing.JLabel();
+        jUtenteDataSrc = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jUtenteCertificatoSrc = new javax.swing.JTextArea();
+        jLabel30 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -84,10 +103,10 @@ public final class JFrameManComp extends javax.swing.JFrame {
 
         jLabel3.setText("Partecipanti");
 
-        jButton2.setText("Applica");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonApplica.setText("Applica");
+        jButtonApplica.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButtonApplicaActionPerformed(evt);
             }
         });
 
@@ -150,16 +169,16 @@ public final class JFrameManComp extends javax.swing.JFrame {
                     .addComponent(jLabelOptional3Prezzo)))
         );
 
-        jButton5.setLabel("Annulla ");
+        jButtonAnnulla.setLabel("Annulla ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonApplica, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonAnnulla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -215,8 +234,8 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton5)))
+                    .addComponent(jButtonApplica)
+                    .addComponent(jButtonAnnulla)))
         );
 
         jButtonCreaCompetizione.setText("Crea competizione");
@@ -263,35 +282,186 @@ public final class JFrameManComp extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Gli utenti iscritti"));
 
+        jListPartecipanti.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListPartecipantiValueChanged(evt);
+            }
+        });
         jScrollPane2.setViewportView(jListPartecipanti);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Informazioni partecipante"), "Informazioni partecipante"), "Informazioni partecipante"));
+        jButtonCancellaPartecipante.setText("Cancella partecipante");
+        jButtonCancellaPartecipante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancellaPartecipanteActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Informazioni sul partecipante"));
+
+        jLabel5.setText("Nome");
+
+        jUtenteNome.setText("-");
+        jUtenteNome.setMaximumSize(new java.awt.Dimension(135, 14));
+        jUtenteNome.setMinimumSize(new java.awt.Dimension(135, 14));
+        jUtenteNome.setPreferredSize(new java.awt.Dimension(135, 14));
+
+        jUtenteCognome.setText("-");
+        jUtenteCognome.setMaximumSize(new java.awt.Dimension(135, 14));
+        jUtenteCognome.setMinimumSize(new java.awt.Dimension(135, 14));
+        jUtenteCognome.setPreferredSize(new java.awt.Dimension(135, 14));
+
+        jLabel14.setText("Cognome");
+
+        jUtenteIndirizzo.setText("-");
+        jUtenteIndirizzo.setMaximumSize(new java.awt.Dimension(135, 14));
+        jUtenteIndirizzo.setMinimumSize(new java.awt.Dimension(135, 14));
+        jUtenteIndirizzo.setPreferredSize(new java.awt.Dimension(135, 14));
+
+        jLabel16.setText("Indirizzo");
+        jLabel16.setToolTipText("");
+
+        jUtenteNascita.setText("-");
+        jUtenteNascita.setMaximumSize(new java.awt.Dimension(135, 14));
+        jUtenteNascita.setMinimumSize(new java.awt.Dimension(135, 14));
+        jUtenteNascita.setPreferredSize(new java.awt.Dimension(135, 14));
+
+        jLabel20.setText("Data di nascita");
+
+        jLabel22.setText("Sesso");
+
+        jLabel25.setText("Tessera san.");
+
+        jLabel27.setText("E-mail");
+
+        jLabel29.setText("Data SRC");
+
+        jUtenteSesso.setText("-");
+        jUtenteSesso.setMaximumSize(new java.awt.Dimension(135, 14));
+        jUtenteSesso.setMinimumSize(new java.awt.Dimension(135, 14));
+        jUtenteSesso.setPreferredSize(new java.awt.Dimension(135, 14));
+
+        jUtenteTesseraSan.setText("-");
+        jUtenteTesseraSan.setMaximumSize(new java.awt.Dimension(135, 14));
+        jUtenteTesseraSan.setMinimumSize(new java.awt.Dimension(135, 14));
+        jUtenteTesseraSan.setPreferredSize(new java.awt.Dimension(135, 14));
+
+        jUtenteMail.setText("-");
+        jUtenteMail.setMaximumSize(new java.awt.Dimension(135, 14));
+        jUtenteMail.setMinimumSize(new java.awt.Dimension(135, 14));
+        jUtenteMail.setPreferredSize(new java.awt.Dimension(135, 14));
+
+        jUtenteDataSrc.setText("-");
+        jUtenteDataSrc.setMaximumSize(new java.awt.Dimension(135, 14));
+        jUtenteDataSrc.setMinimumSize(new java.awt.Dimension(135, 14));
+        jUtenteDataSrc.setPreferredSize(new java.awt.Dimension(135, 14));
+
+        jUtenteCertificatoSrc.setColumns(20);
+        jUtenteCertificatoSrc.setRows(5);
+        jScrollPane4.setViewportView(jUtenteCertificatoSrc);
+
+        jLabel30.setText("Certificato SRC");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel30)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane4)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel29)
+                                .addGap(43, 43, 43)
+                                .addComponent(jUtenteDataSrc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel27)
+                                .addGap(61, 61, 61)
+                                .addComponent(jUtenteMail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel25)
+                                .addGap(27, 27, 27)
+                                .addComponent(jUtenteTesseraSan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel22)
+                                .addGap(61, 61, 61)
+                                .addComponent(jUtenteSesso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jUtenteIndirizzo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addGap(46, 46, 46)
+                                .addComponent(jUtenteCognome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel20)
+                                .addGap(18, 18, 18)
+                                .addComponent(jUtenteNascita, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(64, 64, 64)
+                                .addComponent(jUtenteNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jUtenteNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(jUtenteCognome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(jUtenteIndirizzo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel20)
+                    .addComponent(jUtenteNascita, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel22)
+                    .addComponent(jUtenteSesso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel25)
+                    .addComponent(jUtenteTesseraSan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel27)
+                    .addComponent(jUtenteMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel29)
+                    .addComponent(jUtenteDataSrc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(270, 270, 270))
         );
-
-        jButton4.setText("Cancella partecipante");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonCancellaPartecipante, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -300,9 +470,9 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonCancellaPartecipante)
                 .addContainerGap())
         );
 
@@ -314,8 +484,8 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -364,6 +534,20 @@ public final class JFrameManComp extends javax.swing.JFrame {
         listPartecipanti = agro.getPartecipanti(c.getId());
         Shared.CreateList(jListPartecipanti, listPartecipanti);
     }
+    void PartecipanteLoad(int index) throws SQLException
+    {
+        if (index < 0) return;
+        Partecipante p = agro.getPartecipante(listPartecipanti[index].getMail());
+        jUtenteNome.setText(p.getNome());
+        jUtenteCognome.setText(p.getCognome());
+        jUtenteIndirizzo.setText(p.getIndirizzo());
+        jUtenteNascita.setText(p.getDataNascitaString());
+        jUtenteSesso.setText(String.valueOf(p.getSesso()));
+        jUtenteTesseraSan.setText(p.getTesseraSan());
+        jUtenteMail.setText(p.getMail());
+        jUtenteDataSrc.setText(p.getDataSrcString());
+        jUtenteCertificatoSrc.setText(p.getSrc());
+    }
     
     private void jButtonCreaCompetizioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreaCompetizioneActionPerformed
         JFrame jFrame = new JFrameCreaComp(agro);
@@ -400,23 +584,23 @@ public final class JFrameManComp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jListCompetizioniValueChanged
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButtonApplicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonApplicaActionPerformed
         try 
         {
-            // TODO add your handling code here:
-        Competizione c=agro.getCompetizione(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId());
-        
-        if ((int)jPartecMax.getValue()!=c.getNMax())
-            agro.setNMax(c.getId(), (int)jPartecMax.getValue());
-        if ((int)jPartecMin.getValue()!=c.getNMin())
-            agro.setNMin(c.getId(),(int)jPartecMin.getValue());
-        if ((int)jCompPrezzo.getValue()!=c.getPrezzo())
-            agro.setPrezzoComp(c.getId(),(int)jCompPrezzo.getValue());
-                    JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
-                    , "Successo", JOptionPane.INFORMATION_MESSAGE);
+            Competizione c = agro.getCompetizione(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId());
+
+            if ((int)jPartecMax.getValue()!=c.getNMax())
+                agro.setNMax(c.getId(), (int)jPartecMax.getValue());
+            if ((int)jPartecMin.getValue()!=c.getNMin())
+                agro.setNMin(c.getId(),(int)jPartecMin.getValue());
+            if ((int)jCompPrezzo.getValue()!=c.getPrezzo())
+                agro.setPrezzoComp(c.getId(),(int)jCompPrezzo.getValue());
+                        JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
+                        , "Successo", JOptionPane.INFORMATION_MESSAGE);
         }
-         catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Impossibile modificare la competizione selezionata\n" +
+        catch (SQLException ex)
+        {
+            JOptionPane.showMessageDialog(null, "Impossibile modificare la competizione selezionata" +
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
         finally
@@ -426,7 +610,20 @@ public final class JFrameManComp extends javax.swing.JFrame {
             jFrame.pack();
             jFrame.setVisible(true);
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButtonApplicaActionPerformed
+
+    private void jListPartecipantiValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListPartecipantiValueChanged
+        try {
+            PartecipanteLoad(jListPartecipanti.getSelectedIndex());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile caricare le informazioni dell'utente selezionato." +
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jListPartecipantiValueChanged
+
+    private void jButtonCancellaPartecipanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancellaPartecipanteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonCancellaPartecipanteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -464,15 +661,24 @@ public final class JFrameManComp extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButtonAnnulla;
     private javax.swing.JButton jButtonAnnullaCompetizione;
+    private javax.swing.JButton jButtonApplica;
+    private javax.swing.JButton jButtonCancellaPartecipante;
     private javax.swing.JButton jButtonCreaCompetizione;
     private javax.swing.JSpinner jCompPrezzo;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabelOptional1Prezzo;
     private javax.swing.JLabel jLabelOptional2Prezzo;
@@ -492,5 +698,15 @@ public final class JFrameManComp extends javax.swing.JFrame {
     private javax.swing.JSpinner jPartecMin;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTextArea jUtenteCertificatoSrc;
+    private javax.swing.JLabel jUtenteCognome;
+    private javax.swing.JLabel jUtenteDataSrc;
+    private javax.swing.JLabel jUtenteIndirizzo;
+    private javax.swing.JLabel jUtenteMail;
+    private javax.swing.JLabel jUtenteNascita;
+    private javax.swing.JLabel jUtenteNome;
+    private javax.swing.JLabel jUtenteSesso;
+    private javax.swing.JLabel jUtenteTesseraSan;
     // End of variables declaration//GEN-END:variables
 }
