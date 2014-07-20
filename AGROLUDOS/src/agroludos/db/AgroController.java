@@ -10,6 +10,11 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.mail.MessagingException;
 
+/**
+ * Front controller del progetto.
+ * Separa l'interfaccia con il database, gestendo i dialoghi tra le due parti.
+ * @author Luciano
+ */
 public class AgroController
 {
     protected static final String DB_AGRO = "agroludos";
@@ -25,7 +30,7 @@ public class AgroController
     
     private Statement statement;
     private String mail;
-    
+        
     /**
      * Stabilisce una connessione col database.
      * @param database host che ospita il database MySQL
@@ -82,22 +87,39 @@ public class AgroController
                  return null;
          }
     }
-    
-    protected Statement getStatement()
-    {
-        return statement;
-    }
     protected String getMail()
     {
         return mail;
     }
-    protected Date getDbDate() throws SQLException
+    
+    /**
+     * Ottiene l'oggetto utile a processare l query
+     * @return oggetto statement
+     */
+    private Statement getStatement()
+    {
+        return statement;
+    }
+    
+    /**
+     * Ottiene la data del server MySQL
+     * @return oggetto Date se chiamata con successo, altrimenti torna null
+     * @throws SQLException 
+     */
+    private Date getDbDate() throws SQLException
     {
         ResultSet rs = sendQuery("SELECT CURRENT_DATE");
         if (rs.next())
             return rs.getDate("CURRENT_DATE");
         return null;
     }
+    
+    /**
+     * Dato un ResultSet, controlla quanti risultati sono presenti
+     * @param rs ResulSet da controllare
+     * @return numero di risultati
+     * @throws SQLException 
+     */
     private int getResultSetLength(ResultSet rs) throws SQLException
     {
         if (rs != null)
@@ -113,18 +135,39 @@ public class AgroController
             return 0;
     }
     
-
-    protected ResultSet sendQuery(String query) throws SQLException
+    /**
+     * Manda una query di interrogazione al database MySQL
+     * @param query da eseguire
+     * @return ritorna il set di risultati
+     * @throws SQLException 
+     */
+    private ResultSet sendQuery(String query) throws SQLException
     {
         getStatement().executeQuery(query);
         return getStatement().getResultSet();
     }
+    
+    /**
+     * Manda una query di modifica al database MySQL
+     * @param query da eseguire
+     * @throws SQLException 
+     */
     private void sendUpdate(String query) throws SQLException
     {
         getStatement().executeUpdate(query);
     }
     
-    protected int getUserType(String mail, String password) throws SQLException
+    /**
+     * Ottiene il tipo di utente, utile per il login
+     * @param mail dell'utente da verificare
+     * @param password dell'utente da verificare
+     * @return tipo dell'utente:
+     * 0 = Partecipante
+     * 1 = Manager di competizione
+     * 2 = Manager di sistema
+     * @throws SQLException 
+     */
+    private int getUserType(String mail, String password) throws SQLException
     {
         Request q = new Request(
                 new String[] { "tipo" },
@@ -337,7 +380,11 @@ public class AgroController
             throw new SQLException();
     }  
     
-    
+    /**
+     * Ottiene una lista dei vari tipi di competizione presenti
+     * @return lista di tipi di competizione
+     * @throws SQLException 
+     */
     protected TipoCompetizione[] getCompetizioneTipi() throws SQLException
     {
         ResultSet rs = sendQuery("SELECT * FROM " + TABLE_COMP_TYPE);
@@ -563,6 +610,12 @@ public class AgroController
         sendUpdate(q.toString());
     }
      
+    /**
+     * Imposta, per la competizione specificata, il numero massimo di partecipanti.
+     * @param idCompetizione id della competizione da modificare
+     * @param nmax nuovo numero massimo di utenti da impostare
+     * @throws SQLException 
+     */
     protected void setNPartMax (int idCompetizione,int nmax) throws SQLException
     {
         int nPart=getNPartecipanti(idCompetizione);
@@ -589,7 +642,12 @@ public class AgroController
         sendUpdate(q.toString());
     }
     
-    
+    /**
+     * Imposta, per la competizione specificata, il numero minimo di partecipanti.
+     * @param idCompetizione id della competizione da modificare
+     * @param nmax nuovo numero minimo di utenti da impostare
+     * @throws SQLException 
+     */
     protected void setNPartMin (int idCompetizione,int nmin) throws SQLException
     {
         Update q=new Update 
@@ -599,6 +657,12 @@ public class AgroController
         sendUpdate(q.toString());   
     }
     
+    /**
+     * Imposta, per la competizione specificata, il suo prezzo per i partecipanti.
+     * @param idCompetizione id della competizione da modificare
+     * @param nmax nuovo prezzo della competizione da impostare
+     * @throws SQLException 
+     */
     protected void setPrezzoComp (int idCompetizione,float prezzo) throws SQLException
     {
         Update q=new Update 
@@ -632,6 +696,11 @@ public class AgroController
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata agli optional">
+    /**
+     * Ottiene una lista di tutti gli optional presenti nel database
+     * @return lista degli optional
+     * @throws SQLException 
+     */
     protected Optional[] getOptional() throws SQLException
     {
         ResultSet rs = sendQuery(new Request(null, TABLE_OPTIONAL).toString());
@@ -643,6 +712,12 @@ public class AgroController
         return opt;
     }
     
+    /**
+     * Ottiene le informazioni riguardo un singolo optional a partire dal suo nome
+     * @param nome dell'optional
+     * @return optional con tutte le sue proprietà
+     * @throws SQLException 
+     */
     protected Optional getOptional (String nome) throws SQLException
     {
         Request q=new Request
@@ -654,6 +729,7 @@ public class AgroController
             opt= new Optional(rs.getString("nome"), rs.getString("descrizione"), rs.getFloat("prezzo"));
         return opt;
     }
+    
     /**
      * Ottiene la lista degli optional di una determinata competizione
      * @param competizioneId id della competizione scelta
@@ -1118,6 +1194,13 @@ public class AgroController
     }
     // </editor-fold>
 
+    /**
+     * Invia una mail da parte dell'utente corrente
+     * @param receiver indirizzo mail del destinatario
+     * @param subject oggetto della mail
+     * @param text testo all'interno della mail
+     * @throws MessagingException 
+     */
     public void sendMail(String receiver, String subject, String text) throws MessagingException
     {
         new AgroMail(getMail(), receiver, subject, text).send();
