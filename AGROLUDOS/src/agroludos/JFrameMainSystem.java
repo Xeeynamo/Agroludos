@@ -412,6 +412,8 @@ public class JFrameMainSystem extends javax.swing.JFrame {
 
         jLabel11.setText("Prezzo");
 
+        jOptionalPrice.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(100.0f), Float.valueOf(0.5f)));
+
         jOptionalApply.setText("Applica");
         jOptionalApply.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -629,11 +631,6 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                 .addGap(252, 252, 252))
         );
 
-        jListaUtenti.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jListaUtenti.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 jListaUtentiValueChanged(evt);
@@ -782,11 +779,11 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         jUtenteDataSrc.setText(p.getDataSrcString());
         jUtenteCertificatoSrc.setText(p.getSrc());
         
-        /*int[] idCompetizioni = agro.getPartecipanteCompetizioni(p.getMail());
+        int[] idCompetizioni = agro.getPartecipanteCompetizioni(p.getMail());
         listPartecipanteCompetizioni = new Competizione[idCompetizioni.length];
-        for (Competizione c : listPartecipanteCompetizioni)
-            c = agro.getCompetizione(index);
-        Shared.CreateList(jListaUtentiIscrizioni, listPartecipanteCompetizioni);*/
+        for (int i = 0; i < idCompetizioni.length; i++)
+            listPartecipanteCompetizioni[i] = agro.getCompetizione(idCompetizioni[i]);
+        Shared.CreateList(jListaUtentiIscrizioni, listPartecipanteCompetizioni);
     }
     // </editor-fold>
     
