@@ -276,7 +276,6 @@ public class JFrameMainSystem extends javax.swing.JFrame {
             }
         });
 
-        jCheckAnnullate.setSelected(true);
         jCheckAnnullate.setText("Annullate");
         jCheckAnnullate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -706,7 +705,9 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda le competizioni">
     private void CompetizioniLoadList() throws SQLException
     {
-        int filter = 0;
+        int filter = (jCheckInCorso.isSelected() ? 1 : 0) |
+                (jCheckConcluse.isSelected() ? 2 : 0) |
+                (jCheckAnnullate.isSelected() ? 4 : 0);
         listCompetizioni = agro.getCompetizioniMinimal(filter);
         Shared.CreateList(jListCompetizioni, listCompetizioni);
     }
