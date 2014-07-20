@@ -452,6 +452,25 @@ public class AgroController
                  new Condition("idCompetizione",String.valueOf(idCompetizione),Request.Operator.Equal));
         sendUpdate(q.toString());
     }
+    
+    
+    protected void setNPartMin (int idCompetizione,int nmin) throws SQLException
+    {
+        Update q=new Update 
+                (TABLE_COMPETIZIONE,
+                 "partMin",String.valueOf(nmin),
+                 new Condition("idCompetizione",String.valueOf(idCompetizione),Request.Operator.Equal));
+        sendUpdate(q.toString());   
+    }
+    
+    protected void setPrezzoComp (int idCompetizione,float prezzo) throws SQLException
+    {
+        Update q=new Update 
+                (TABLE_COMPETIZIONE,
+                 "prezzo",String.valueOf(prezzo),
+                 new Condition("idCompetizione",String.valueOf(idCompetizione),Request.Operator.Equal));
+        sendUpdate(q.toString());   
+    }
     /**
      * Verifica se la competizione indicata come parametro è stata già prenotata dal partecipante
      * @param mail email del partecipante 

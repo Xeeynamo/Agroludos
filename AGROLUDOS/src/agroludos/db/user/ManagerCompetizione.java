@@ -41,4 +41,13 @@ public class ManagerCompetizione extends AgroController
     {
         super.setNPartMax(idCompetizione,nmax);
     }
+    
+    public void setNMin (int idCompetizione,int nmin) throws SQLException
+    {
+        super.setNPartMin(idCompetizione,nmin);
+    }
+    public void setPrezzoComp (int idCompetizione,int prezzo) throws SQLException
+    {
+        super.setPrezzoComp(idCompetizione,(float)prezzo);
+    }
 }

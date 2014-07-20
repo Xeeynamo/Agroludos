@@ -402,14 +402,14 @@ public final class JFrameManComp extends javax.swing.JFrame {
         try 
         {
             // TODO add your handling code here:
-            Competizione c=agro.getCompetizione(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId());
+        Competizione c=agro.getCompetizione(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId());
         
         if ((int)jPartecMax.getValue()!=c.getNMax())
             agro.setNMax(c.getId(), (int)jPartecMax.getValue());
-        /*if ((int)jPartecMin.getValue()!=c.getNMin())
-            c.setNMin(jPartecMax.getValue());
-        if ((float)jCompPrezzo.getValue()!=c.getPrezzo())
-            c.setPrezzoComp();*/
+        if ((int)jPartecMin.getValue()!=c.getNMin())
+            agro.setNMin(c.getId(),(int)jPartecMin.getValue());
+        if ((int)jCompPrezzo.getValue()!=c.getPrezzo())
+            agro.setPrezzoComp(c.getId(),(int)jCompPrezzo.getValue());
                     JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
                     , "Successo", JOptionPane.INFORMATION_MESSAGE);
         }
