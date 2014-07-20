@@ -16,10 +16,8 @@ public class Utente extends AgroController
     {
        Competizione [] c= super._getCompetizioni();
        int NComp=0;
-       System.out.println("nComp="+c.length+"\n");
        for (int i=0;i<c.length;i++)
        {
-           System.out.println("compId="+c[i].getId());
            if((super.getNGiorniMancanti((Date)c[i].getDataComp())<=1)||(super.isPrenotato(super.getMail(), c[i].getId())))
                c[i]=null;
            else
@@ -82,7 +80,12 @@ public class Utente extends AgroController
             return comp[i];
         else
             throw new SQLException();
-}
+    }
+    
+    public boolean isOptionalSelezionato (Optional opt,Competizione comp) throws SQLException
+    {
+        return super._isOptionalPrenotato(super.getPartecipante(super.getMail()), opt, comp);
+    }
     
     @Override public Optional[] getOptional() throws SQLException
     {

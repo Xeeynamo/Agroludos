@@ -82,46 +82,10 @@ public class AgroController
             return rs.getInt("tipo");
         return -1;
     }
+
+    // <editor-fold defaultstate="collapsed" desc="Parte dedicata alle competizioni">
     
-    protected void _addPartec(String password,Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
-    {
-        
-        if (isMailExists(p.getMail()))
-            throw new DefEmailException();
-        if (_checkCodFiscExists(p.getCodiceFiscale()))
-            throw new DefCodFiscException();
-        if (isCampiVuoti(password,p))
-            throw new CampiVuotiException();
-        Insert I;
-        SimpleDateFormat d = new SimpleDateFormat("yyyy-MM-dd");
-        String date=d.format(p.getDataNascita());
-        String dateSrc=d.format(p.getDataSrc());
-        I= new Insert (
-                TABLE_UTENTE,
-                new String [] {
-                "\""+p.getMail()+"\"",
-                "PASSWORD(\""+password+"\")",
-                "0"});
-        System.out.println(I.toString());
-        sendUpdate(I.toString());
-        I= new Insert (
-                TABLE_PARTECIPANTE,
-                new String [] {
-                "\""+p.getMail()+"\"",
-                "\""+p.getNome()+"\"",
-                "\""+p.getCognome()+"\"",
-                "\""+p.getIndirizzo()+"\"",
-                "'"+date+"'",
-                "\""+p.getCodiceFiscale()+"\"",
-                "\""+p.getSesso()+"\"",
-                "\""+p.getTesseraSan()+"\"",
-                "'"+dateSrc+"'",
-                "\""+p.getSrc()+"\""});
-        System.out.println(I.toString());
-        sendUpdate(I.toString());
-    }
-   
-    /**
+        /**
      * riporta la lista di TUTTE le competizioni presenti nel sistema
      * @return Lista delle competizioni se c'è almeno una competizione nel sistema, altrimenti lancia l'eccezione
      * @throws SQLException 
@@ -186,9 +150,9 @@ public class AgroController
             
         else
             throw new SQLException();
-    }       
-
-    // <editor-fold defaultstate="collapsed" desc="Parte dedicata alle competizioni">
+    }  
+    
+    
     protected TipoCompetizione[] getCompetizioneTipi() throws SQLException
     {
         ResultSet rs = sendQuery("SELECT * FROM " + TABLE_COMP_TYPE);
@@ -440,6 +404,32 @@ public class AgroController
         return opt;
 
     }
+    
+    /**
+     * Indica se il partecipante, per quella particolare competizione,
+     * ha selezionato o meno l'optional riportato nel parametro
+     * @param p partecipante    
+     * @param o optional    
+     * @param competizione
+     * @return true se il partecipante ha selezionato quell'optiona,
+     * altrimenti false
+     * @throws SQLException 
+     */
+    protected boolean _isOptionalPrenotato (Partecipante p, Optional o, Competizione c) throws SQLException
+    {
+        Request q = new Request (
+                    new String [] {"selezionato"},
+                    TABLE_OPTIONAL_PRENOTAZIONE,
+                    new Condition (
+                    new Condition ("prenotazione",String.valueOf(getIndexPrenotazione(p,c)),Request.Operator.Equal).toString(),
+                    new Condition ("optional",String.valueOf(getIndexOptionalCompetizione(o,c)),Request.Operator.Equal).toString(),
+                    Request.Operator.And));
+        ResultSet rs=sendQuery(q.toString());
+        if (rs.next())
+            return (rs.getInt(1)==1);
+        else
+            return false;
+    }
 
     protected int getIndexOptionalCompetizione(Optional opt,Competizione comp) throws SQLException
     {
@@ -466,6 +456,44 @@ public class AgroController
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai partecipanti">
+    
+        
+    protected void _addPartec(String password,Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
+    {
+        
+        if (isMailExists(p.getMail()))
+            throw new DefEmailException();
+        if (_checkCodFiscExists(p.getCodiceFiscale()))
+            throw new DefCodFiscException();
+        if (isCampiVuoti(password,p))
+            throw new CampiVuotiException();
+        Insert I;
+        SimpleDateFormat d = new SimpleDateFormat("yyyy-MM-dd");
+        String date=d.format(p.getDataNascita());
+        String dateSrc=d.format(p.getDataSrc());
+        I= new Insert (
+                TABLE_UTENTE,
+                new String [] {
+                "\""+p.getMail()+"\"",
+                "PASSWORD(\""+password+"\")",
+                "0"});
+        sendUpdate(I.toString());
+        I= new Insert (
+                TABLE_PARTECIPANTE,
+                new String [] {
+                "\""+p.getMail()+"\"",
+                "\""+p.getNome()+"\"",
+                "\""+p.getCognome()+"\"",
+                "\""+p.getIndirizzo()+"\"",
+                "'"+date+"'",
+                "\""+p.getCodiceFiscale()+"\"",
+                "\""+p.getSesso()+"\"",
+                "\""+p.getTesseraSan()+"\"",
+                "'"+dateSrc+"'",
+                "\""+p.getSrc()+"\""});
+        sendUpdate(I.toString());
+    }
+    
     /**
      * Ottiene le informazioni base di un partecipante, quali mail nome e cognome.
      * Questa funzione serve per permettere di restituire una lista di partecipanti,
@@ -607,7 +635,6 @@ public class AgroController
         Insert I=new Insert (
                 TABLE_PRENOTAZIONE,
                 new String [] {"0","\""+p.getMail()+"\"","\""+c.getId()+"\""});
-        System.out.println(I.toString()+"\n");
         sendUpdate(I.toString());
         if (opt!=null)
         {
@@ -631,7 +658,6 @@ public class AgroController
                             String.valueOf(getIndexPrenotazione(p,c)),
                             String.valueOf(trovato)
                         } );
-                System.out.println(I.toString()+"\n");
                 sendUpdate(I.toString());
                 //sendUpdate("insert into opt_pren values (\""+opt[i].getNome()+"\",\""+p.getCodiceFiscale()+"\","+c.getId()+");");
             } 
