@@ -105,4 +105,9 @@ public class Utente extends AgroController
     {
         super.setOptional(optional);
     }
+    
+    public String getMailSys () throws SQLException
+    {
+        return super.getSysMail();
+    }
 }

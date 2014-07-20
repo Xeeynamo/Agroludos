@@ -183,6 +183,19 @@ public class AgroController
             return rs.getInt("tipo");
         return -1;
     }
+    
+    protected String getSysMail () throws SQLException
+    {
+        Request q= new Request(
+                    new String []{"mail"},
+                   TABLE_UTENTE,
+                    new Condition ("tipo",String.valueOf(2),Request.Operator.Equal));
+        ResultSet rs=sendQuery(q.toString());
+        if (rs.next())
+            return rs.getString(1);
+        else
+            throw new SQLException();
+    }        
 
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata alle competizioni">
     

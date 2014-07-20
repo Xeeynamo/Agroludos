@@ -259,7 +259,7 @@ public class JFrameCreaComp extends javax.swing.JFrame
         
         int indexTipo = jListTipoCompetizioni.getSelectedIndex();
         Manager manager = new Manager("", "", agro.getMail());
-        float prezzo = (float)jPrezzo.getValue();
+        float prezzo = Float.parseFloat(jPrezzo.getValue().toString());
         int minPart = (int)jPartecipantiMin.getValue();
         int maxPart = (int)jPartecipantiMax.getValue();
         Date data = (Date)jCompetizioneData.getValue();
