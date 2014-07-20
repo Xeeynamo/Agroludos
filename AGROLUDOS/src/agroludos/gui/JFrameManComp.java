@@ -700,7 +700,8 @@ public final class JFrameManComp extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             try {
                 new JFrameManComp((ManagerCompetizione)Agroludos.Connect(null).Login("luciano.ciccariello@agroludos.it", "Xeey")).setVisible(true);
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
+                Shared.showError(ex.toString());
             }
         });
     }

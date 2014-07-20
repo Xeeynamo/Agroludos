@@ -1,10 +1,9 @@
 package agroludos.db.user;
 
 import agroludos.db.AgroController;
-import agroludos.db.exception.CampiVuotiException;
-import agroludos.db.exception.DefCodFiscException;
-import agroludos.db.exception.DefEmailException;
+import agroludos.db.exception.*;
 import agroludos.db.components.Partecipante;
+import agroludos.db.exception.WrongLoginException;
 import java.sql.*;
 
 /**
@@ -19,7 +18,7 @@ public class Anonimo extends AgroController
         super(database, username, password);
     }
     
-    @Override public AgroController Login(String mail, String password) throws SQLException
+    @Override public AgroController Login(String mail, String password) throws SQLException, WrongLoginException
     {
         return super.Login(mail, password);
     }

@@ -5,10 +5,9 @@ import agroludos.db.user.ManagerCompetizione;
 import agroludos.db.user.Utente;
 import agroludos.db.user.ManagerSistema;
 import agroludos.db.*;
+import agroludos.db.exception.WrongLoginException;
 import agroludos.db.user.Anonimo;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -124,6 +123,10 @@ public class JFrameLogin extends javax.swing.JFrame {
             this.setVisible(false);
             jFrame.pack();
             jFrame.setVisible(true);
+        }
+        catch (WrongLoginException ex)
+        {
+            Shared.showError(ex.toString());
         }
         catch (SQLException ex)
         {

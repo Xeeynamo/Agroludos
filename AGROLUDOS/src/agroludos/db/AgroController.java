@@ -70,9 +70,10 @@ public class AgroController
      * @param password la sua password
      * @return utente sotto forma di oggetto:
      * Le possibili classe restituite sono Utente, ManagerCompetizione e ManagerSistema
+     * @throws WrongLoginException quando mail o password specificati sono errati
      * @throws SQLException 
      */
-    public AgroController Login(String mail, String password) throws SQLException
+    protected AgroController Login(String mail, String password) throws SQLException, WrongLoginException
     {
         int type = getUserType(mail, password);
         switch (type) 
@@ -84,7 +85,7 @@ public class AgroController
              case 2:
                  return new ManagerSistema(getStatement(), mail);
              default:
-                 return null;
+                 throw new WrongLoginException();
          }
     }
     protected String getMail()
