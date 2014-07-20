@@ -61,6 +61,7 @@ public class JFrameLogin extends javax.swing.JFrame {
         jTextPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Agroludos");
 
         jLoginMail.setText("Nome utente");
 
