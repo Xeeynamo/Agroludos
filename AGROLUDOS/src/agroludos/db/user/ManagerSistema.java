@@ -38,6 +38,10 @@ public class ManagerSistema extends AgroController
     {
         return super.getManagers();
     }
+    @Override public Competizione[] getCompetizioniMinimal(int filter) throws SQLException
+    {
+        return super.getCompetizioniMinimal(filter);
+    }
     @Override public Competizione[] getCompetizioni(String manager) throws SQLException
     {
         return super.getCompetizioni(manager);
