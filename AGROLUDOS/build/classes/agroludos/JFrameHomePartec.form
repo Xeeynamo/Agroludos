@@ -604,6 +604,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Annulla iscrizione"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonMyAnnullaIscrizioneActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>

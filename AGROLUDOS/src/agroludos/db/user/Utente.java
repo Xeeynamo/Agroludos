@@ -58,6 +58,11 @@ public class Utente extends AgroController
        return c1;        
     }
     
+    public void AnnullaPrenotazione (Competizione c) throws SQLException
+    {
+        dropPrenotazione(super.getPartecipante(super.getMail()),c);
+    }
+    
     public void addIscrizioneCompetizione(Competizione c, Optional [] opt) throws SQLException, SrcScadutaException
     {
         super._addIscrizioneCompetizione(super.getPartecipante(super.getMail()), c, opt);

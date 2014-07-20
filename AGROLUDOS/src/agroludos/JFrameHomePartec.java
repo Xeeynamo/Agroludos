@@ -412,6 +412,11 @@ public class JFrameHomePartec extends javax.swing.JFrame
         jLabelMyManager.setText("-");
 
         jButtonMyAnnullaIscrizione.setText("Annulla iscrizione");
+        jButtonMyAnnullaIscrizione.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMyAnnullaIscrizioneActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Prezzo totale");
 
@@ -930,11 +935,29 @@ public class JFrameHomePartec extends javax.swing.JFrame
                     this.setVisible(false);
                     jFrame.pack();
                     jFrame.setVisible(true);
-                }
-         
-        
-        
+                }   
     }//GEN-LAST:event_jButtonMyOptionalConfermaActionPerformed
+
+    private void jButtonMyAnnullaIscrizioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMyAnnullaIscrizioneActionPerformed
+        try 
+        {
+            // TODO add your handling code here:
+            agro.AnnullaPrenotazione(agro.getCompetizione(listComp[jListMyIscrizioni.getSelectedIndex()].getId()));
+            JOptionPane.showMessageDialog(null, "Annullamento prenotazione\n effettuato successo!\n"
+            , "Successo", JOptionPane.INFORMATION_MESSAGE);
+        } 
+        catch (SQLException ex) 
+        {
+            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            JFrame jFrame=new JFrameHomePartec(agro);
+            this.setVisible(false);
+            jFrame.pack();
+            jFrame.setVisible(true);
+        }
+    }//GEN-LAST:event_jButtonMyAnnullaIscrizioneActionPerformed
 
     /**
      * @param args the command line arguments

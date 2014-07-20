@@ -350,7 +350,7 @@ public class AgroController
                 {
                     "nome",
                     "descrizione",
-                    TABLE_OPTIONAL_COMPETIZIONE + "prezzo",
+                    TABLE_OPTIONAL_COMPETIZIONE + ".prezzo",
                 },
                 TABLE_OPTIONAL_COMPETIZIONE,
                 new Join[]
@@ -369,16 +369,18 @@ public class AgroController
                 },
                 new Condition("competizione", String.valueOf(idCompetizione), Request.Operator.Equal)
         );
+        System.out.println(q.toString()+"\n");
         ResultSet rs = sendQuery(q + "ORDER BY data");
-        Optional[] opt = new Optional[getResultSetLength(rs)];
-        for (Optional o : opt)
-        {
-            o = new Optional(
+        Optional [] opt=new Optional[getResultSetLength(rs)];
+            for (int i=0;i<opt.length;i++,rs.next())
+            {
+                opt[i] = new Optional(
                     rs.getString("nome"),
                     rs.getString("descrizione"),
-                    rs.getFloat(TABLE_OPTIONAL_COMPETIZIONE + "prezzo")
-            );
-        }
+                    rs.getFloat(TABLE_OPTIONAL_COMPETIZIONE + ".prezzo")
+                );
+                System.out.println("LOL "+rs.getString("nome")+"\n");
+            }
         return opt;
     }
     
@@ -752,6 +754,38 @@ public class AgroController
                 sendUpdate(I.toString());
             } 
         }   
+    }
+    
+    protected void dropPrenotazione (Partecipante p, Competizione c) throws SQLException
+    {
+        if (isPrenotato(p.getMail(),c.getId()))
+        {
+            Delete q;
+            System.out.println("1\n");
+            int id_pren=getIndexPrenotazione (p,c);
+            System.out.println("2\n");
+            Optional [] opt =getCompetizioneOptional(c.getId());
+            System.out.println("3\n");
+            for (int i=0;i<opt.length;i++)
+            {
+                System.out.println(opt[i].getNome()+"\n");
+                int id_opt_comp=getIndexOptionalCompetizione(opt[i],c);
+                System.out.println("5\n");
+                q=new Delete
+                    (TABLE_OPTIONAL_PRENOTAZIONE,
+                     new Condition 
+                    (new Condition ("optional",String.valueOf(id_opt_comp),Request.Operator.Equal).toString(),
+                     new Condition ("prenotazione",String.valueOf(id_pren),Request.Operator.Equal).toString(),
+                    Request.Operator.And));
+                System.out.println(q.toString()+"\n");
+                sendUpdate(q.toString());
+            }
+            q=new Delete
+                (TABLE_PRENOTAZIONE,
+                new Condition("idPrenotazione",String.valueOf(id_pren),Request.Operator.Equal));
+            System.out.println(q.toString()+"\n");
+            sendUpdate(q.toString());
+        }
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai manager di competizione">
