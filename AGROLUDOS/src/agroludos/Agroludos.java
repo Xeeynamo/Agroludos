@@ -1,45 +1,34 @@
 package agroludos;
 
+import agroludos.db.user.Anonimo;
 import agroludos.gui.JFrameLogin;
-import agroludos.db.AgroConnect;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
+import agroludos.gui.Shared;
 
-/**
- *
- * @author Luciano
- */
 public class Agroludos
 {
-    public static AgroConnect agroConnect;
-    
-    public static void CreateAgroConnect()
+    public static Anonimo Connect(String[] args)
     {
-        if (agroConnect == null)
+        try
         {
-            try
-            {
-                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-            }
-            catch (Exception e)
-            { 
-            }
-            try
-            {
-                Agroludos.agroConnect = new AgroConnect("root", "agroludos");
-            }
-            catch (Exception e)
-            {
-                JOptionPane.showMessageDialog(null, "Impossibile stabilire una connessione col database\n" +
-                        e.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-
-            }
+            if (args == null || args.length != 3)
+                return new Anonimo("localhost", "root", "agroludos");
+            else
+                return new Anonimo(args[0], args[1], args[2]);
         }
+        catch (Exception ex)
+        {
+            Shared.showError("Impossibile stabilire una connessione col database.\nIl programma sarà terminato." + ex.toString());
+        }
+        return null;
     }
+    
     public static void main(String[] args)
     {
-        CreateAgroConnect();
-        JFrameLogin frame = new JFrameLogin();
-        frame.setVisible(true);
+        Anonimo user = Connect(args);
+        if (user != null)
+        {
+            JFrameLogin frame = new JFrameLogin(user);
+            frame.setVisible(true);
+        }
     }
 }

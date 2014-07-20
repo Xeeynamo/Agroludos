@@ -7,13 +7,9 @@
 package agroludos.gui;
 
 import agroludos.Agroludos;
-import agroludos.db.*;
 import agroludos.db.components.*;
 import agroludos.db.user.ManagerCompetizione;
-import java.awt.*;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -27,8 +23,9 @@ public final class JFrameManComp extends javax.swing.JFrame {
     Partecipante[] listPartecipanti;
     
     public JFrameManComp(ManagerCompetizione agro) {
-        initComponents();
         this.agro = agro;
+        Shared.setDefaultLookAndFeel();
+        initComponents();
         LoadListCompetizioni();
     }
     
@@ -701,8 +698,10 @@ public final class JFrameManComp extends javax.swing.JFrame {
         /* Create and display the form */
 
         java.awt.EventQueue.invokeLater(() -> {
-            Agroludos.CreateAgroConnect();
-            new JFrameManComp((ManagerCompetizione)Agroludos.agroConnect.Login("luciano.ciccariello@agroludos.it", "Xeey")).setVisible(true);
+            try {
+                new JFrameManComp((ManagerCompetizione)Agroludos.Connect(null).Login("luciano.ciccariello@agroludos.it", "Xeey")).setVisible(true);
+            } catch (SQLException ex) {
+            }
         });
     }
 

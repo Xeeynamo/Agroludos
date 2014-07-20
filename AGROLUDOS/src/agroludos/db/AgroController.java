@@ -3,6 +3,7 @@ package agroludos.db;
 import agroludos.db.components.*;
 import agroludos.db.exception.*;
 import agroludos.db.query.*;
+import agroludos.db.user.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,14 +22,65 @@ public class AgroController
     protected static final String TABLE_COMPETIZIONE = "competizione";
     protected static final String TABLE_MAN_COMP = "manager";
     private static final String TABLE_COMP_TYPE = "tipocompetizione";
-    protected
-    Statement statement;
-    String mail;
     
-    public AgroController(Statement statement, String mail)
+    private Statement statement;
+    private String mail;
+    
+    /**
+     * Stabilisce una connessione col database.
+     * @param database host che ospita il database MySQL
+     * @param username nome utente MySQL
+     * @param password password MySQL
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws SQLException 
+     */
+    protected AgroController(String database, String username, String password) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException
+    {
+        // Carico il driver JDBC
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        // mi connetto al database
+        Connection db = DriverManager.getConnection("jdbc:mysql://" + database + "/" + "agroludos?" +
+                "user="+ username + "&password="+ password);
+        
+        // creo lo statement per l'invio della query
+        statement = (Statement)db.createStatement();
+    }
+    
+    /**
+     * Inizializza la classe utente che può interagire col sistema.
+     * @param statement parte che gestisce lo scambio di info tra la classe ed il DB MySQL
+     * @param mail chi ha effettuato l'accesso
+     */
+    protected AgroController(Statement statement, String mail)
     {
         this.statement = statement;
         this.mail = mail;
+    }
+    
+    /**
+     * Istanzia un utente
+     * @param mail indirizzo mail dell'utente
+     * @param password la sua password
+     * @return utente sotto forma di oggetto:
+     * Le possibili classe restituite sono Utente, ManagerCompetizione e ManagerSistema
+     * @throws SQLException 
+     */
+    public AgroController Login(String mail, String password) throws SQLException
+    {
+        int type = getUserType(mail, password);
+        switch (type) 
+        {
+             case 0:
+                 return new agroludos.db.user.Utente(getStatement(), mail);
+             case 1:
+                 return new ManagerCompetizione(getStatement(), mail);
+             case 2:
+                 return new ManagerSistema(getStatement(), mail);
+             default:
+                 return null;
+         }
     }
     
     protected Statement getStatement()
@@ -770,7 +822,7 @@ public class AgroController
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai partecipanti"> 
-    protected void _addPartec(String password,Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
+    protected void addPartecipante(String password, Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
         
         if (isMailExists(p.getMail()))

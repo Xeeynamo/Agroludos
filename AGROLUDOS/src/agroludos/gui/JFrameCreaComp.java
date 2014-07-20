@@ -23,6 +23,7 @@ public class JFrameCreaComp extends javax.swing.JFrame
     public JFrameCreaComp(ManagerCompetizione agro)
     {
         this.agro = agro;
+        Shared.setDefaultLookAndFeel();
         initComponents();
         
         try {

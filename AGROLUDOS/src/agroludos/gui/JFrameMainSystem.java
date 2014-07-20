@@ -12,6 +12,8 @@ import agroludos.db.components.*;
 import java.awt.*;
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -34,6 +36,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     
     public JFrameMainSystem(ManagerSistema agroSysMan) {
         agro = agroSysMan;
+        Shared.setDefaultLookAndFeel();
         initComponents();
     }
 
@@ -940,8 +943,10 @@ public class JFrameMainSystem extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            Agroludos.CreateAgroConnect();
-            new JFrameMainSystem((ManagerSistema)Agroludos.agroConnect.Login("a", "a")).setVisible(true);
+            try {
+                new JFrameMainSystem((ManagerSistema)Agroludos.Connect(null).Login("a", "a")).setVisible(true);
+            } catch (SQLException ex) {
+            }
         });
     }
 

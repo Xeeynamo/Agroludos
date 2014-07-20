@@ -14,17 +14,17 @@ import java.sql.*;
  */
 public class Anonimo extends AgroController
 {
-    public Anonimo(Statement statement)
+    public Anonimo(String database, String username, String password) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException
     {
-        super(statement, null);
+        super(database, username, password);
     }
     
-    @Override public int getUserType(String mail, String password) throws SQLException
+    @Override public AgroController Login(String mail, String password) throws SQLException
     {
-        return super.getUserType(mail, password);
+        return super.Login(mail, password);
     }
     public void addPartec(String password,Partecipante p) throws SQLException, DefEmailException, DefCodFiscException, CampiVuotiException
     {
-        super._addPartec(password,p);
+        super.addPartecipante(password,p);
     }
 }

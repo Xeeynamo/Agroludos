@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package agroludos.gui;
 
 import agroludos.Agroludos;
@@ -11,6 +5,8 @@ import agroludos.db.user.ManagerCompetizione;
 import agroludos.db.user.Utente;
 import agroludos.db.user.ManagerSistema;
 import agroludos.db.*;
+import agroludos.db.user.Anonimo;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -21,28 +17,13 @@ import javax.swing.*;
  */
 public class JFrameLogin extends javax.swing.JFrame {
 
-    /**
-     * Creates new form JFrameLogin
-     */
-    public JFrameLogin() {
-        
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (Exception e)
-        {
-            
-        }
+    Anonimo agro;
+    
+    public JFrameLogin(Anonimo agro)
+    {
+        this.agro = agro;
+        Shared.setDefaultLookAndFeel();
         initComponents();
-        try
-        {
-            Agroludos.agroConnect = new AgroConnect("root", "agroludos");
-        }
-        catch (Exception e)
-        {
-            JOptionPane.showMessageDialog(null, "Impossibile stabilire una connessione col database\n" +
-                    e.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-            
-        }
     }
 
     /**
@@ -127,15 +108,16 @@ public class JFrameLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLoginEntraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginEntraActionPerformed
-        AgroController user = Agroludos.agroConnect.Login(jTextMail.getText(), jTextPassword.getText());
-        if (user != null)
+        try
         {
+            AgroController user = agro.Login(jTextMail.getText(), jTextPassword.getText());
+            
             JFrame jFrame;
-            if (user instanceof  ManagerSistema)
+            if (user instanceof ManagerSistema)
                 jFrame = new JFrameMainSystem((ManagerSistema)user);
-            else if (user instanceof  ManagerCompetizione)
+            else if (user instanceof ManagerCompetizione)
                 jFrame = new JFrameManComp((ManagerCompetizione)user);
-            else if (user instanceof  Utente)
+            else if (user instanceof Utente)
                 jFrame = new JFrameHomePartec((Utente)user);
             else
                 return;
@@ -143,10 +125,14 @@ public class JFrameLogin extends javax.swing.JFrame {
             jFrame.pack();
             jFrame.setVisible(true);
         }
+        catch (SQLException ex)
+        {
+            Shared.showError("Impossibile effettuare il login, connessione fallita.\n" + ex.toString());
+        }
     }//GEN-LAST:event_jLoginEntraActionPerformed
 
     private void jLoginRegistratiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginRegistratiActionPerformed
-        new JFrameRegistrazione().setVisible(true);
+        new JFrameRegistrazione(agro).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jLoginRegistratiActionPerformed
 
@@ -178,10 +164,8 @@ public class JFrameLogin extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFrameLogin().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new JFrameLogin(Agroludos.Connect(null)).setVisible(true);
         });
     }
 

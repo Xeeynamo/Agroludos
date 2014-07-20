@@ -1,15 +1,28 @@
 package agroludos.gui;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.JComboBox;
-import javax.swing.JList;
+import javax.swing.*;
 
 /**
  * Qui ci va tutta la parte di codice condivisa tra i vari JForm
  */
 public class Shared
 {
+    public static void setDefaultLookAndFeel()
+    {
+        try
+        {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        }
+        catch (Exception e)
+        {
+            
+        }
+    }
+    public static void showError(String message)
+    {
+        JOptionPane.showMessageDialog(null, message, "Errore", JOptionPane.ERROR_MESSAGE);
+    }
+    
     /**
      * Popola la lista del controllo JList.
      * NOTA: Il vecchio contenuto verrà cancellato, venendo sostituito
