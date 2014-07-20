@@ -95,8 +95,6 @@ public class JFrameHomePartec extends javax.swing.JFrame
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListMyIscrizioni = new javax.swing.JList();
-        jLabel1 = new javax.swing.JLabel();
-        jLabelMyPartecipante = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabelMyCosto = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -299,10 +297,6 @@ public class JFrameHomePartec extends javax.swing.JFrame
         });
         jScrollPane2.setViewportView(jListMyIscrizioni);
 
-        jLabel1.setText("Partecipante");
-
-        jLabelMyPartecipante.setText("#22");
-
         jLabel5.setText("Costo competizione");
 
         jLabelMyCosto.setText("-");
@@ -425,16 +419,10 @@ public class JFrameHomePartec extends javax.swing.JFrame
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel1))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(19, 19, 19)
-                                        .addComponent(jLabelMyPartecipante))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabelMyCosto))))
+                                .addGap(8, 8, 8)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabelMyCosto))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(50, 50, 50)
@@ -445,7 +433,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
                                     .addComponent(jLabelMyManagerMail)
                                     .addComponent(jLabelMyManager)))
                             .addComponent(jLabel23))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 98, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -453,17 +441,13 @@ public class JFrameHomePartec extends javax.swing.JFrame
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabelMyPartecipante))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jLabelMyCosto))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabelMyPrezzoTotale))
@@ -503,10 +487,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    void setMyPartecipanteId(int value)
-    {
-        jLabelMyPartecipante.setText("#" + Integer.toString(value));
-    }
+
     void setCostoCompetizione(int value)
     {
         jLabelMyCosto.setText(Integer.toString(value) + "€");
@@ -989,7 +970,6 @@ public class JFrameHomePartec extends javax.swing.JFrame
     private javax.swing.JCheckBox jCheckBoxOpt2;
     private javax.swing.JCheckBox jCheckBoxOpt3;
     private javax.swing.JButton jIscrizioneCompetizione;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
@@ -1005,7 +985,6 @@ public class JFrameHomePartec extends javax.swing.JFrame
     private javax.swing.JLabel jLabelMyOptionalCosto1;
     private javax.swing.JLabel jLabelMyOptionalCosto2;
     private javax.swing.JLabel jLabelMyOptionalCosto3;
-    private javax.swing.JLabel jLabelMyPartecipante;
     private javax.swing.JLabel jLabelMyPrezzoTotale;
     private javax.swing.JLabel jLabelNPart;
     private javax.swing.JLabel jLabelPrezzoOpt1;
