@@ -945,7 +945,8 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             try {
                 new JFrameMainSystem((ManagerSistema)Agroludos.Connect(null).Login("a", "a")).setVisible(true);
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
+                Shared.showError(ex.toString());
             }
         });
     }

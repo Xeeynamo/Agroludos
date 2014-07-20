@@ -109,6 +109,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Home");
 
         jTabsCompetizioni.setName(""); // NOI18N
         jTabsCompetizioni.addChangeListener(new javax.swing.event.ChangeListener() {
