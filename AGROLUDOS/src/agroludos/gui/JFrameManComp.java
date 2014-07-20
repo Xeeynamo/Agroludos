@@ -598,7 +598,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
         try 
         {
             Competizione c = agro.getCompetizione(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId());
-            float prezzo_mod=(float)jCompPrezzo.getValue();
+            float prezzo_mod = Float.parseFloat(jCompPrezzo.getValue().toString());
             if ((int)jPartecMax.getValue()!=c.getNMax())
                 agro.setNMax(c.getId(), (int)jPartecMax.getValue());
             if ((int)jPartecMin.getValue()!=c.getNMin())
