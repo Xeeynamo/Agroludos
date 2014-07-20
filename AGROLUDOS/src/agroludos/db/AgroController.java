@@ -759,29 +759,22 @@ public class AgroController
         if (isPrenotato(p.getMail(),c.getId()))
         {
             Delete q;
-            System.out.println("1\n");
             int id_pren=getIndexPrenotazione (p,c);
-            System.out.println("2\n");
             Optional [] opt =getCompetizioneOptional(c.getId());
-            System.out.println("3\n");
             for (int i=0;i<opt.length;i++)
             {
-                System.out.println(opt[i].getNome()+"\n");
                 int id_opt_comp=getIndexOptionalCompetizione(opt[i],c);
-                System.out.println("5\n");
                 q=new Delete
                     (TABLE_OPTIONAL_PRENOTAZIONE,
                      new Condition 
                     (new Condition ("optional",String.valueOf(id_opt_comp),Request.Operator.Equal).toString(),
                      new Condition ("prenotazione",String.valueOf(id_pren),Request.Operator.Equal).toString(),
                     Request.Operator.And));
-                System.out.println(q.toString()+"\n");
                 sendUpdate(q.toString());
             }
             q=new Delete
                 (TABLE_PRENOTAZIONE,
                 new Condition("idPrenotazione",String.valueOf(id_pren),Request.Operator.Equal));
-            System.out.println(q.toString()+"\n");
             sendUpdate(q.toString());
         }
     }
