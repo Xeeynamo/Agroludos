@@ -28,7 +28,7 @@ public class Agroludos
         }
         catch (Exception ex)
         {
-            Shared.showError("Impossibile stabilire una connessione col database.\nIl programma sarà terminato." + ex.toString());
+            Shared.showError(null, "Impossibile stabilire una connessione col database.\nIl programma sarà terminato." + ex.toString());
         }
         return null;
     }

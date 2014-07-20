@@ -711,7 +711,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
             try {
                 new JFrameManComp((ManagerCompetizione)Agroludos.Connect(null).Login("luciano.ciccariello@agroludos.it", "Xeey")).setVisible(true);
             } catch (Exception ex) {
-                Shared.showError(ex.toString());
+                Shared.showError(null, ex.toString());
             }
         });
     }

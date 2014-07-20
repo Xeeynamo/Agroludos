@@ -947,7 +947,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
             try {
                 new JFrameMainSystem((ManagerSistema)Agroludos.Connect(null).Login("a", "a")).setVisible(true);
             } catch (Exception ex) {
-                Shared.showError(ex.toString());
+                Shared.showError(null, ex.toString());
             }
         });
     }

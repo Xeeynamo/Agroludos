@@ -1,5 +1,6 @@
 package agroludos.gui;
 
+import java.awt.Component;
 import javax.swing.*;
 
 /**
@@ -18,9 +19,13 @@ public class Shared
             
         }
     }
-    public static void showError(String message)
+    public static void showError(Component parent, String message)
     {
-        JOptionPane.showMessageDialog(null, message, "Errore", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(parent, message, "Errore", JOptionPane.ERROR_MESSAGE);
+    }
+    public static void showDialog(Component parent, String title, String message)
+    {
+        JOptionPane.showMessageDialog(parent, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
     
     /**

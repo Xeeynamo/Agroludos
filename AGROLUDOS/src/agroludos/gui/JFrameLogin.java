@@ -126,11 +126,11 @@ public class JFrameLogin extends javax.swing.JFrame {
         }
         catch (WrongLoginException ex)
         {
-            Shared.showError(ex.toString());
+            Shared.showError(this, ex.toString());
         }
         catch (SQLException ex)
         {
-            Shared.showError("Impossibile effettuare il login, connessione fallita.\n" + ex.toString());
+            Shared.showError(this, "Impossibile effettuare il login, connessione fallita.\n" + ex.toString());
         }
     }//GEN-LAST:event_jLoginEntraActionPerformed
 

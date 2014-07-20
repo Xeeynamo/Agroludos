@@ -110,7 +110,7 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
 
         jRegistraDatanascita.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d/M/yyyy"))));
 
-        jRegistraDataSrc.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d/M/yy"))));
+        jRegistraDataSrc.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d/M/yyyy"))));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -285,28 +285,27 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
                 jRegistraCertificatoSrc.getText());
             
             agro.addPartec(Password,p);
+            
+            Shared.showDialog(this, "Registrazione", "Registrazione avvenuta con successo!");
+            
             jFrame=new JFrameLogin(agro);
             this.setVisible(false);
             jFrame.pack();
             jFrame.setVisible(true);
+            
+            
         } catch (ParseException e) {
-            JOptionPane.showMessageDialog(null, "Data di nascita o data SRC non riconosciuta. Il formato corretto è DD/MM/YYYY.\n" + e.toString(),
-                    "Errore", JOptionPane.ERROR_MESSAGE);
+            Shared.showError(this, "Data di nascita o data SRC non riconosciuta. Il formato corretto è DD/MM/YYYY.");
         } catch (DefPassException e) {
-            JOptionPane.showMessageDialog(null, "Password inseriti diversi.\n",
-                    "Errore", JOptionPane.ERROR_MESSAGE);
+            Shared.showError(this, "Password inserite diverse.");
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Problemi con il mySQL.\n" + e.toString(),
-                    "Errore", JOptionPane.ERROR_MESSAGE);
+            Shared.showError(this, "Impossibile stabilire una connessione col server.");
         } catch (DefEmailException e) {
-                        JOptionPane.showMessageDialog(null,e.toString(),
-                    "Errore", JOptionPane.ERROR_MESSAGE);
+            Shared.showError(this, e.toString());
         } catch (DefCodFiscException e) {
-                        JOptionPane.showMessageDialog(null, e.toString(),
-                    "Errore", JOptionPane.ERROR_MESSAGE);
+            Shared.showError(this, e.toString());
         } catch (CampiVuotiException e) {
-            JOptionPane.showMessageDialog(null, e.toString(),
-                    "Errore", JOptionPane.ERROR_MESSAGE);
+            Shared.showError(this, e.toString());
         }
         
     }//GEN-LAST:event_jRegistraConfermaActionPerformed
