@@ -531,7 +531,7 @@ public class AgroController
         Request q = new Request(
                 new String[]
                 {
-                    TABLE_PARTECIPANTE + ".mail",
+                    TABLE_PARTECIPANTE + ".email",
                     "nome",
                     "cognome"
                 },
@@ -553,7 +553,7 @@ public class AgroController
         for (int i = 0; i < p.length; i++, rs.next())
         {
             p[i] = new Partecipante(
-                rs.getString("mail"),
+                rs.getString("email"),
                 rs.getString("nome"),
                 rs.getString("cognome"));
         }
