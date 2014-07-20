@@ -350,6 +350,11 @@ public class JFrameHomePartec extends javax.swing.JFrame
         jButtonMyOptionalConferma.setText("Conferma");
 
         jButtonMyOptionalAnnulla.setText("Annulla");
+        jButtonMyOptionalAnnulla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMyOptionalAnnullaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -581,6 +586,12 @@ public class JFrameHomePartec extends javax.swing.JFrame
         float prezzo_tot=0;
         Competizione c=agro.getCompetizione(listComp[index].getId());
         jLabelMyCosto.setText(String.valueOf(c.getPrezzo())+"€");
+        if(jCheckBoxMyOptional1.isSelected())
+            jCheckBoxMyOptional1.setSelected(false);
+        if(jCheckBoxMyOptional2.isSelected())
+            jCheckBoxMyOptional2.setSelected(false);
+        if(jCheckBoxMyOptional3.isSelected())
+            jCheckBoxMyOptional3.setSelected(false);
         jCheckBoxMyOptional1.setEnabled(false);
         jCheckBoxMyOptional2.setEnabled(false);
         jCheckBoxMyOptional3.setEnabled(false);
@@ -876,6 +887,15 @@ public class JFrameHomePartec extends javax.swing.JFrame
         else
             jLabelMyPrezzoTotale.setText(String.valueOf(Float.valueOf(jLabelMyPrezzoTotale.getText())-prezzo)); 
     }//GEN-LAST:event_jCheckBoxMyOptional3ActionPerformed
+
+    private void jButtonMyOptionalAnnullaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMyOptionalAnnullaActionPerformed
+        try {
+            // TODO add your handling code here:
+            CompetizionePrenotataLoad(jListMyIscrizioni.getSelectedIndex());
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonMyOptionalAnnullaActionPerformed
 
     /**
      * @param args the command line arguments
