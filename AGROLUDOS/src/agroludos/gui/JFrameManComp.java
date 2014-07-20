@@ -116,6 +116,8 @@ public final class JFrameManComp extends javax.swing.JFrame {
 
         jLabel6.setText("/");
 
+        jCompPrezzo.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(1.0f), Float.valueOf(1.0f), Float.valueOf(100.0f), Float.valueOf(0.5f)));
+
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Scelta optional"));
 
         jOptional1nome.setText("Colazione");
@@ -468,7 +470,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonCancellaPartecipante)
                 .addContainerGap())
@@ -512,6 +514,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
     {
         if (index < 0) return;
         Competizione c = agro.getCompetizione(listCompetizioni[index].getId());
+        Optional [] opt=agro.getOptional();
         jLabelPartecCur.setText(String.valueOf(c.getNPart()));
         jPartecMax.setValue(c.getNMax());
         jPartecMin.setValue(c.getNMin());
@@ -519,14 +522,20 @@ public final class JFrameManComp extends javax.swing.JFrame {
         jOptional1nome.setSelected(false);
         jOptional2nome.setSelected(false);
         jOptional3nome.setSelected(false);
+        jLabelOptional1Prezzo.setText(String.valueOf(opt[0].getPrezzo())+"€");
+        jLabelOptional2Prezzo.setText(String.valueOf(opt[1].getPrezzo())+"€");
+        jLabelOptional3Prezzo.setText(String.valueOf(opt[2].getPrezzo())+"€");
         for (Optional o : c.getOptional())
         {
             if (jOptional1nome.getText().compareTo(o.getNome()) == 0)
                 jOptional1nome.setSelected(true);
             else if (jOptional2nome.getText().compareTo(o.getNome()) == 0)
                 jOptional2nome.setSelected(true);
+                
+                
             else if (jOptional3nome.getText().compareTo(o.getNome()) == 0)
-                jOptional3nome.setSelected(true);
+                 jOptional3nome.setSelected(true);
+                
         }
         
         listPartecipanti = agro.getPartecipanti(c.getId());
@@ -586,13 +595,13 @@ public final class JFrameManComp extends javax.swing.JFrame {
         try 
         {
             Competizione c = agro.getCompetizione(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId());
-            int prezzo_mod=(int)jCompPrezzo.getValue();
+            float prezzo_mod=(float)jCompPrezzo.getValue();
             if ((int)jPartecMax.getValue()!=c.getNMax())
                 agro.setNMax(c.getId(), (int)jPartecMax.getValue());
             if ((int)jPartecMin.getValue()!=c.getNMin())
                 agro.setNMin(c.getId(),(int)jPartecMin.getValue());
-            if (prezzo_mod!=(int)c.getPrezzo())
-                agro.setPrezzoComp(c.getId(),(float)prezzo_mod);
+            if (prezzo_mod!=c.getPrezzo())
+                agro.setPrezzoComp(c.getId(),prezzo_mod);
             Optional [] opt_c=agro.getOptional(c.getId());
             boolean opt [] =new boolean [3];
             int nOpt=0;
