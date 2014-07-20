@@ -7,9 +7,14 @@
 package agroludos;
 
 import agroludos.db.components.*;
+import agroludos.db.exception.DatePriorException;
+import agroludos.db.exception.MinMaxException;
+import agroludos.db.exception.TipoCompetizioneInvalidException;
 import agroludos.db.user.ManagerCompetizione;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class JFrameCreaComp extends javax.swing.JFrame
@@ -98,17 +103,30 @@ public class JFrameCreaComp extends javax.swing.JFrame
 
         jListTipoCompetizioni.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jPartecipantiMin.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        jPartecipantiMin.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+        jPartecipantiMin.setValue(4);
 
         jLabel2.setText("Numero minimo di partecipanti");
 
-        jPartecipantiMax.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        jPartecipantiMax.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+        jPartecipantiMax.setValue(8);
 
         jLabel3.setText("Numero massimo di partecipanti");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Scelta degli optional disponibili"));
 
+        jListaOptional.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jListaOptionalActionPerformed(evt);
+            }
+        });
+
         jOptionalSelezionabile.setText("Selezionabile");
+        jOptionalSelezionabile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jOptionalSelezionabileActionPerformed(evt);
+            }
+        });
 
         jOptionalPrezzo.setEnabled(false);
 
@@ -145,7 +163,8 @@ public class JFrameCreaComp extends javax.swing.JFrame
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jCompetizioneData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat(""))));
+        jCompetizioneData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d/M/yy"))));
+        jCompetizioneData.setValue(new Date());
 
         jLabel5.setText("Data della competizione");
 
@@ -164,6 +183,7 @@ public class JFrameCreaComp extends javax.swing.JFrame
         });
 
         jPrezzo.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(100.0f), Float.valueOf(0.5f)));
+        jPrezzo.setValue(10.0);
 
         jLabel6.setText("Prezzo della competizione");
         jLabel6.setToolTipText("");
@@ -241,7 +261,7 @@ public class JFrameCreaComp extends javax.swing.JFrame
     private void jConfermaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfermaActionPerformed
         
         int indexTipo = jListTipoCompetizioni.getSelectedIndex();
-        Manager manager = null;
+        Manager manager = new Manager("", "", agro.getMail());
         float prezzo = (float)jPrezzo.getValue();
         int minPart = (int)jPartecipantiMin.getValue();
         int maxPart = (int)jPartecipantiMax.getValue();
@@ -274,9 +294,17 @@ public class JFrameCreaComp extends javax.swing.JFrame
             TipoCompetizione cTipo = listTipoCompetizione[indexTipo];
             Competizione competizione = new Competizione(0, prezzo, minPart, maxPart,
                     0, cTipo, manager, data, creaListaOptional());
-            
-            setVisible(false);
-            dispose();
+            try
+            {
+                agro.creaCompetizione(competizione);
+                setVisible(false);
+                dispose();
+            }
+            catch (Exception ex)
+            {
+                JOptionPane.showConfirmDialog(this, ex.toString(),
+                    "Errore", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jConfermaActionPerformed
 
@@ -284,6 +312,28 @@ public class JFrameCreaComp extends javax.swing.JFrame
         setVisible(false);
         dispose();
     }//GEN-LAST:event_jAnnullaActionPerformed
+
+    private void jListaOptionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jListaOptionalActionPerformed
+        int index = jListaOptional.getSelectedIndex();
+        if (index >= 0)
+        {
+            jOptionalSelezionabile.setEnabled(true);
+            jOptionalSelezionabile.setSelected(listOptionalDisponibili[index]);
+            jOptionalPrezzo.setValue(listOptional[index].getPrezzo());
+        }
+        else
+        {
+            jOptionalSelezionabile.setEnabled(false);
+        }
+    }//GEN-LAST:event_jListaOptionalActionPerformed
+
+    private void jOptionalSelezionabileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOptionalSelezionabileActionPerformed
+        int index = jListaOptional.getSelectedIndex();
+        if (index >= 0)
+        {
+            listOptionalDisponibili[index] = jOptionalSelezionabile.isSelected();
+        }
+    }//GEN-LAST:event_jOptionalSelezionabileActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

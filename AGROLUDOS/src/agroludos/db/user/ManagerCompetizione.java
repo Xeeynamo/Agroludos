@@ -1,8 +1,8 @@
 package agroludos.db.user;
 
-import agroludos.db.*;
 import agroludos.db.AgroController;
 import agroludos.db.components.*;
+import agroludos.db.exception.*;
 import java.sql.*;
 
 public class ManagerCompetizione extends AgroController
@@ -12,6 +12,10 @@ public class ManagerCompetizione extends AgroController
         super(statement, mail);
     }
     
+    @Override public String getMail()
+    {
+        return super.getMail();
+    }
     @Override public TipoCompetizione[] getCompetizioneTipi() throws SQLException
     {
         return super.getCompetizioneTipi();
@@ -35,6 +39,13 @@ public class ManagerCompetizione extends AgroController
     @Override public void annullaCompetizione(int idCompetizione) throws SQLException
     {
         super.annullaCompetizione(idCompetizione);
+    }
+    @Override public void creaCompetizione(Competizione c) throws SQLException,
+            TipoCompetizioneInvalidException,
+            MinMaxException,
+            DatePriorException
+    {
+        super.creaCompetizione(c);
     }
     
     public void setNMax (int idCompetizione,int nmax) throws SQLException

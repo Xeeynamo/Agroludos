@@ -97,7 +97,7 @@ public class Competizione
     }
     public String getDataCompString ()
     {
-        SimpleDateFormat d = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat d = new SimpleDateFormat("yyyy-MM-dd");
         return d.format(getDataComp());
     }
     public Optional [] getOptional ()

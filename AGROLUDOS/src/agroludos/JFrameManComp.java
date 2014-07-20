@@ -28,7 +28,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
     public JFrameManComp(ManagerCompetizione agro) {
         initComponents();
         this.agro = agro;
-        Initialize();
+        LoadListCompetizioni();
     }
     
     /**
@@ -330,7 +330,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    void Initialize()
+    void LoadListCompetizioni()
     {
         try {
             listCompetizioni = agro.getCompetizioni();
@@ -385,7 +385,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Impossibile annullare la competizione\n" +
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
             }
-            Initialize();
+            LoadListCompetizioni();
         }
     }//GEN-LAST:event_jButtonAnnullaCompetizioneActionPerformed
 

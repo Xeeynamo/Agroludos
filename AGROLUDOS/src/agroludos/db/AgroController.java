@@ -41,7 +41,10 @@ public class AgroController
     }
     protected Date getDbDate() throws SQLException
     {
-        return sendQuery("SELECT CURRENT_DATE").getDate("CURRENT_DATE");
+        ResultSet rs = sendQuery("SELECT CURRENT_DATE");
+        if (rs.next())
+            return rs.getDate("CURRENT_DATE");
+        return null;
     }
     private int getResultSetLength(ResultSet rs) throws SQLException
     {
@@ -114,9 +117,9 @@ public class AgroController
                 new String[]
                 {
                     "DEFAULT",
-                    c.getTipoCompetizione().getNome(),
-                    c.getManager().getMail(),
-                    c.getDataCompString(),
+                    "\"" + c.getTipoCompetizione().getNome() + "\"",
+                    "\"" + c.getManager().getMail() + "\"",
+                    "'" + c.getDataCompString() + "'",
                     String.valueOf(c.getNMin()),
                     String.valueOf(c.getNMax()),
                     String.valueOf(c.getPrezzo()),
@@ -124,15 +127,19 @@ public class AgroController
                     
                 }
         );
+        String s = insert.toString();
         sendUpdate(insert.toString());
+        Optional[] opt = c.getOptional();
         c = getCompetizione(c.getManager().getMail(), c.getDataCompString());
-        for (Optional o : c.getOptional())
+        if (c == null)
+            throw new SQLException();
+        for (Optional o : opt)
         {
             insert = new Insert(TABLE_OPTIONAL_COMPETIZIONE,
                     new String[]
                     {
                         "DEFAULT",
-                        o.getNome(),
+                        "\"" + o.getNome() + "\"",
                         String.valueOf(c.getId()),
                         String.valueOf(o.getPrezzo())
                     }
@@ -349,7 +356,7 @@ public class AgroController
                 TABLE_COMPETIZIONE,
                 new Condition(
                     new Condition("manager", "\"" + manager + "\"", Request.Operator.Equal).toString(),
-                    new Condition("data", date, Request.Operator.Equal).toString(),
+                    new Condition("data", "'" + date + "'", Request.Operator.Equal).toString(),
                     Request.Operator.And
                 )
         );
