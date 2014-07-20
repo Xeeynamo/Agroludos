@@ -454,6 +454,26 @@ public class AgroController
                 ", prezzo=" + optional.getPrezzo() +
                 " WHERE nome='" + optional.getNome() + "'");
     }
+    
+    protected void _setOptionalPrenotazione (Optional o, Partecipante p, Competizione c, boolean scelto) throws SQLException
+    {
+        String selezione=null;
+        if ((_isOptionalPrenotato(p,o,c))&&(!scelto))
+            selezione=String.valueOf(0);
+        else if ((!_isOptionalPrenotato(p,o,c))&&(scelto))
+            selezione=String.valueOf(1);
+        if (selezione!=null)
+        {
+            Update q=new Update (
+            TABLE_OPTIONAL_PRENOTAZIONE,
+            "selezionato",selezione,
+            new Condition(
+            new Condition ("optional",String.valueOf(getIndexOptionalCompetizione(o,c)),Request.Operator.Equal).toString(),
+            new Condition ("prenotazione",String.valueOf(getIndexPrenotazione(p,c)),Request.Operator.Equal).toString(),
+            Request.Operator.And));
+            sendUpdate(q.toString());
+        }
+    }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai partecipanti">
     
@@ -640,7 +660,7 @@ public class AgroController
         {
             Optional [] opt_comp=getOptional(c.getId());
             for (int i=0;i<opt_comp.length;i++)
-            {    //System.out.println("insert into opt_pren values (\""+opt[i].getNome()+"\",\""+p.getCodiceFiscale()+"\","+c.getId()+");");
+            {    
                 int trovato=0;
                 for (int j=0;j<opt.length;j++)
                 { 
@@ -659,7 +679,6 @@ public class AgroController
                             String.valueOf(trovato)
                         } );
                 sendUpdate(I.toString());
-                //sendUpdate("insert into opt_pren values (\""+opt[i].getNome()+"\",\""+p.getCodiceFiscale()+"\","+c.getId()+");");
             } 
         }   
     }

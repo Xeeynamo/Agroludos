@@ -87,6 +87,10 @@ public class Utente extends AgroController
         return super._isOptionalPrenotato(super.getPartecipante(super.getMail()), opt, comp);
     }
     
+    public void setOptionalPrenotazione (Optional opt, Competizione comp,boolean scelto) throws SQLException
+    {
+        super._setOptionalPrenotazione(opt, super.getPartecipante(super.getMail()), comp, scelto);
+    }
     @Override public Optional[] getOptional() throws SQLException
     {
         return super.getOptional();

@@ -348,6 +348,11 @@ public class JFrameHomePartec extends javax.swing.JFrame
         jLabelMyOptionalCosto3.setText("-");
 
         jButtonMyOptionalConferma.setText("Conferma");
+        jButtonMyOptionalConferma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMyOptionalConfermaActionPerformed(evt);
+            }
+        });
 
         jButtonMyOptionalAnnulla.setText("Annulla");
         jButtonMyOptionalAnnulla.addActionListener(new java.awt.event.ActionListener() {
@@ -635,7 +640,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
                         jLabelMyOptionalCosto3.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
                         if (agro.isOptionalSelezionato(listOpt[i], c))
                         {    
-                            jCheckBoxMyOptional2.setSelected(true);
+                            jCheckBoxMyOptional3.setSelected(true);
                             prezzo_tot+=listOpt[i].getPrezzo();
                         }
                     }
@@ -896,6 +901,40 @@ public class JFrameHomePartec extends javax.swing.JFrame
             Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonMyOptionalAnnullaActionPerformed
+
+    private void jButtonMyOptionalConfermaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMyOptionalConfermaActionPerformed
+        // TODO add your handling code here:
+        try {
+            for (int i=0;i<listOpt.length;i++)
+            {
+                
+                if(listOpt[i].getNome().compareTo("Colazione")==0)
+                    agro.setOptionalPrenotazione(listOpt[i],agro.getCompetizione(listComp[jListMyIscrizioni.getSelectedIndex()].getId()),jCheckBoxMyOptional1.isSelected());   
+                else if(listOpt[i].getNome().compareTo("Pranzo")==0)
+                    agro.setOptionalPrenotazione(listOpt[i],agro.getCompetizione(listComp[jListMyIscrizioni.getSelectedIndex()].getId()),jCheckBoxMyOptional2.isSelected());
+                    else if(listOpt[i].getNome().compareTo("Pernotto")==0)
+                        agro.setOptionalPrenotazione(listOpt[i],agro.getCompetizione(listComp[jListMyIscrizioni.getSelectedIndex()].getId()),jCheckBoxMyOptional3.isSelected());
+
+                
+
+            }
+            
+            JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
+                    , "Successo", JOptionPane.INFORMATION_MESSAGE); 
+                        }catch (SQLException ex) {
+                     Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                finally
+                {
+                    JFrame jFrame=new JFrameHomePartec(agro);
+                    this.setVisible(false);
+                    jFrame.pack();
+                    jFrame.setVisible(true);
+                }
+         
+        
+        
+    }//GEN-LAST:event_jButtonMyOptionalConfermaActionPerformed
 
     /**
      * @param args the command line arguments
