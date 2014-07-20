@@ -742,7 +742,7 @@ public class AgroController
         );
         ResultSet rs = sendQuery(q.toString() + "ORDER BY cognome");
         Partecipante[] p = new Partecipante[getResultSetLength(rs)];
-        for (int i = 0; i < p.length; i++)
+        for (int i = 0; i < p.length; i++, rs.next())
         {
             p[i] = new Partecipante(
                     rs.getString("email"),
