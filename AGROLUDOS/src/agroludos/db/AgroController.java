@@ -33,11 +33,11 @@ public class AgroController
         this.mail = mail;
     }
     
-    private Statement getStatement()
+    protected Statement getStatement()
     {
         return statement;
     }
-    private String getMail()
+    protected String getMail()
     {
         return mail;
     }
