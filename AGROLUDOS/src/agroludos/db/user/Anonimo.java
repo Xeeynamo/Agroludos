@@ -1,9 +1,9 @@
 package agroludos.db.user;
 
 import agroludos.db.AgroController;
-import agroludos.db.components.CampiVuotiException;
-import agroludos.db.components.DefCodFiscException;
-import agroludos.db.components.DefEmailException;
+import agroludos.db.exception.CampiVuotiException;
+import agroludos.db.exception.DefCodFiscException;
+import agroludos.db.exception.DefEmailException;
 import agroludos.db.components.Partecipante;
 import java.sql.*;
 

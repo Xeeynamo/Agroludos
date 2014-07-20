@@ -1,15 +1,12 @@
 package agroludos.db;
 
 import agroludos.db.components.*;
+import agroludos.db.exception.*;
 import agroludos.db.query.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import javax.mail.MessagingException;
 
 public class AgroController
@@ -42,7 +39,7 @@ public class AgroController
     {
         return mail;
     }
-    private Date getDbDate() throws SQLException
+    protected Date getDbDate() throws SQLException
     {
         return sendQuery("SELECT CURRENT_DATE").getDate("CURRENT_DATE");
     }
@@ -89,6 +86,60 @@ public class AgroController
     }
 
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata alle competizioni">
+    
+    /**
+     * Crea una competizione
+     * @param c competizione contenente tutti i dati necessari per crearne una
+     * @throws SQLException 
+     * lanciato quando vi è un problema col database
+     * @throws agroludos.db.exception.TipoCompetizioneInvalidException 
+     * lanciato quando il tipo di competizione impostata non è presente nel sistema
+     * @throws agroludos.db.exception.MinMaxException 
+     * lanciato quando il minimo numero di partecipanti è maggiore al numero massimo
+     * @throws agroludos.db.exception.DatePriorException 
+     * lanciato quando la data della competizione è precedente alla data impostata nel DB
+     */
+    protected void creaCompetizione(Competizione c) throws SQLException,
+            TipoCompetizioneInvalidException,
+            MinMaxException,
+            DatePriorException
+    {
+        if (checkTipoCompetizione(c.getTipoCompetizione()) == false)
+            throw new TipoCompetizioneInvalidException();
+        if (c.getNMin() > c.getNMax())
+            throw new MinMaxException();
+        if (c.getDataComp().before(getDbDate()))
+            throw new DatePriorException();
+        Insert insert = new Insert(TABLE_COMPETIZIONE,
+                new String[]
+                {
+                    "DEFAULT",
+                    c.getTipoCompetizione().getNome(),
+                    c.getManager().getMail(),
+                    c.getDataCompString(),
+                    String.valueOf(c.getNMin()),
+                    String.valueOf(c.getNMax()),
+                    String.valueOf(c.getPrezzo()),
+                    "0",
+                    
+                }
+        );
+        sendUpdate(insert.toString());
+        c = getCompetizione(c.getManager().getMail(), c.getDataCompString());
+        for (Optional o : c.getOptional())
+        {
+            insert = new Insert(TABLE_OPTIONAL_COMPETIZIONE,
+                    new String[]
+                    {
+                        "DEFAULT",
+                        o.getNome(),
+                        String.valueOf(c.getId()),
+                        String.valueOf(o.getPrezzo())
+                    }
+            );
+            sendUpdate(insert.toString());
+        }
+    }
     /**
      * Ottiene una lista minimale delle competizioni a parte da un filtro
      * @param filter è un numero che, con un OR tra bit, crea un filtro:
@@ -281,6 +332,31 @@ public class AgroController
                 rs.getDate("data"));
         }
         return c;
+    }
+    
+    /**
+     * Ottiene la prima competizione trovata partendo dal manager e dalla data.
+     * Le competizioni annullate non saranno incluse nella lista.
+     * @param manager mail del manager di competizione
+     * @param date data della competizione
+     * @return la prima competizione trovata che soddisfa i requisiti chiesti
+     * @throws SQLException 
+     */
+    public Competizione getCompetizione(String manager, String date) throws SQLException
+    {
+        Request q = new Request(
+                new String[] { "idCompetizione", },
+                TABLE_COMPETIZIONE,
+                new Condition(
+                    new Condition("manager", "\"" + manager + "\"", Request.Operator.Equal).toString(),
+                    new Condition("data", date, Request.Operator.Equal).toString(),
+                    Request.Operator.And
+                )
+        );
+        ResultSet rs = sendQuery(q.toString());
+        if (rs.next())
+            return getCompetizione(rs.getInt("idCompetizione"));
+        return null;
     }
     
     /**
@@ -549,7 +625,7 @@ public class AgroController
      * ha selezionato o meno l'optional riportato nel parametro
      * @param p partecipante    
      * @param o optional    
-     * @param competizione
+     * @param c competizione
      * @return true se il partecipante ha selezionato quell'optiona,
      * altrimenti false
      * @throws SQLException 
@@ -917,6 +993,21 @@ public class AgroController
     }
     
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai controlli sui campi">
+    
+    /**
+     * Controlla se il tipo di competizione specificata è già presente nel sistema
+     */
+    private boolean checkTipoCompetizione(TipoCompetizione tipo) throws SQLException
+    {
+        TipoCompetizione[] tipoCompetizioni = getCompetizioneTipi();
+        for (TipoCompetizione t : tipoCompetizioni)
+        {
+            if (tipo.getNome().compareTo(t.getNome()) == 0)
+                return true;
+        }
+        return false;
+    }
+    
     /**
      * Controlla se l'indirizzo mail specificato è presente nel sistema
      * @param email indirizzo e-mail da verificare

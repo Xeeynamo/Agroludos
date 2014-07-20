@@ -6,16 +6,18 @@
 
 package agroludos;
 
+import agroludos.db.components.*;
 import agroludos.db.user.ManagerCompetizione;
-import agroludos.db.user.ManagerSistema;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 public class JFrameCreaComp extends javax.swing.JFrame
 {
     private final ManagerCompetizione agro;
+    TipoCompetizione[] listTipoCompetizione;
+    Optional[] listOptional;
+    boolean[] listOptionalDisponibili;
     
     public JFrameCreaComp(ManagerCompetizione agro)
     {
@@ -23,19 +25,43 @@ public class JFrameCreaComp extends javax.swing.JFrame
         initComponents();
         
         try {
-            Shared.CreateList(jListTipoCompetizioni, agro.getCompetizioneTipi());
+            Shared.CreateList(jListTipoCompetizioni, listTipoCompetizione = agro.getCompetizioneTipi());
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Impossibile caricare i tipi di competizioni\n" +
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
             return;
         }
         try {
-            Shared.CreateList(jListaOptional, agro.getOptional());
+            Shared.CreateList(jListaOptional, listOptional = agro.getOptional());
+            listOptionalDisponibili = new boolean[listOptional.length];
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Impossibile caricare la lista degli optional\n" +
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
             return;
         }
+    }
+    
+    /**
+     * Crea una lista con soli gli optional disponibili
+     * @return 
+     */
+    Optional[] creaListaOptional()
+    {
+        int count = 0;
+        for (boolean b : listOptionalDisponibili)
+        {
+            if (b)
+                count++;
+        }
+        Optional[] o = new Optional[count];
+        for (int i = 0, j = 0; j < count; i++)
+        {
+            if (listOptionalDisponibili[i])
+            {
+                o[j++] = listOptional[i];
+            }
+        }
+        return o;
     }
 
     /**
@@ -62,6 +88,8 @@ public class JFrameCreaComp extends javax.swing.JFrame
         jLabel5 = new javax.swing.JLabel();
         jConferma = new javax.swing.JButton();
         jAnnulla = new javax.swing.JButton();
+        jPrezzo = new javax.swing.JSpinner();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Crea competizione");
@@ -70,13 +98,15 @@ public class JFrameCreaComp extends javax.swing.JFrame
 
         jListTipoCompetizioni.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jPartecipantiMin.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+
         jLabel2.setText("Numero minimo di partecipanti");
+
+        jPartecipantiMax.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
 
         jLabel3.setText("Numero massimo di partecipanti");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Scelta degli optional disponibili"));
-
-        jListaOptional.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jOptionalSelezionabile.setText("Selezionabile");
 
@@ -115,13 +145,28 @@ public class JFrameCreaComp extends javax.swing.JFrame
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jCompetizioneData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d/M/yyyy"))));
+        jCompetizioneData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat(""))));
 
         jLabel5.setText("Data della competizione");
 
         jConferma.setText("Conferma");
+        jConferma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jConfermaActionPerformed(evt);
+            }
+        });
 
         jAnnulla.setText("Annulla");
+        jAnnulla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jAnnullaActionPerformed(evt);
+            }
+        });
+
+        jPrezzo.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(100.0f), Float.valueOf(0.5f)));
+
+        jLabel6.setText("Prezzo della competizione");
+        jLabel6.setToolTipText("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -151,7 +196,11 @@ public class JFrameCreaComp extends javax.swing.JFrame
                                 .addComponent(jConferma, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jAnnulla, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPrezzo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -174,6 +223,10 @@ public class JFrameCreaComp extends javax.swing.JFrame
                     .addComponent(jCompetizioneData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jPrezzo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -185,6 +238,53 @@ public class JFrameCreaComp extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jConfermaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfermaActionPerformed
+        
+        int indexTipo = jListTipoCompetizioni.getSelectedIndex();
+        Manager manager = null;
+        float prezzo = (float)jPrezzo.getValue();
+        int minPart = (int)jPartecipantiMin.getValue();
+        int maxPart = (int)jPartecipantiMax.getValue();
+        Date data = (Date)jCompetizioneData.getValue();
+        
+        if (indexTipo < 0)
+        {
+            JOptionPane.showConfirmDialog(this,
+                "Nessun tipo di competizione selezionata.",
+                "Errore", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+        }
+        else if (minPart > maxPart)
+        {
+            JOptionPane.showConfirmDialog(this,
+                "Il numero minimo di partecipanti non può essere maggiore del numero massimo di partecipanti.",
+                "Errore", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+        }
+        else if (data.before(new Date()))
+        {
+            JOptionPane.showConfirmDialog(this,
+                "La data impostata è precedente a quella attuale.",
+                "Errore", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+        }
+        else if (JOptionPane.showConfirmDialog(this,
+                "Sei sicuro di voler creare questa competizione? I vari campi potranno essere modificati in un secondo momento ma, una volta creata una competizione, questa potrà essere solo annullata ma non eliminata. Continuare?",
+                "Conferma creazione competizione",
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) ==
+                JOptionPane.YES_OPTION)
+        {
+            TipoCompetizione cTipo = listTipoCompetizione[indexTipo];
+            Competizione competizione = new Competizione(0, prezzo, minPart, maxPart,
+                    0, cTipo, manager, data, creaListaOptional());
+            
+            setVisible(false);
+            dispose();
+        }
+    }//GEN-LAST:event_jConfermaActionPerformed
+
+    private void jAnnullaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAnnullaActionPerformed
+        setVisible(false);
+        dispose();
+    }//GEN-LAST:event_jAnnullaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jAnnulla;
@@ -195,6 +295,7 @@ public class JFrameCreaComp extends javax.swing.JFrame
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JComboBox jListTipoCompetizioni;
     private javax.swing.JComboBox jListaOptional;
     private javax.swing.JSpinner jOptionalPrezzo;
@@ -202,5 +303,6 @@ public class JFrameCreaComp extends javax.swing.JFrame
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSpinner jPartecipantiMax;
     private javax.swing.JSpinner jPartecipantiMin;
+    private javax.swing.JSpinner jPrezzo;
     // End of variables declaration//GEN-END:variables
 }

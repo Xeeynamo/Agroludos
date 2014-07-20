@@ -1,5 +1,6 @@
 package agroludos.db.user;
 
+import agroludos.db.exception.SrcScadutaException;
 import agroludos.db.*;
 import agroludos.db.AgroController;
 import agroludos.db.components.*;

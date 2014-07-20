@@ -6,10 +6,10 @@
 
 package agroludos;
 
-import agroludos.db.components.CampiVuotiException;
-import agroludos.db.components.DefCodFiscException;
-import agroludos.db.components.DefEmailException;
-import agroludos.db.components.DefPassException;
+import agroludos.db.exception.CampiVuotiException;
+import agroludos.db.exception.DefCodFiscException;
+import agroludos.db.exception.DefEmailException;
+import agroludos.db.exception.DefPassException;
 import agroludos.db.components.Partecipante;
 import java.io.File;
 import java.io.FileWriter;

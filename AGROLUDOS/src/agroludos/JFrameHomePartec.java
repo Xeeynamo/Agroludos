@@ -8,10 +8,10 @@ package agroludos;
 
 import agroludos.db.user.Utente;
 import agroludos.db.*;
-import agroludos.db.components.CampiVuotiException;
+import agroludos.db.exception.CampiVuotiException;
 import agroludos.db.components.Competizione;
 import agroludos.db.components.Optional;
-import agroludos.db.components.SrcScadutaException;
+import agroludos.db.exception.SrcScadutaException;
 import java.awt.Component;
 import java.io.IOException;
 import java.sql.SQLException;
