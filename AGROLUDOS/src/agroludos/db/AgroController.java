@@ -239,7 +239,8 @@ public class AgroController
     }
     
     /**
-     * Ottiene una lista di competizioni gestite da uno specifico manager
+     * Ottiene una lista di competizioni gestite da uno specifico manager.
+     * Le competizioni annullate non saranno incluse nella lista.
      * @param manager mail del manager di competizione
      * @return lista delle competizioni gestite dal manager specificato
      * @throws SQLException 
@@ -263,7 +264,11 @@ public class AgroController
                                     Request.Operator.Equal
                             ))
                 },
-                new Condition(TABLE_MAN_COMP + ".mail", "\"" + manager + "\"", Request.Operator.Equal)
+                new Condition(
+                    new Condition(TABLE_MAN_COMP + ".mail", "\"" + manager + "\"", Request.Operator.Equal).toString(),
+                    new Condition("annullata", "0", Request.Operator.Equal).toString(),
+                    Request.Operator.And
+                )
         );
         ResultSet rs = sendQuery(q + "ORDER BY data");
         Competizione[] c = new Competizione[getResultSetLength(rs)];
