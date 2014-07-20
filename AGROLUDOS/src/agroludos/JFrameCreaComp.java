@@ -7,14 +7,10 @@
 package agroludos;
 
 import agroludos.db.components.*;
-import agroludos.db.exception.DatePriorException;
-import agroludos.db.exception.MinMaxException;
-import agroludos.db.exception.TipoCompetizioneInvalidException;
 import agroludos.db.user.ManagerCompetizione;
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class JFrameCreaComp extends javax.swing.JFrame
@@ -297,7 +293,9 @@ public class JFrameCreaComp extends javax.swing.JFrame
             try
             {
                 agro.creaCompetizione(competizione);
+                JFrame frame = new JFrameManComp(agro);
                 setVisible(false);
+                frame.setVisible(true);
                 dispose();
             }
             catch (Exception ex)
@@ -309,7 +307,9 @@ public class JFrameCreaComp extends javax.swing.JFrame
     }//GEN-LAST:event_jConfermaActionPerformed
 
     private void jAnnullaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAnnullaActionPerformed
+        JFrame frame = new JFrameManComp(agro);
         setVisible(false);
+        frame.setVisible(true);
         dispose();
     }//GEN-LAST:event_jAnnullaActionPerformed
 

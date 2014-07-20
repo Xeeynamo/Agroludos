@@ -368,6 +368,8 @@ public final class JFrameManComp extends javax.swing.JFrame {
     private void jButtonCreaCompetizioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreaCompetizioneActionPerformed
         JFrame jFrame = new JFrameCreaComp(agro);
         jFrame.setVisible(true);
+        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButtonCreaCompetizioneActionPerformed
 
     private void jButtonAnnullaCompetizioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnnullaCompetizioneActionPerformed
