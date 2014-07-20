@@ -87,6 +87,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
         jLabel30 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Manager di competizione");
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Le tue competizioni"));
 
