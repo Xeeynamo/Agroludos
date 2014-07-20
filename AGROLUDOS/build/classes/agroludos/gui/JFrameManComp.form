@@ -326,17 +326,17 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabelOptional1Prezzo">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="-"/>
+                    <Property name="text" type="java.lang.String" value="5&#x20ac;"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabelOptional2Prezzo">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="-"/>
+                    <Property name="text" type="java.lang.String" value="10&#x20ac;"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabelOptional3Prezzo">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="-"/>
+                    <Property name="text" type="java.lang.String" value="25&#x20ac;"/>
                   </Properties>
                 </Component>
               </SubComponents>

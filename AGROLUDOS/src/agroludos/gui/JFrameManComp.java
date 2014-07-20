@@ -127,11 +127,11 @@ public final class JFrameManComp extends javax.swing.JFrame {
 
         jOptional2nome.setText("Pranzo");
 
-        jLabelOptional1Prezzo.setText("-");
+        jLabelOptional1Prezzo.setText("5€");
 
-        jLabelOptional2Prezzo.setText("-");
+        jLabelOptional2Prezzo.setText("10€");
 
-        jLabelOptional3Prezzo.setText("-");
+        jLabelOptional3Prezzo.setText("25€");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
