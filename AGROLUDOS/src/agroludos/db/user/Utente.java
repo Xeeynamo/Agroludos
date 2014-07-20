@@ -62,7 +62,7 @@ public class Utente extends AgroController
     
     public void addIscrizioneCompetizione(Competizione c, Optional [] opt) throws SQLException, SrcScadutaException
     {
-        super._addIscrizioneCompetizione(super.getPartecipante(getMail()), c, opt);
+        super._addIscrizioneCompetizione(super.getPartecipante(super.getMail()), c, opt);
     }
      
     public Competizione getCompetizione (int id) throws SQLException

@@ -85,6 +85,7 @@ public class AgroController
     
     protected void _addPartec(String password,Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
+        
         if (isMailExists(p.getMail()))
             throw new DefEmailException();
         if (_checkCodFiscExists(p.getCodiceFiscale()))
@@ -127,63 +128,64 @@ public class AgroController
      */
     protected Competizione[] _getCompetizioni() throws SQLException
     {
-        String s1="drop view if exists n_partecipanti,optional_competizione,manager_competizioni;";
-        sendUpdate(s1);
-        s1=new String("create view n_partecipanti as "
-                + "select competizione.id as id_comp, count(prenotazione.part) as n_part "
-                + "from competizione join prenotazione on competizione.id=prenotazione.comp "
-                + "group by competizione.id;");
-        sendUpdate(s1);
-        s1=new String("create view optional_competizione as "
-                +"select competizione.id as id_comp,optional.nome as optional,optional.descrizione as descrizione,opt_comp.prezzo as prezzo "
-                +"from (competizione left join opt_comp on competizione.id=opt_comp.comp) "
-                +"left join optional on opt_comp.opt=optional.nome "
-                +"order by competizione.id;");
-        sendUpdate(s1);
-        s1=new String ("create view manager_competizioni as "
-                +"select competizione.id as id_comp, mc.cognome as cognome_mc, mc.nome as nome_mc, mc.mail as mail_mc "
-                +"from competizione join mc on competizione.manager_comp=mc.id "
-                +"order by mc.cognome, mc.nome;");
-        sendUpdate(s1);
-        s1=new String ("select competizione.id,competizione.prezzo,competizione.nmin,competizione.nmax,n_partecipanti.n_part,competizione.tipo, "
-                +"manager_competizioni.nome_mc,manager_competizioni.cognome_mc,manager_competizioni.mail_mc,competizione.data_comp, "
-                +"optional_competizione.optional,optional_competizione.descrizione,optional_competizione.prezzo,tipo_comp.descrizione "
-                +"from (((competizione left join n_partecipanti on competizione.id=n_partecipanti.id_comp) "
-                +"join manager_competizioni on competizione.id=manager_competizioni.id_comp) "
-                +"join optional_competizione on competizione.id=optional_competizione.id_comp) "
-                +"join tipo_comp on tipo_comp.nome=competizione.tipo "
-                +"group by competizione.id,optional_competizione.optional "
-                +"order by competizione.id;");
-        ResultSet rs=sendQuery(s1);
-        if (getResultSetLength(rs)!=0)
+        Manager man=null;
+        TipoCompetizione tipo=null;
+        Request q= new Request
+                (new String [] {"idCompetizione","manager","tipo"},
+                 TABLE_COMPETIZIONE
+                );
+        ResultSet rs=sendQuery(q.toString());
+        int NRis=getResultSetLength(rs);
+        if (NRis!=0)
         {
-            int nRis=1;
-            int id=rs.getInt("competizione.id");
-            while(!rs.isLast())
+            Competizione [] comp=new Competizione[NRis];
+            int [] id_c=new int [NRis];
+            String [] mail_mc=new String [NRis];
+            String [] tipo_comp=new String [NRis];
+            if (!rs.isFirst())
+                rs.first();
+            for (int i=0;i<NRis;i++,rs.next())
             {
+                id_c[i]=rs.getInt("idCompetizione");
+                mail_mc[i]=rs.getString("manager");
+                tipo_comp[i]=rs.getString("tipo");
+            }    
+            for (int i=0;i<id_c.length;i++)
+            {
+                Optional [] opt=AgroController.this.getOptional(id_c[i]);
+                Manager M[]=getManagers();
+                for (Manager m:M)
+                    if(m.getMail().compareTo(mail_mc[i])==0)
+                    {
+                        man=m;
+                        break;
+                    }    
+                TipoCompetizione T[]=getCompetizioneTipi();
+                for (TipoCompetizione t:T)
+                    if (t.getNome().compareTo(tipo_comp[i])==0)
+                    {
+                        tipo=t;
+                        break;
+                    }
+                int nPart=getNPartecipanti(id_c[i]);
+                Condition c1=new Condition ("idCompetizione",String.valueOf(id_c[i]),Request.Operator.Equal);
+                Condition c2=new Condition ("manager","\""+mail_mc[i]+"\"",Request.Operator.Equal);
+                Condition c3=new Condition ("tipo","\""+tipo_comp[i]+"\"",Request.Operator.Equal);
+                Condition c4=new Condition (c1.toString(),c2.toString(),Request.Operator.And);
+                Condition c5=new Condition (c4.toString(),c3.toString(),Request.Operator.And);
+                q=new Request (
+                      null,
+                      TABLE_COMPETIZIONE,
+                      c5);
+                rs=sendQuery(q.toString());
                 rs.next();
-                if(id!=rs.getInt("competizione.id"))
-                {
-                    nRis++;
-                    id=rs.getInt("competizione.id");
-                }    
-            }
-            while (!rs.isFirst())
-                rs.previous();
-            Competizione [] comp=new Competizione[nRis];
-            for (int i=0;i<nRis;i++,rs.next())
-            {
-                Optional [] opt=AgroController.this.getOptional(rs,rs.getInt("competizione.id"));
-                Manager m=new Manager(rs.getString(7),rs.getString(8),rs.getString(9));
-                TipoCompetizione t=new TipoCompetizione(rs.getString(6),rs.getString("tipo_comp.descrizione"));
-                comp[i]=new Competizione (rs.getInt(1),rs.getFloat(2),rs.getInt(3),rs.getInt(4),rs.getInt(5),t,m,rs.getDate(10),opt);
+                comp[i]=new Competizione (rs.getInt("idCompetizione"),rs.getFloat("prezzo"),rs.getInt("partMin"),rs.getInt("partMax"),nPart,tipo,man,rs.getDate("data"),opt);
             }
             return comp;
         }
             
         else
             throw new SQLException();
-
     }       
 
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata alle competizioni">
@@ -402,45 +404,6 @@ public class AgroController
         }
         return opt;
     }
-
-
-    private Optional[] getOptional(ResultSet rs, int id) throws SQLException
-    {
-        boolean End;
-        int NOpt;
-        Optional [] opt=new Optional [3];
-        String optional=rs.getString("optional_competizione.optional");
-        if (optional!=null)
-        {
-            NOpt=1;
-            opt[NOpt-1]=new Optional(rs.getString("optional_competizione.optional"),rs.getString("optional_competizione.descrizione"),rs.getFloat("optional_competizione.prezzo"));
-            End=false;
-            while ((!rs.isLast())&&(!End))
-            {
-                rs.next();
-                if(rs.getInt("competizione.id")==id)
-                {
-                    NOpt++;
-                    if (NOpt<=3)
-                        opt[NOpt-1]=new Optional(rs.getString("optional_competizione.optional"),rs.getString("optional_competizione.descrizione"),rs.getFloat("optional_competizione.prezzo"));
-                }
-                else
-                {
-                    rs.previous();
-                    End=true;
-                }   
-                
-            }
-            Optional[] opt_ris=new Optional [NOpt];
-            for (int i=0;i<NOpt;i++)
-                opt_ris[i]=opt[i];
-            return opt_ris;
-        }
-        else
-            return null;
-    }
-    
-
     /**
      * Ottiene la lista degli optional di una determinata competizione
      * @param competizioneId id della competizione scelta
@@ -458,11 +421,11 @@ public class AgroController
                     new Join(TABLE_OPTIONAL_COMPETIZIONE,
                             new Condition(
                                     TABLE_OPTIONAL + ".nome",
-                                    TABLE_OPTIONAL_COMPETIZIONE + ".opt",
+                                    TABLE_OPTIONAL_COMPETIZIONE + ".optional",
                                     Request.Operator.Equal
                             ))
                 },
-                new Condition(TABLE_OPTIONAL_COMPETIZIONE + ".comp", Integer.toString(competizioneId), Request.Operator.Equal)
+                new Condition(TABLE_OPTIONAL_COMPETIZIONE + ".competizione", Integer.toString(competizioneId), Request.Operator.Equal)
         );
         
         ResultSet rs = sendQuery(q.toString());
@@ -478,6 +441,22 @@ public class AgroController
 
     }
 
+    protected int getIndexOptionalCompetizione(Optional opt,Competizione comp) throws SQLException
+    {
+        Request q= new Request (
+                    new String [] {"idOptionalCompetizione"},
+                    TABLE_OPTIONAL_COMPETIZIONE,
+                    new Condition (
+                    new Condition ("optional","\""+opt.getNome()+"\"",Request.Operator.Equal).toString(),
+                    new Condition ("competizione",String.valueOf(comp.getId()),Request.Operator.Equal).toString(),
+                    Request.Operator.And));
+        ResultSet rs = sendQuery(q.toString());
+        if (rs.next())
+            return rs.getInt(1);
+        else
+            throw new SQLException();
+    } 
+   
     protected void setOptional(Optional optional) throws SQLException
     {
         sendUpdate("UPDATE " + TABLE_OPTIONAL +
@@ -549,7 +528,7 @@ public class AgroController
                     new Join(TABLE_PARTECIPANTE,
                             new Condition(
                                     TABLE_UTENTE + ".mail",
-                                    TABLE_PARTECIPANTE + ".mail",
+                                    TABLE_PARTECIPANTE + ".email",
                                     Request.Operator.Equal
                             ))
                 },
@@ -565,12 +544,12 @@ public class AgroController
             return new Partecipante(email,
                     rs.getString("nome"),
                     rs.getString("cognome"),
-                    rs.getString("codfisc"),
+                    rs.getString("codicefiscale"),
                     rs.getString("indirizzo"),
                     rs.getDate("datanascita"),
                     (char)rs.getString("sesso").charAt(0),
-                    rs.getString("tes_san"),
-                    rs.getDate("data_src"),
+                    rs.getString("tesserasan"),
+                    rs.getDate("datasrc"),
                     rs.getString("src"));  
     }
     
@@ -590,30 +569,73 @@ public class AgroController
                 {
                     new Join(TABLE_PRENOTAZIONE,
                             new Condition(
-                                    TABLE_COMPETIZIONE + ".id",
-                                    TABLE_PRENOTAZIONE + ".id",
+                                    TABLE_COMPETIZIONE + ".idCompetizione",
+                                    TABLE_PRENOTAZIONE + ".competizione",
                                     Request.Operator.Equal
                             ))
                 },
-                new Condition(TABLE_COMPETIZIONE + ".id", Integer.toString(competizioneId), Request.Operator.Equal)
+                new Condition(TABLE_COMPETIZIONE + ".idCompetizione", Integer.toString(competizioneId), Request.Operator.Equal)
         );
-        return sendQuery(q.toString()).getInt(1);
+        ResultSet rs=sendQuery(q.toString());
+        if (rs.next())
+            return rs.getInt(1);
+        else
+            throw new SQLException();
+    }
+    
+    protected int getIndexPrenotazione (Partecipante p, Competizione c) throws SQLException
+    {
+        Request q= new Request (
+                    new String [] {"idPrenotazione"},
+                    TABLE_PRENOTAZIONE,
+                    new Condition (
+                    new Condition ("partecipante","\""+p.getMail()+"\"",Request.Operator.Equal).toString(),
+                    new Condition ("competizione",String.valueOf(c.getId()),Request.Operator.Equal).toString(),
+                    Request.Operator.And));
+        ResultSet rs = sendQuery(q.toString());
+        if (rs.next())
+            return rs.getInt(1);
+        else
+            throw new SQLException();
     }
     
     protected void _addIscrizioneCompetizione(Partecipante p, Competizione c,Optional [] opt) throws SQLException, SrcScadutaException
     {
         if(getNGiorniMancanti(c.getDataComp(),p.getDataSrc())>=365)
             throw new SrcScadutaException();
-        System.out.println("insert into prenotazione values (\""+p.getCodiceFiscale()+"\","+c.getId()+");");
-        
-        sendUpdate("insert into prenotazione values (\""+p.getCodiceFiscale()+"\","+c.getId()+");");
+        //System.out.println("insert into prenotazione values (\""+p.getCodiceFiscale()+"\","+c.getId()+");");
+        Insert I=new Insert (
+                TABLE_PRENOTAZIONE,
+                new String [] {"0","\""+p.getMail()+"\"","\""+c.getId()+"\""});
+        System.out.println(I.toString()+"\n");
+        sendUpdate(I.toString());
         if (opt!=null)
         {
-            for (int i=0;i<opt.length;i++)
-            {
-                System.out.println("insert into opt_pren values (\""+opt[i].getNome()+"\",\""+p.getCodiceFiscale()+"\","+c.getId()+");");
-                sendUpdate("insert into opt_pren values (\""+opt[i].getNome()+"\",\""+p.getCodiceFiscale()+"\","+c.getId()+");");
-        }   }
+            Optional [] opt_comp=getOptional(c.getId());
+            for (int i=0;i<opt_comp.length;i++)
+            {    //System.out.println("insert into opt_pren values (\""+opt[i].getNome()+"\",\""+p.getCodiceFiscale()+"\","+c.getId()+");");
+                int trovato=0;
+                for (int j=0;j<opt.length;j++)
+                { 
+                    if (opt[j].getNome().compareTo(opt_comp[i].getNome())==0)
+                    {
+                        trovato=1;
+                        break;
+                    }
+                }
+                I= new Insert (
+                        TABLE_OPTIONAL_PRENOTAZIONE,
+                        new String [] 
+                        {
+                            String.valueOf(getIndexOptionalCompetizione(opt_comp[i],c)),
+                            String.valueOf(getIndexPrenotazione(p,c)),
+                            String.valueOf(trovato)
+                        } );
+                System.out.println(I.toString()+"\n");
+                sendUpdate(I.toString());
+                //sendUpdate("insert into opt_pren values (\""+opt[i].getNome()+"\",\""+p.getCodiceFiscale()+"\","+c.getId()+");");
+            } 
+        }   
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai manager di competizione">

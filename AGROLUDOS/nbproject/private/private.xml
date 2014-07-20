@@ -10,6 +10,7 @@
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/components/Competizione.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/JFrameHomePartec.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/query/Request.java</file>
+            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/user/ManagerSistema.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/components/CampiVuotiException.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/query/Insert.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/JFrameLogin.java</file>
@@ -26,7 +27,6 @@
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/components/DefCodFiscException.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/AgroConnect.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/components/Manager.java</file>
-            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/user/Utente.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/user/Anonimo.java</file>
         </group>
     </open-files>
