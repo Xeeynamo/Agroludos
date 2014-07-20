@@ -33,15 +33,19 @@ public class AgroController
         this.mail = mail;
     }
     
-    protected Statement getStatement()
+    private Statement getStatement()
     {
         return statement;
     }
-    protected String getMail()
+    private String getMail()
     {
         return mail;
     }
-    protected int getResultSetLength(ResultSet rs) throws SQLException
+    private Date getDbDate() throws SQLException
+    {
+        return sendQuery("SELECT CURRENT_DATE").getDate("CURRENT_DATE");
+    }
+    private int getResultSetLength(ResultSet rs) throws SQLException
     {
         if (rs != null)
         {
@@ -84,8 +88,78 @@ public class AgroController
     }
 
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata alle competizioni">
+    /**
+     * Ottiene una lista minimale delle competizioni a parte da un filtro
+     * @param filter è un numero che, con un OR tra bit, crea un filtro:
+     * 1 = competizioni in corso
+     * 2 = competizioni già passate
+     * 4 = competizioni annullate
+     * @return
+     * @throws SQLException 
+     */
+    protected Competizione[] getCompetizioniMinimal(int filter) throws SQLException
+    {
+        Condition condition;
+        
+        if (filter < 4)
+        {
+            if (filter == 0)
+                return new Competizione[0];
+            if ((filter & 3) == 1)
+                condition = new Condition(
+                        new Condition("data", "'" + getDbDate().toString() + "'", Request.Operator.GreaterEqual).toString(),
+                        new Condition("annullata", "false", Request.Operator.Equal).toString(),
+                        Request.Operator.And);
+            else if ((filter & 3) == 2)
+                condition = new Condition(
+                        new Condition("data", "'" + getDbDate().toString() + "'", Request.Operator.LessEqual).toString(),
+                        new Condition("annullata", "false", Request.Operator.Equal).toString(),
+                        Request.Operator.And);
+            else
+                condition = new Condition("annullata", "false", Request.Operator.Equal);
+        }
+        else
+        {
+            filter -= 4;
+            if (filter == 0)
+                return new Competizione[0];
+            if ((filter & 3) == 1)
+                condition = new Condition(
+                        new Condition("data", "'" + getDbDate().toString() + "'", Request.Operator.GreaterEqual).toString(),
+                        new Condition("annullata", "true", Request.Operator.Equal).toString(),
+                        Request.Operator.And);
+            else if ((filter & 3) == 2)
+                condition = new Condition(
+                        new Condition("data", "'" + getDbDate().toString() + "'", Request.Operator.LessEqual).toString(),
+                        new Condition("annullata", "true", Request.Operator.Equal).toString(),
+                        Request.Operator.And);
+            else
+                condition = new Condition("annullata", "true", Request.Operator.Equal);
+        }
+            
+        Request q = new Request(
+                new String[]
+                {
+                    "idCompetizione",
+                    "tipo",
+                    "data",
+                },
+                TABLE_COMPETIZIONE,
+                condition
+        );
+        ResultSet rs = sendQuery(q + "ORDER BY data");
+        Competizione[] c = new Competizione[getResultSetLength(rs)];
+        for (int i = 0; i < c.length; i++, rs.next())
+        {
+            c[i] = new Competizione(
+                rs.getInt("idCompetizione"),
+                new TipoCompetizione(rs.getString("tipo")),
+                rs.getDate("data"));
+        }
+        return c;
+    }
     
-        /**
+    /**
      * riporta la lista di TUTTE le competizioni presenti nel sistema
      * @return Lista delle competizioni se c'è almeno una competizione nel sistema, altrimenti lancia l'eccezione
      * @throws SQLException 
@@ -475,9 +549,7 @@ public class AgroController
         }
     }
     // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai partecipanti">
-    
-        
+    // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai partecipanti"> 
     protected void _addPartec(String password,Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
         
@@ -547,7 +619,6 @@ public class AgroController
                 },
                 new Condition(TABLE_UTENTE + ".tipo", "0", Request.Operator.Equal)
         );
-        String s = q.toString();
         ResultSet rs = sendQuery(q + "ORDER BY cognome");
         Partecipante[] p = new Partecipante[getResultSetLength(rs)];
         for (int i = 0; i < p.length; i++, rs.next())
