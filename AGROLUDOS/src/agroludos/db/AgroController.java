@@ -441,7 +441,6 @@ public class AgroController
                         (new String [] {"partecipante"},
                          TABLE_PRENOTAZIONE,
                          new Condition ("idPrenotazione","("+q1.toString()+")",Request.Operator.Equal));
-                System.out.println(q2.toString()+"\n");
                 ResultSet rs=sendQuery(q2.toString());
                 if (rs.next())
                     dropPrenotazione(getPartecipante(rs.getString(1)),getCompetizione(idCompetizione));
@@ -451,7 +450,6 @@ public class AgroController
                 (TABLE_COMPETIZIONE,
                  "partMax",String.valueOf(nmax),
                  new Condition("idCompetizione",String.valueOf(idCompetizione),Request.Operator.Equal));
-        System.out.println(q.toString()+"\n");
         sendUpdate(q.toString());
     }
     /**
