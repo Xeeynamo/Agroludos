@@ -825,6 +825,8 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     private void jOptionalApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOptionalApplyActionPerformed
         try {
             UpdateOptional(jListOptional.getSelectedIndex());
+            JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
+                        , "Successo", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Impossibile applicare le modifiche\n" +
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
