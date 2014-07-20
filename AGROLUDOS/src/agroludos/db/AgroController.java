@@ -350,7 +350,7 @@ public class AgroController
                 {
                     "nome",
                     "descrizione",
-                    TABLE_OPTIONAL_COMPETIZIONE + "prezzo",
+                    TABLE_OPTIONAL_COMPETIZIONE + ".prezzo",
                 },
                 TABLE_OPTIONAL_COMPETIZIONE,
                 new Join[]
@@ -371,12 +371,12 @@ public class AgroController
         );
         ResultSet rs = sendQuery(q + "ORDER BY data");
         Optional[] opt = new Optional[getResultSetLength(rs)];
-        for (Optional o : opt)
+        for (int i = 0; i < opt.length; i++)
         {
-            o = new Optional(
+            opt[i] = new Optional(
                     rs.getString("nome"),
                     rs.getString("descrizione"),
-                    rs.getFloat(TABLE_OPTIONAL_COMPETIZIONE + "prezzo")
+                    rs.getFloat(TABLE_OPTIONAL_COMPETIZIONE + ".prezzo")
             );
         }
         return opt;
