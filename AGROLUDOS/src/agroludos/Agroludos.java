@@ -1,5 +1,6 @@
 package agroludos;
 
+import agroludos.gui.JFrameLogin;
 import agroludos.db.AgroConnect;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -10,7 +11,7 @@ import javax.swing.UIManager;
  */
 public class Agroludos
 {
-    static AgroConnect agroConnect;
+    public static AgroConnect agroConnect;
     
     public static void CreateAgroConnect()
     {
