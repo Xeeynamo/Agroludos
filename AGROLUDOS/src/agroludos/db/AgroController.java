@@ -1,4 +1,4 @@
-﻿package agroludos.db;
+package agroludos.db;
 
 import agroludos.db.components.*;
 import agroludos.db.query.*;
@@ -369,17 +369,16 @@ public class AgroController
                 },
                 new Condition("competizione", String.valueOf(idCompetizione), Request.Operator.Equal)
         );
-        System.out.println(q.toString()+"\n");
         ResultSet rs = sendQuery(q + "ORDER BY data");
         Optional [] opt=new Optional[getResultSetLength(rs)];
-        for (int i = 0; i < opt.length; i++, rs.next())
-        {
-        	opt[i] = new Optional(
+            for (int i=0;i<opt.length;i++,rs.next())
+            {
+                opt[i] = new Optional(
                     rs.getString("nome"),
                     rs.getString("descrizione"),
                     rs.getFloat(TABLE_OPTIONAL_COMPETIZIONE + ".prezzo")
                 );
-        }
+            }
         return opt;
     }
     
