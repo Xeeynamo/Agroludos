@@ -296,7 +296,6 @@ public class AgroController
                     "partMax",
                     "prezzo",
                     "annullata",
-                    TABLE_COMPETIZIONE + ".descrizione",
                     TABLE_MAN_COMP + ".mail",
                     TABLE_MAN_COMP + ".nome",
                     TABLE_MAN_COMP + ".cognome",
@@ -310,23 +309,21 @@ public class AgroController
                                 TABLE_COMPETIZIONE + ".manager",
                                 Request.Operator.Equal
                             )),
-                    new Join(TABLE_COMP_TYPE,
-                            new Condition(
-                                TABLE_COMP_TYPE + ".nome",
-                                TABLE_COMPETIZIONE + ".tipo",
-                                Request.Operator.Equal))
-                }
+                },
+                new Condition("idCompetizione", String.valueOf(idCompetizione), Request.Operator.Equal)
         );
         int nPart = getNPartecipanti(idCompetizione);
         Optional[] opt = getOptional(idCompetizione);
         ResultSet rs = sendQuery(q + "ORDER BY data");
-        Competizione c = new Competizione(
+        if (rs.next())
+        {
+            return new Competizione(
                 rs.getInt("idCompetizione"),
                 rs.getFloat("prezzo"),
                 rs.getInt("partMin"),
                 rs.getInt("partMax"),
                 nPart,
-                new TipoCompetizione(rs.getString("tipo"), rs.getString(TABLE_COMPETIZIONE + ".descrizione")),
+                new TipoCompetizione(rs.getString("tipo"), ""),
                 new Manager(
                         rs.getString(TABLE_MAN_COMP + ".nome"),
                         rs.getString(TABLE_MAN_COMP + ".cognome"),
@@ -334,7 +331,8 @@ public class AgroController
                 ),
                 rs.getDate("data"),
                 opt);
-        return c;
+        }
+        return null;
     }
     
     /**
