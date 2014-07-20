@@ -10,6 +10,8 @@ import agroludos.Agroludos;
 import agroludos.db.components.*;
 import agroludos.db.user.ManagerCompetizione;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -676,6 +678,29 @@ public final class JFrameManComp extends javax.swing.JFrame {
 
     private void jButtonCancellaPartecipanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancellaPartecipanteActionPerformed
         // TODO add your handling code here:
+        
+        try 
+        {
+            if (jListPartecipanti.getSelectedIndex()!=-1)
+                        if (JOptionPane.showConfirmDialog(this,
+                "Il partecipante da te selezionato sta per essere annullato. Sei sicuro di voler continuare?",
+                "Conferma annullamento competizione",
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) ==
+                JOptionPane.YES_OPTION)
+                agro.dropPrenotazione(agro.getCompetizione(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId()), agro.getPartecipante(listPartecipanti[jListPartecipanti.getSelectedIndex()].getMail()));
+                JOptionPane.showMessageDialog(null, "Annullamento effettuato\ncon successo!\n"
+                        , "Successo", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile annullare la prenotazione." +
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+        finally
+        {
+            JFrame jFrame=new JFrameManComp(agro);
+            this.setVisible(false);
+            jFrame.pack();
+            jFrame.setVisible(true);
+        }
     }//GEN-LAST:event_jButtonCancellaPartecipanteActionPerformed
 
     /**
