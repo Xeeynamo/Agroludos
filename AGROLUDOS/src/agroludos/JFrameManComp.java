@@ -61,8 +61,8 @@ public final class JFrameManComp extends javax.swing.JFrame {
         jLabelOptional2Prezzo = new javax.swing.JLabel();
         jLabelOptional3Prezzo = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        jButtonCreaCompetizione = new javax.swing.JButton();
+        jButtonAnnullaCompetizione = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListPartecipanti = new javax.swing.JList();
@@ -214,18 +214,18 @@ public final class JFrameManComp extends javax.swing.JFrame {
                     .addComponent(jButton5)))
         );
 
-        jButton1.setText("Crea competizione");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonCreaCompetizione.setText("Crea competizione");
+        jButtonCreaCompetizione.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonCreaCompetizioneActionPerformed(evt);
             }
         });
 
-        jButton6.setActionCommand("Elimina competizione");
-        jButton6.setLabel("Elimina competizione");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAnnullaCompetizione.setText("Annulla competizione");
+        jButtonAnnullaCompetizione.setActionCommand("Elimina competizione");
+        jButtonAnnullaCompetizione.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                jButtonAnnullaCompetizioneActionPerformed(evt);
             }
         });
 
@@ -236,10 +236,10 @@ public final class JFrameManComp extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonAnnullaCompetizione, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonCreaCompetizione, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -250,9 +250,9 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(jButtonCreaCompetizione)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6)
+                .addComponent(jButtonAnnullaCompetizione)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -359,13 +359,29 @@ public final class JFrameManComp extends javax.swing.JFrame {
         Shared.CreateList(jListPartecipanti, listPartecipanti);
     }
     
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jButtonCreaCompetizioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreaCompetizioneActionPerformed
+        JFrame jFrame = new JFrameCreaComp(agro);
+        jFrame.setVisible(true);
+    }//GEN-LAST:event_jButtonCreaCompetizioneActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+    private void jButtonAnnullaCompetizioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnnullaCompetizioneActionPerformed
+        if (jListCompetizioni.getSelectedIndex() < 0)
+            return;
+        if (JOptionPane.showConfirmDialog(this,
+                "La competizione da te creata sta per essere annullata. Una volta confermato, non sarà più possibile recuperarla. Sei sicuro di voler continuare?",
+                "Conferma annullamento competizione",
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) ==
+                JOptionPane.YES_OPTION)
+        {
+            try {
+                agro.annullaCompetizione(jListCompetizioni.getSelectedIndex());
+            } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile annullare la competizione\n" +
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+            }
+            Initialize();
+        }
+    }//GEN-LAST:event_jButtonAnnullaCompetizioneActionPerformed
 
     private void jListCompetizioniValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListCompetizioniValueChanged
         try {
@@ -412,11 +428,11 @@ public final class JFrameManComp extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButtonAnnullaCompetizione;
+    private javax.swing.JButton jButtonCreaCompetizione;
     private javax.swing.JSpinner jCompPrezzo;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

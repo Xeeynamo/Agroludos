@@ -12,6 +12,10 @@ public class ManagerCompetizione extends AgroController
         super(statement, mail);
     }
     
+    @Override public TipoCompetizione[] getCompetizioneTipi() throws SQLException
+    {
+        return super.getCompetizioneTipi();
+    }
     @Override public Optional[] getOptional() throws SQLException
     {
         return super.getOptional();
@@ -27,5 +31,9 @@ public class ManagerCompetizione extends AgroController
     @Override public Partecipante[] getPartecipanti (int idCompetizione) throws SQLException
     {
         return super.getPartecipanti(idCompetizione);
+    }
+    @Override public void annullaCompetizione(int idCompetizione) throws SQLException
+    {
+        super.annullaCompetizione(idCompetizione);
     }
 }

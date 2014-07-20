@@ -15,9 +15,9 @@ import javax.swing.JOptionPane;
 
 public class JFrameCreaComp extends javax.swing.JFrame
 {
-    private final ManagerSistema agro;
+    private final ManagerCompetizione agro;
     
-    public JFrameCreaComp(ManagerSistema agro)
+    public JFrameCreaComp(ManagerCompetizione agro)
     {
         this.agro = agro;
         initComponents();

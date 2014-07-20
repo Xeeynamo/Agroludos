@@ -411,6 +411,23 @@ public class AgroController
     }
     
     /**
+     * Annulla la competizione specificata, flaggandola come annullata
+     * @param idCompetizione id della competizione da eliminare
+     * @throws SQLException 
+     */
+    protected void annullaCompetizione(int idCompetizione) throws SQLException
+    {
+        Update q = new Update
+        (
+            TABLE_COMPETIZIONE,
+            "annullata",
+            "1",
+            new Condition ("idCompetizione", String.valueOf(idCompetizione), Request.Operator.Equal)
+        );
+        sendUpdate(q.toString());
+    }
+    
+    /**
      * Verifica se la competizione indicata come parametro è stata già prenotata dal partecipante
      * @param mail email del partecipante 
      * @param idCompetizione id competizione su cui si vuole controllare se è stata fatta una prenotazione
