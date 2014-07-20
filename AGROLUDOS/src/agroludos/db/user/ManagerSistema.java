@@ -58,4 +58,8 @@ public class ManagerSistema extends AgroController
     {
         return super.getCompetizioneOptional(idCompetizione);
     }
+    @Override public Partecipante[] getPartecipanti (int idCompetizione) throws SQLException
+    {
+        return super.getPartecipanti(idCompetizione);
+    }
 }

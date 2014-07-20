@@ -655,9 +655,7 @@ public class AgroController
                         Request.Operator.And)
         );
         ResultSet rs = sendQuery(q.toString());
-        if (getResultSetLength(rs) != 1)
-            throw new SQLException();
-        else
+        if (rs.next())
             return new Partecipante(email,
                     rs.getString("nome"),
                     rs.getString("cognome"),
@@ -668,6 +666,8 @@ public class AgroController
                     rs.getString("tesserasan"),
                     rs.getDate("datasrc"),
                     rs.getString("src"));  
+        else
+            return null;
     }
     
     /**
@@ -698,6 +698,53 @@ public class AgroController
             return rs.getInt(1);
         else
             throw new SQLException();
+    }
+    
+    /**
+     * Ottiene i partecipanti di una determinata competizione
+     * @param competizioneId id della competizione da verificare
+     * @return numero di partecipanti
+     * @throws SQLException 
+     */
+    protected Partecipante[] getPartecipanti (int competizioneId) throws SQLException
+    {
+        // "select count(*) from competizione join prenotazione on competizione.id=prenotazione.comp where competizione.id="+id;
+        Request q = new Request(
+                new String[]
+                {
+                    "idCompetizione",
+                    "email",
+                    "nome",
+                    "cognome"
+                },
+                TABLE_COMPETIZIONE,
+                new Join[]
+                {
+                    new Join(TABLE_PRENOTAZIONE,
+                            new Condition(
+                                    TABLE_PRENOTAZIONE + ".competizione",
+                                    TABLE_COMPETIZIONE + ".idCompetizione",
+                                    Request.Operator.Equal
+                            )),
+                    new Join(TABLE_PARTECIPANTE,
+                            new Condition(
+                                    TABLE_PARTECIPANTE + ".email",
+                                    TABLE_PRENOTAZIONE + ".partecipante",
+                                    Request.Operator.Equal
+                            ))
+                },
+                new Condition("idCompetizione", Integer.toString(competizioneId), Request.Operator.Equal)
+        );
+        ResultSet rs = sendQuery(q.toString() + "ORDER BY cognome");
+        Partecipante[] p = new Partecipante[getResultSetLength(rs)];
+        for (int i = 0; i < p.length; i++)
+        {
+            p[i] = new Partecipante(
+                    rs.getString("email"),
+                    rs.getString("nome"),
+                    rs.getString("cognome"));
+        }
+        return p;
     }
     
     protected int getIndexPrenotazione (Partecipante p, Competizione c) throws SQLException

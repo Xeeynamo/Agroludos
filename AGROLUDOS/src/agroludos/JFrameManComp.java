@@ -6,29 +6,31 @@
 
 package agroludos;
 
-import agroludos.db.user.ManagerCompetizione;
 import agroludos.db.*;
+import agroludos.db.components.*;
+import agroludos.db.user.ManagerCompetizione;
 import java.awt.*;
-import javax.swing.*;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
 
 /**
  *
  * @author Luciano
  */
-public class JFrameManComp extends javax.swing.JFrame {
+public final class JFrameManComp extends javax.swing.JFrame {
 
     ManagerCompetizione agro;
+    Competizione[] listCompetizioni;
+    Partecipante[] listPartecipanti;
     
-    public JFrameManComp() {
-        initComponents();
-        this.agro = null;
-    }
     public JFrameManComp(ManagerCompetizione agro) {
         initComponents();
         this.agro = agro;
+        Initialize();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,30 +42,30 @@ public class JFrameManComp extends javax.swing.JFrame {
 
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList();
+        jListCompetizioni = new javax.swing.JList();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        jLabelPartecCur = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jSpinner2 = new javax.swing.JSpinner();
-        jSpinner1 = new javax.swing.JSpinner();
+        jPartecMin = new javax.swing.JSpinner();
+        jPartecMax = new javax.swing.JSpinner();
         jLabel6 = new javax.swing.JLabel();
-        jSpinner4 = new javax.swing.JSpinner();
+        jCompPrezzo = new javax.swing.JSpinner();
         jPanel5 = new javax.swing.JPanel();
-        jCheckBox10 = new javax.swing.JCheckBox();
-        jCheckBox11 = new javax.swing.JCheckBox();
-        jCheckBox12 = new javax.swing.JCheckBox();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
+        jOptional1nome = new javax.swing.JCheckBox();
+        jOptional3nome = new javax.swing.JCheckBox();
+        jOptional2nome = new javax.swing.JCheckBox();
+        jLabelOptional1Prezzo = new javax.swing.JLabel();
+        jLabelOptional2Prezzo = new javax.swing.JLabel();
+        jLabelOptional3Prezzo = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList();
+        jListPartecipanti = new javax.swing.JList();
         jPanel2 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
 
@@ -71,12 +73,12 @@ public class JFrameManComp extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Le tue competizioni"));
 
-        jList3.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Tiro con l'arco (DATA)", "Corsa campestre (GG/MM/AAAA)" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+        jListCompetizioni.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListCompetizioniValueChanged(evt);
+            }
         });
-        jScrollPane3.setViewportView(jList3);
+        jScrollPane3.setViewportView(jListCompetizioni);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Modifiche competizione"));
 
@@ -86,7 +88,7 @@ public class JFrameManComp extends javax.swing.JFrame {
 
         jLabel12.setText("Prezzo competizione");
 
-        jLabel4.setText("0");
+        jLabelPartecCur.setText("0");
 
         jLabel13.setText("Minimo partecipanti");
 
@@ -94,17 +96,17 @@ public class JFrameManComp extends javax.swing.JFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Scelta optional"));
 
-        jCheckBox10.setText("Colazione");
+        jOptional1nome.setText("Colazione");
 
-        jCheckBox11.setText("Pernotto");
+        jOptional3nome.setText("Pernotto");
 
-        jCheckBox12.setText("Pranzo");
+        jOptional2nome.setText("Pranzo");
 
-        jLabel19.setText("5€");
+        jLabelOptional1Prezzo.setText("5€");
 
-        jLabel20.setText("10€");
+        jLabelOptional2Prezzo.setText("10€");
 
-        jLabel21.setText("25€");
+        jLabelOptional3Prezzo.setText("25€");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -114,33 +116,33 @@ public class JFrameManComp extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jCheckBox11)
+                        .addComponent(jOptional3nome)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel21))
+                        .addComponent(jLabelOptional3Prezzo))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(jCheckBox12)
+                        .addComponent(jOptional2nome)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel20))
+                        .addComponent(jLabelOptional2Prezzo))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(jCheckBox10)
+                        .addComponent(jOptional1nome)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel19)))
+                        .addComponent(jLabelOptional1Prezzo)))
                 .addGap(39, 39, 39))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox10)
-                    .addComponent(jLabel19))
+                    .addComponent(jOptional1nome)
+                    .addComponent(jLabelOptional1Prezzo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox12)
-                    .addComponent(jLabel20))
+                    .addComponent(jOptional2nome)
+                    .addComponent(jLabelOptional2Prezzo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox11)
-                    .addComponent(jLabel21)))
+                    .addComponent(jOptional3nome)
+                    .addComponent(jLabelOptional3Prezzo)))
         );
 
         jButton5.setLabel("Annulla ");
@@ -158,7 +160,7 @@ public class JFrameManComp extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 14, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,18 +172,18 @@ public class JFrameManComp extends javax.swing.JFrame {
                                             .addGap(45, 45, 45)
                                             .addComponent(jLabel6)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(jPartecMax, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(jPartecMin, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(jCompPrezzo, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(53, 53, 53)
-                                .addComponent(jLabel4)
+                                .addComponent(jLabelPartecCur)
                                 .addGap(81, 81, 81))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -193,16 +195,16 @@ public class JFrameManComp extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelPartecCur)
+                    .addComponent(jPartecMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPartecMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCompPrezzo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -234,11 +236,10 @@ public class JFrameManComp extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane3)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -257,12 +258,7 @@ public class JFrameManComp extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Gli utenti iscritti"));
 
-        jList2.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Luciano Ciccariello", "Luigi Rosini" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane2.setViewportView(jList2);
+        jScrollPane2.setViewportView(jListPartecipanti);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Informazioni partecipante"), "Informazioni partecipante"), "Informazioni partecipante"));
 
@@ -290,7 +286,7 @@ public class JFrameManComp extends javax.swing.JFrame {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -329,6 +325,40 @@ public class JFrameManComp extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    void Initialize()
+    {
+        try {
+            listCompetizioni = agro.getCompetizioni();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile caricare la lista delle competizioni\n" +
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+        Shared.CreateList(jListCompetizioni, listCompetizioni);
+    }
+    void SelezionaCompetizione(int index) throws SQLException
+    {
+        Competizione c = agro.getCompetizione(listCompetizioni[index].getId());
+        jLabelPartecCur.setText(String.valueOf(c.getNPart()));
+        jPartecMax.setValue(c.getNMax());
+        jPartecMin.setValue(c.getNMin());
+        
+        jOptional1nome.setSelected(false);
+        jOptional2nome.setSelected(false);
+        jOptional3nome.setSelected(false);
+        for (Optional o : c.getOptional())
+        {
+            if (jOptional1nome.getText().compareTo(o.getNome()) == 0)
+                jOptional1nome.setSelected(true);
+            else if (jOptional2nome.getText().compareTo(o.getNome()) == 0)
+                jOptional2nome.setSelected(true);
+            else if (jOptional3nome.getText().compareTo(o.getNome()) == 0)
+                jOptional3nome.setSelected(true);
+        }
+        
+        listPartecipanti = agro.getPartecipanti(c.getId());
+        Shared.CreateList(jListPartecipanti, listPartecipanti);
+    }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -336,6 +366,15 @@ public class JFrameManComp extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jListCompetizioniValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListCompetizioniValueChanged
+        try {
+            SelezionaCompetizione(jListCompetizioni.getSelectedIndex());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile caricare la competizione selezionata\n" +
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jListCompetizioniValueChanged
 
     /**
      * @param args the command line arguments
@@ -365,10 +404,10 @@ public class JFrameManComp extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFrameManComp().setVisible(true);
-            }
+
+        java.awt.EventQueue.invokeLater(() -> {
+            Agroludos.CreateAgroConnect();
+            new JFrameManComp((ManagerCompetizione)Agroludos.agroConnect.Login("luciano.ciccariello@agroludos.it", "Xeey")).setVisible(true);
         });
     }
 
@@ -378,28 +417,28 @@ public class JFrameManComp extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JCheckBox jCheckBox10;
-    private javax.swing.JCheckBox jCheckBox11;
-    private javax.swing.JCheckBox jCheckBox12;
+    private javax.swing.JSpinner jCompPrezzo;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JList jList2;
-    private javax.swing.JList jList3;
+    private javax.swing.JLabel jLabelOptional1Prezzo;
+    private javax.swing.JLabel jLabelOptional2Prezzo;
+    private javax.swing.JLabel jLabelOptional3Prezzo;
+    private javax.swing.JLabel jLabelPartecCur;
+    private javax.swing.JList jListCompetizioni;
+    private javax.swing.JList jListPartecipanti;
+    private javax.swing.JCheckBox jOptional1nome;
+    private javax.swing.JCheckBox jOptional2nome;
+    private javax.swing.JCheckBox jOptional3nome;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JSpinner jPartecMax;
+    private javax.swing.JSpinner jPartecMin;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JSpinner jSpinner4;
     // End of variables declaration//GEN-END:variables
 }

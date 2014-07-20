@@ -72,7 +72,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         jCheckInCorso = new javax.swing.JCheckBox();
         jCheckAnnullate = new javax.swing.JCheckBox();
         jCheckConcluse = new javax.swing.JCheckBox();
-        jComboBox3 = new javax.swing.JComboBox();
+        jCompetizioneUtentiIscritti = new javax.swing.JComboBox();
         jPanel1 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabelCompetizionePrezzo = new javax.swing.JLabel();
@@ -368,7 +368,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCompetizioneUtentiIscritti, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
@@ -384,7 +384,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jCompetizioneUtentiIscritti, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -717,6 +717,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         jLabelCompetizionePrezzo.setText(String.valueOf(c.getPrezzo()));
         jLabelCompetizioneManagerNome.setText(c.getManager().toString());
         jLabelCompetizioneManagerMail.setText(c.getManager().getMail());
+        Shared.CreateList(jCompetizioneUtentiIscritti, agro.getPartecipanti(c.getId()));
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda gli optional">
@@ -948,7 +949,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckAnnullate;
     private javax.swing.JCheckBox jCheckConcluse;
     private javax.swing.JCheckBox jCheckInCorso;
-    private javax.swing.JComboBox jComboBox3;
+    private javax.swing.JComboBox jCompetizioneUtentiIscritti;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
