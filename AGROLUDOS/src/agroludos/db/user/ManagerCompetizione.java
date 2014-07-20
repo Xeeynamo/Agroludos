@@ -36,4 +36,9 @@ public class ManagerCompetizione extends AgroController
     {
         super.annullaCompetizione(idCompetizione);
     }
+    
+    public void setNMax (int idCompetizione,int nmax) throws SQLException
+    {
+        super.setNPartMax(idCompetizione,nmax);
+    }
 }

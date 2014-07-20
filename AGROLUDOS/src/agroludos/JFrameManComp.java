@@ -85,6 +85,11 @@ public final class JFrameManComp extends javax.swing.JFrame {
         jLabel3.setText("Partecipanti");
 
         jButton2.setText("Applica");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel12.setText("Prezzo competizione");
 
@@ -342,7 +347,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
         jLabelPartecCur.setText(String.valueOf(c.getNPart()));
         jPartecMax.setValue(c.getNMax());
         jPartecMin.setValue(c.getNMin());
-        
+        jCompPrezzo.setValue(c.getPrezzo());
         jOptional1nome.setSelected(false);
         jOptional2nome.setSelected(false);
         jOptional3nome.setSelected(false);
@@ -392,6 +397,34 @@ public final class JFrameManComp extends javax.swing.JFrame {
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jListCompetizioniValueChanged
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try 
+        {
+            // TODO add your handling code here:
+            Competizione c=agro.getCompetizione(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId());
+        
+        if ((int)jPartecMax.getValue()!=c.getNMax())
+            agro.setNMax(c.getId(), (int)jPartecMax.getValue());
+        /*if ((int)jPartecMin.getValue()!=c.getNMin())
+            c.setNMin(jPartecMax.getValue());
+        if ((float)jCompPrezzo.getValue()!=c.getPrezzo())
+            c.setPrezzoComp();*/
+                    JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
+                    , "Successo", JOptionPane.INFORMATION_MESSAGE);
+        }
+         catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Impossibile modificare la competizione selezionata\n" +
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+        finally
+        {
+            JFrame jFrame=new JFrameManComp(agro);
+            this.setVisible(false);
+            jFrame.pack();
+            jFrame.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

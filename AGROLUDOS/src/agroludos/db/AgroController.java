@@ -426,7 +426,34 @@ public class AgroController
         );
         sendUpdate(q.toString());
     }
-    
+     
+    protected void setNPartMax (int idCompetizione,int nmax) throws SQLException
+    {
+        int nPart=getNPartecipanti(idCompetizione);
+        if (nPart>nmax)
+        {
+            for (int i=nPart-nmax;i>0;i--)
+            {
+                Request q1=new Request 
+                        (new String [] {"max(idPrenotazione)"},
+                         TABLE_PRENOTAZIONE);
+                Request q2=new Request
+                        (new String [] {"partecipante"},
+                         TABLE_PRENOTAZIONE,
+                         new Condition ("idPrenotazione","("+q1.toString()+")",Request.Operator.Equal));
+                System.out.println(q2.toString()+"\n");
+                ResultSet rs=sendQuery(q2.toString());
+                if (rs.next())
+                    dropPrenotazione(getPartecipante(rs.getString(1)),getCompetizione(idCompetizione));
+            }    
+        }
+        Update q=new Update 
+                (TABLE_COMPETIZIONE,
+                 "partMax",String.valueOf(nmax),
+                 new Condition("idCompetizione",String.valueOf(idCompetizione),Request.Operator.Equal));
+        System.out.println(q.toString()+"\n");
+        sendUpdate(q.toString());
+    }
     /**
      * Verifica se la competizione indicata come parametro è stata già prenotata dal partecipante
      * @param mail email del partecipante 
