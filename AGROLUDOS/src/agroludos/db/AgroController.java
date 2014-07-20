@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import javax.mail.MessagingException;
 
 public class AgroController
 {
@@ -910,6 +911,11 @@ public class AgroController
     }
     // </editor-fold>
 
+    public void sendMail(String receiver, String subject, String text) throws MessagingException
+    {
+        new AgroMail(getMail(), receiver, subject, text).send();
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai controlli sui campi">
     /**
      * Controlla se l'indirizzo mail specificato è presente nel sistema
