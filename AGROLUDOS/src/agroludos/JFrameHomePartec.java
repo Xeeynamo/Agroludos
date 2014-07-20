@@ -53,23 +53,12 @@ public class JFrameHomePartec extends javax.swing.JFrame
     
     void CompetizioniDisponibiliLoadList() throws SQLException
     {
-        CreateList(jListDisponibili,listComp=agro.getCompetizioniDisponibili());
+        Shared.CreateList(jListDisponibili,listComp=agro.getCompetizioniDisponibili());
     }
     
     void CompetizioniPrenotateLoadList() throws SQLException
     {
-        CreateList(jListMyIscrizioni,listComp=agro.getCompetizioniPrenotate());
-    }
-
-    void CreateList(JList jList, Object[] list)
-    {
-        DefaultListModel listModel = new DefaultListModel();
-        jList.removeAll();
-        for (Object o : list)
-        {
-            listModel.addElement(o.toString());
-        }
-        jList.setModel(listModel);
+        Shared.CreateList(jListMyIscrizioni,listComp=agro.getCompetizioniPrenotate());
     }
 
     /**
@@ -574,13 +563,6 @@ public class JFrameHomePartec extends javax.swing.JFrame
     {
         jLabelMyManagerMail.setText(value);
     }
-    int getTotalPrice()
-    {
-        int value = db.getCostoCompetizione();
-        for (int i = 0; i < 3; i++)
-            value += db.getOptionalPrezzo(i);
-        return value;
-    }
     
     private void jListMyIscrizioniValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListMyIscrizioniValueChanged
         try {
@@ -593,6 +575,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
     
     void CompetizionePrenotataLoad (int index) throws SQLException
     {
+        if (index < 0) return;
         float prezzo_tot=0;
         Competizione c=agro.getCompetizione(listComp[index].getId());
         jLabelMyCosto.setText(String.valueOf(c.getPrezzo())+"€");
@@ -658,6 +641,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
     
     void CompetizioneDisponibileLoad (int index) throws SQLException
     {
+        if (index < 0) return;
         Competizione c=agro.getCompetizione(listComp[index].getId());
         jLabelNPart.setText(String.valueOf(c.getNMax()-c.getNPart()));
         jLabelPrezzo_Comp.setText(String.valueOf(c.getPrezzo())+"€");

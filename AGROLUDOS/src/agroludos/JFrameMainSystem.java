@@ -691,6 +691,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     }
     private void ManagerSelected(int index) throws SQLException
     {
+        if (index < 0) return;
         String mail = listManager[index].getMail();
         Shared.CreateList(jListManagerCompetizioni, listManagerCompetizioni =
                 agro.getCompetizioni(mail));
@@ -698,6 +699,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     }
     private void ManagerSelectedCompetition(int index) throws SQLException
     {
+        if (index < 0) return;
         listManagerCompetizioniOptional = agro.getCompetizioneOptional(listManagerCompetizioni[index].getId());
         Shared.CreateList(jManagerOptionalList, listManagerCompetizioniOptional);
     }
@@ -713,6 +715,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     }
     private void CompetizioniSelected(int index) throws SQLException
     {
+        if (index < 0) return;
         Competizione c = agro.getCompetizione(listCompetizioni[index].getId());
         jLabelCompetizionePrezzo.setText(String.valueOf(c.getPrezzo()));
         jLabelCompetizioneManagerNome.setText(c.getManager().toString());
@@ -737,6 +740,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
      */
     void ReloadOptional(int index) throws SQLException
     {
+        if (index < 0) return;
         jOptionalPrice.setValue(listOptional[index].getPrezzo());
         jOptionalDescription.setText(listOptional[index].getDescrizione());
     }
@@ -747,6 +751,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
      */
     void UpdateOptional(int index) throws SQLException
     {
+        if (index < 0) return;
         Optional opt = new Optional(listOptional[index].getNome(),
             jOptionalDescription.getText(),
             (float)jOptionalPrice.getValue());
@@ -765,6 +770,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     }
     void PartecipanteLoad(int index) throws SQLException
     {
+        if (index < 0) return;
         Partecipante p = agro.getPartecipante(listPartecipanti[index].getMail());
         jUtenteNome.setText(p.getNome());
         jUtenteCognome.setText(p.getCognome());

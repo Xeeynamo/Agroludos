@@ -337,6 +337,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
     }
     void SelezionaCompetizione(int index) throws SQLException
     {
+        if (index < 0) return;
         Competizione c = agro.getCompetizione(listCompetizioni[index].getId());
         jLabelPartecCur.setText(String.valueOf(c.getNPart()));
         jPartecMax.setValue(c.getNMax());
