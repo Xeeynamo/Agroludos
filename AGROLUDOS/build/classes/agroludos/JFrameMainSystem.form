@@ -262,7 +262,10 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanel5">
+        <Container class="javax.swing.JPanel" name="jPanelCompetizioni">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="jPanelCompetizioni" noResource="true"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Competizioni">
@@ -329,7 +332,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JList" name="jList1">
+                <Component class="javax.swing.JList" name="jListCompetizioni">
                   <Properties>
                     <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                       <StringArray count="5">
@@ -341,6 +344,9 @@
                       </StringArray>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="jListCompetizioniValueChanged"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -368,11 +374,11 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckInCorso" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-                                  <Component id="jCheckBox3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jCheckConcluse" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="jCheckBox2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCheckAnnullate" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -382,43 +388,49 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jCheckBox1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jCheckBox3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCheckInCorso" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jCheckConcluse" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jCheckBox2" min="-2" max="-2" attributes="0"/>
+                          <Component id="jCheckAnnullate" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+                <Component class="javax.swing.JCheckBox" name="jCheckInCorso">
                   <Properties>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="In corso"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckInCorsoActionPerformed"/>
+                  </Events>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox2">
+                <Component class="javax.swing.JCheckBox" name="jCheckAnnullate">
                   <Properties>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Annullate"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckAnnullateActionPerformed"/>
+                  </Events>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox3">
+                <Component class="javax.swing.JCheckBox" name="jCheckConcluse">
                   <Properties>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Concluse"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckConcluseActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
             <Component class="javax.swing.JComboBox" name="jComboBox3">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="2">
-                    <StringItem index="0" value="Luciano Ciccariello"/>
-                    <StringItem index="1" value="Luigi Rosini"/>
-                  </StringArray>
+                  <StringArray count="0"/>
                 </Property>
               </Properties>
             </Component>
@@ -441,9 +453,9 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabelMyManagerMail" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabelMyManagerNome" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelCompetizioneManagerMail" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelCompetizioneManagerNome" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelCompetizionePrezzo" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="44" max="32767" attributes="0"/>
                       </Group>
@@ -455,15 +467,15 @@
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelCompetizionePrezzo" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel23" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabelMyManagerNome" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelCompetizioneManagerNome" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabelMyManagerMail" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelCompetizioneManagerMail" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -474,7 +486,7 @@
                     <Property name="text" type="java.lang.String" value="Prezzo impostato"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel8">
+                <Component class="javax.swing.JLabel" name="jLabelCompetizionePrezzo">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="10&#x20ac;"/>
                   </Properties>
@@ -484,12 +496,12 @@
                     <Property name="text" type="java.lang.String" value="Manager"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabelMyManagerNome">
+                <Component class="javax.swing.JLabel" name="jLabelCompetizioneManagerNome">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Marco Rossi"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabelMyManagerMail">
+                <Component class="javax.swing.JLabel" name="jLabelCompetizioneManagerMail">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="marco.rossi@agroludos.it"/>
                   </Properties>
