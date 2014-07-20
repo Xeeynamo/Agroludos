@@ -17,7 +17,7 @@ insert into Optional values ('Pernotto', '-', 1);
 
 insert into utente values ('geralt@str.com',PASSWORD('furia'),0);
 
-insert into partecipante values ('geralt@str.com','geralt','di rivia', "via temeria" ,'1992-10-10', 'MOCCATTE12LOLASD', 'M','IOMORO666','2011-8-23','C:\File SRC\MOCCATTE12LOLASD.txt');
+insert into partecipante values ('geralt@str.com','geralt','di rivia', "via temeria" ,'1992-10-10', 'MOCCATTE12LOLASD', 'M','IOMORO666','2013-3-11','Pazzo');
 
 insert into competizione values (0,"Tiro con l'arco",'luigi.rosini@agroludos.it','2014-09-11',5,50,10.00,0);
 insert into competizione values (0,"Corsa campestre",'luciano.ciccariello@agroludos.it','2014-10-23',10,30,15.50,0);
