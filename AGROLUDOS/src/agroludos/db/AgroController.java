@@ -590,6 +590,18 @@ public class AgroController
         }
         return opt;
     }
+    
+    protected Optional getOptional (String nome) throws SQLException
+    {
+        Request q=new Request
+                (null,TABLE_OPTIONAL,
+                 new Condition ("nome","\""+nome+"\"",Request.Operator.Equal));
+        ResultSet rs=sendQuery(q.toString());
+        Optional opt=null;
+        if (rs.next())
+            opt= new Optional(rs.getString("nome"), rs.getString("descrizione"), rs.getFloat("prezzo"));
+        return opt;
+    }
     /**
      * Ottiene la lista degli optional di una determinata competizione
      * @param competizioneId id della competizione scelta
@@ -695,6 +707,66 @@ public class AgroController
             Request.Operator.And));
             sendUpdate(q.toString());
         }
+    }
+    
+    protected void setOptionalCompetizione (Competizione c,Optional o) throws SQLException
+    {
+        boolean trovato=false;
+        Optional [] opt_c=getOptional(c.getId());
+        for (int i=0;i<opt_c.length;i++)
+        {
+            if (trovato=o.getNome().compareTo(opt_c[i].getNome())==0)
+                break;
+        }   
+        if (!trovato)
+        {
+            Insert q= new Insert (
+                    TABLE_OPTIONAL_COMPETIZIONE,
+                    new String []
+                    {
+                    "DEFAULT","\""+o.getNome()+"\"",String.valueOf(c.getId()),String.valueOf(o.getPrezzo())
+                    });
+            System.out.println(q.toString()+"\n");
+            sendUpdate(q.toString());
+            Partecipante [] p=getPartecipanti(c.getId());
+            for (int i=0;i<p.length;i++)
+                _setOptionalPrenotazione(o,p[i],c,false);
+        }
+    }
+    
+    protected void dropOptionalCompetizione (Competizione c,Optional o) throws SQLException
+    {
+        boolean trovato=false;
+        Optional [] opt_c=getOptional(c.getId());
+        for (int i=0;i<opt_c.length;i++)
+        {
+            if (trovato=o.getNome().compareTo(opt_c[i].getNome())==0)
+                break;
+        }
+        if (trovato)
+        {
+            if (getNPartecipanti(c.getId())!=0)
+            {
+                Partecipante [] p=getPartecipanti(c.getId());
+                for (int i=0;i<p.length;i++)
+                    dropOptionalPrenotazione(o,p[i],c);
+            }
+            Delete q=new Delete (
+                    TABLE_OPTIONAL_COMPETIZIONE,
+                    new Condition ("idOptionalCompetizione",String.valueOf(getIndexOptionalCompetizione(o,c)),Request.Operator.Equal));
+            sendUpdate(q.toString());
+        }
+    }
+    
+    protected void dropOptionalPrenotazione (Optional o, Partecipante p, Competizione c) throws SQLException
+    {
+        Delete q=new Delete (
+                TABLE_OPTIONAL_PRENOTAZIONE,
+                new Condition (
+                new Condition("optional",String.valueOf(getIndexOptionalCompetizione(o,c)),Request.Operator.Equal).toString(),
+                new Condition ("prenotazione",String.valueOf(getIndexPrenotazione(p,c)),Request.Operator.Equal).toString(),
+                Request.Operator.And));
+        sendUpdate(q.toString());
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai partecipanti"> 

@@ -517,7 +517,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
         jLabelPartecCur.setText(String.valueOf(c.getNPart()));
         jPartecMax.setValue(c.getNMax());
         jPartecMin.setValue(c.getNMin());
-        jCompPrezzo.setValue(c.getPrezzo());
+        jCompPrezzo.setValue((int)c.getPrezzo());
         jOptional1nome.setSelected(false);
         jOptional2nome.setSelected(false);
         jOptional3nome.setSelected(false);
@@ -588,15 +588,60 @@ public final class JFrameManComp extends javax.swing.JFrame {
         try 
         {
             Competizione c = agro.getCompetizione(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId());
-
+            int prezzo_mod=(int)jCompPrezzo.getValue();
             if ((int)jPartecMax.getValue()!=c.getNMax())
                 agro.setNMax(c.getId(), (int)jPartecMax.getValue());
             if ((int)jPartecMin.getValue()!=c.getNMin())
                 agro.setNMin(c.getId(),(int)jPartecMin.getValue());
-            if ((int)jCompPrezzo.getValue()!=c.getPrezzo())
-                agro.setPrezzoComp(c.getId(),(int)jCompPrezzo.getValue());
+            if (prezzo_mod!=(int)c.getPrezzo())
+                agro.setPrezzoComp(c.getId(),(float)prezzo_mod);
+            Optional [] opt_c=agro.getOptional(c.getId());
+            boolean opt [] =new boolean [3];
+            int nOpt=0;
+            if (jOptional1nome.isSelected())
+            {
+                nOpt++;
+                opt[0]=true;
+            }
+            else opt[0]=false;
+            if (jOptional2nome.isSelected())
+            {
+                nOpt++;
+                opt[1]=true;
+            }
+            else opt[1]=false;
+            if (jOptional3nome.isSelected())
+            {
+                nOpt++;
+                opt[2]=true;
+            }
+            else opt[2]=false;
+            String optional_nome;
+            for (int i=0;i<3;i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        optional_nome="Colazione";
+                        break;
+                    case 1:
+                        optional_nome="Pranzo";
+                        break;
+                    case 2:
+                        optional_nome="Pernotto";
+                        break;
+                    default:
+                        optional_nome="";
+                        break;
+                }
+                if (opt[i])
+                    agro.setOptionalCompetizione(c,agro.getOptional(optional_nome));
+                else
+                    agro.dropOptionalCompetizione(c,agro.getOptional(optional_nome));
+            }
                         JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
                         , "Successo", JOptionPane.INFORMATION_MESSAGE);
+            
         }
         catch (SQLException ex)
         {

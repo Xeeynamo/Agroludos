@@ -24,6 +24,14 @@ public class ManagerCompetizione extends AgroController
     {
         return super.getOptional();
     }
+    @Override public Optional getOptional(String nome) throws SQLException
+    {
+        return super.getOptional(nome);
+    }
+    @Override public Optional[] getOptional(int idCompetizione) throws SQLException
+    {
+        return super.getOptional(idCompetizione);
+    }
     @Override public void setOptional(Optional optional) throws SQLException
     {
         super.setOptional(optional);
@@ -61,8 +69,17 @@ public class ManagerCompetizione extends AgroController
     {
         super.setNPartMin(idCompetizione,nmin);
     }
-    public void setPrezzoComp (int idCompetizione,int prezzo) throws SQLException
+    public void setPrezzoComp (int idCompetizione,float prezzo) throws SQLException
     {
-        super.setPrezzoComp(idCompetizione,(float)prezzo);
+        super.setPrezzoComp(idCompetizione,prezzo);
+    }
+    public void setOptionalCompetizione (Competizione c, Optional o) throws SQLException
+    {
+        super.setOptionalCompetizione(c, o);
+    }
+    
+    public void dropOptionalCompetizione (Competizione c, Optional o) throws SQLException
+    {
+        super.dropOptionalCompetizione(c, o);
     }
 }
