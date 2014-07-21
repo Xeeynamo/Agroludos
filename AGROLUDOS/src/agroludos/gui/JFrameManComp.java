@@ -9,6 +9,7 @@ package agroludos.gui;
 import agroludos.Agroludos;
 import agroludos.db.components.*;
 import agroludos.db.user.ManagerCompetizione;
+import agroludos.db.exception.*;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -598,6 +599,8 @@ public final class JFrameManComp extends javax.swing.JFrame {
         try 
         {
             Competizione c = agro.getCompetizione(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId());
+            if (agro.isModificaScaduto(c))
+                throw new ModificaCompScadutaException();
             float prezzo_mod=(float)jCompPrezzo.getValue();
             if ((int)jPartecMax.getValue()!=c.getNMax())
                 agro.setNMax(c.getId(), (int)jPartecMax.getValue());
@@ -656,6 +659,11 @@ public final class JFrameManComp extends javax.swing.JFrame {
         catch (SQLException ex)
         {
             JOptionPane.showMessageDialog(null, "Impossibile modificare la competizione selezionata" +
+                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (ModificaCompScadutaException ex)
+        {
+            JOptionPane.showMessageDialog(null,
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
         finally

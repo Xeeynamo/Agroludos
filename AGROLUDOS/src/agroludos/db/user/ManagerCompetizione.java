@@ -87,4 +87,12 @@ public class ManagerCompetizione extends AgroController
     {
         super.dropPrenotazione(p, c);
     }
+    
+    public boolean isModificaScaduto(Competizione c)
+    {
+        if (super.getNGiorniMancanti(c.getDataComp())<2)
+            return true;
+        else
+            return false;
+    }
 }
