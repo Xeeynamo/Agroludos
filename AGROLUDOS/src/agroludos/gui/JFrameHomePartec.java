@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.swing.*;
 
 /**
@@ -27,7 +28,10 @@ public class JFrameHomePartec extends javax.swing.JFrame
     Utente agro;
     Competizione [] listComp;
     Optional [] listOpt;
-
+    private static final String obj="AGROLUDOS";
+    private static final String iscr="Un nuovo partecipante si è iscritto alla competizione del ";
+    static String mod="Un partecipante ha cambiato la scelta dei optional offriti dalla competizione da voi gestita del  ";
+    static String canc="Un partecipante ha annullato la prenotazione per la competizione da voi gestita del ";
     public JFrameHomePartec(Utente agro)
     {
         Shared.setDefaultLookAndFeel();
@@ -718,12 +722,18 @@ public class JFrameHomePartec extends javax.swing.JFrame
             agro.addIscrizioneCompetizione(listComp[jListDisponibili.getSelectedIndex()],opt_scelti);
                     JOptionPane.showMessageDialog(null, "Prenotazione effettuata\ncon successo!\n"
                     , "Successo", JOptionPane.INFORMATION_MESSAGE);
+            String mail_mc=listComp[jListDisponibili.getSelectedIndex()].getManager().getMail();
+            listComp[jListDisponibili.getSelectedIndex()].getDataCompString();
+            AgroMail m=new AgroMail(agro.getMailSys(),mail_mc,obj,iscr+listComp[jListDisponibili.getSelectedIndex()].getDataCompString());
+            m.send();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Impossibile caricare le competizioni\n" +
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         } catch (SrcScadutaException ex) {
             JOptionPane.showMessageDialog(null,
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        } catch (MessagingException ex) {
+            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally
         {
@@ -885,9 +895,17 @@ public class JFrameHomePartec extends javax.swing.JFrame
             
             JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
                     , "Successo", JOptionPane.INFORMATION_MESSAGE); 
-                        }catch (SQLException ex) {
+                        
+            String mail_mc=listComp[jListDisponibili.getSelectedIndex()].getManager().getMail();
+            listComp[jListDisponibili.getSelectedIndex()].getDataCompString();
+            AgroMail m=new AgroMail(agro.getMailSys(),mail_mc,obj,mod+listComp[jListDisponibili.getSelectedIndex()].getDataCompString());
+            m.send();
+        }
+                catch (SQLException ex) {
                      Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                } catch (MessagingException ex) {
+            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
+        }
                 finally
                 {
                     JFrame jFrame=new JFrameHomePartec(agro);
@@ -904,9 +922,15 @@ public class JFrameHomePartec extends javax.swing.JFrame
             agro.AnnullaPrenotazione(agro.getCompetizione(listComp[jListMyIscrizioni.getSelectedIndex()].getId()));
             JOptionPane.showMessageDialog(null, "Annullamento prenotazione\n effettuato successo!\n"
             , "Successo", JOptionPane.INFORMATION_MESSAGE);
+            String mail_mc=listComp[jListDisponibili.getSelectedIndex()].getManager().getMail();
+            listComp[jListDisponibili.getSelectedIndex()].getDataCompString();
+            AgroMail m=new AgroMail(agro.getMailSys(),mail_mc,obj,canc+listComp[jListDisponibili.getSelectedIndex()].getDataCompString());
+            m.send();
         } 
         catch (SQLException ex) 
         {
+            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MessagingException ex) {
             Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally
