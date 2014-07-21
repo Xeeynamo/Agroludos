@@ -603,9 +603,9 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 throw new ModificaCompScadutaException();
             float prezzo_mod = Float.parseFloat(jCompPrezzo.getValue().toString());
             if ((int)jPartecMax.getValue()!=c.getNMax())
-                agro.setNMax(c.getId(), (int)jPartecMax.getValue());
+                agro.setNPartMax(c.getId(), (int)jPartecMax.getValue());
             if ((int)jPartecMin.getValue()!=c.getNMin())
-                agro.setNMin(c.getId(),(int)jPartecMin.getValue());
+                agro.setNPartMin(c.getId(),(int)jPartecMin.getValue());
             if (prezzo_mod!=c.getPrezzo())
                 agro.setPrezzoComp(c.getId(),prezzo_mod);
             Optional [] opt_c=agro.getOptional(c.getId());

@@ -14,6 +14,13 @@ public class AgroMail
     
     String from, to, subject, text;
     
+    /**
+     * Inizializza l'oggetto per mandare le mail.
+     * @param from l'utente che sta mandando la mail
+     * @param to indirizzo mail del destinatario
+     * @param subject oggetto della mail
+     * @param text contenuto della mail
+     */
     public AgroMail(String from, String to, String subject, String text)
     {
         this.from = CHOSEN_USERNAME;
@@ -22,6 +29,11 @@ public class AgroMail
         this.text = text;
     }
     
+    /**
+     * Manda la mail precedentemente preparata.
+     * @throws AddressException
+     * @throws MessagingException 
+     */
     public void send() throws AddressException, MessagingException
     {
         Properties p = new Properties();

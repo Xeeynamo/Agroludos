@@ -66,7 +66,7 @@ public class Utente extends AgroController
     
     public void addIscrizioneCompetizione(Competizione c, Optional [] opt) throws SQLException, SrcScadutaException
     {
-        super._addIscrizioneCompetizione(super.getPartecipante(super.getMail()), c, opt);
+        super.addIscrizioneCompetizione(super.getPartecipante(super.getMail()), c, opt);
     }
      
     public Competizione getCompetizione (int id) throws SQLException
@@ -95,7 +95,7 @@ public class Utente extends AgroController
     
     public void setOptionalPrenotazione (Optional opt, Competizione comp,boolean scelto) throws SQLException
     {
-        super._setOptionalPrenotazione(opt, super.getPartecipante(super.getMail()), comp, scelto);
+        super.setOptionalPrenotazione(opt, super.getPartecipante(super.getMail()), comp, scelto);
     }
     @Override public Optional[] getOptional() throws SQLException
     {

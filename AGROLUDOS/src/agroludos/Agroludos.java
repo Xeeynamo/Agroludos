@@ -1,8 +1,12 @@
 package agroludos;
 
+import agroludos.db.AgroMail;
 import agroludos.db.user.Anonimo;
 import agroludos.gui.JFrameLogin;
 import agroludos.gui.Shared;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 
 public class Agroludos
 {
@@ -35,6 +39,12 @@ public class Agroludos
     
     public static void main(String[] args)
     {
+        try {
+            new AgroMail("ciao@gmail.com", "xeeynamo@hotmail.com", "AGROLUDOS", "penis").send();
+        } catch (MessagingException ex) {
+            Logger.getLogger(Agroludos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         Anonimo user = Connect(args);
         if (user != null)
         {

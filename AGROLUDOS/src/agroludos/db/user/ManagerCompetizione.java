@@ -59,35 +59,30 @@ public class ManagerCompetizione extends AgroController
     {
         super.creaCompetizione(c);
     }
-    
-    public void setNMax (int idCompetizione,int nmax) throws SQLException
+    @Override public void setNPartMax (int idCompetizione,int nmax) throws SQLException
     {
         super.setNPartMax(idCompetizione,nmax);
     }
-    
-    public void setNMin (int idCompetizione,int nmin) throws SQLException
+    @Override public void setNPartMin (int idCompetizione,int nmin) throws SQLException
     {
         super.setNPartMin(idCompetizione,nmin);
     }
-    public void setPrezzoComp (int idCompetizione,float prezzo) throws SQLException
+    @Override public void setPrezzoComp (int idCompetizione,float prezzo) throws SQLException
     {
         super.setPrezzoComp(idCompetizione,prezzo);
     }
-    public void setOptionalCompetizione (Competizione c, Optional o) throws SQLException
+    @Override public void setOptionalCompetizione (Competizione c, Optional o) throws SQLException
     {
         super.setOptionalCompetizione(c, o);
     }
-    
-    public void dropOptionalCompetizione (Competizione c, Optional o) throws SQLException
+    @Override public void dropOptionalCompetizione (Competizione c, Optional o) throws SQLException
     {
         super.dropOptionalCompetizione(c, o);
     }
-    
     public void dropPrenotazione (Competizione c, Partecipante p) throws SQLException
     {
         super.dropPrenotazione(p, c);
     }
-    
     public boolean isModificaScaduto(Competizione c)
     {
         if (super.getNGiorniMancanti(c.getDataComp())<2)

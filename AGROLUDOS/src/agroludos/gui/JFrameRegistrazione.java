@@ -284,7 +284,7 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
                 d2.parse(jRegistraDataSrc.getText()),
                 jRegistraCertificatoSrc.getText());
             
-            agro.addPartec(Password,p);
+            agro.addPartecipante(Password,p);
             
             Shared.showDialog(this, "Registrazione", "Registrazione avvenuta con successo!");
             

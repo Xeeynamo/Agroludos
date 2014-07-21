@@ -88,6 +88,10 @@ public class AgroController
                  throw new WrongLoginException();
          }
     }
+    /**
+     * Ottiene l'indirizzo mail dell'utente correntemente loggato.
+     * @return indirizzo mail
+     */
     protected String getMail()
     {
         return mail;
@@ -184,18 +188,17 @@ public class AgroController
         return -1;
     }
     
-    protected String getSysMail () throws SQLException
+    /**
+     * Invia una mail da parte dell'utente corrente
+     * @param receiver indirizzo mail del destinatario
+     * @param subject oggetto della mail
+     * @param text testo all'interno della mail
+     * @throws MessagingException 
+     */
+    public void sendMail(String receiver, String subject, String text) throws MessagingException
     {
-        Request q= new Request(
-                    new String []{"mail"},
-                   TABLE_UTENTE,
-                    new Condition ("tipo",String.valueOf(2),Request.Operator.Equal));
-        ResultSet rs=sendQuery(q.toString());
-        if (rs.next())
-            return rs.getString(1);
-        else
-            throw new SQLException();
-    }        
+        new AgroMail(getMail(), receiver, subject, text).send();
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata alle competizioni">
     
@@ -659,10 +662,10 @@ public class AgroController
     /**
      * Imposta, per la competizione specificata, il numero minimo di partecipanti.
      * @param idCompetizione id della competizione da modificare
-     * @param nmax nuovo numero minimo di utenti da impostare
+     * @param nmin nuovo numero minimo di utenti da impostare
      * @throws SQLException 
      */
-    protected void setNPartMin (int idCompetizione,int nmin) throws SQLException
+    protected void setNPartMin (int idCompetizione, int nmin) throws SQLException
     {
         Update q=new Update 
                 (TABLE_COMPETIZIONE,
@@ -674,10 +677,10 @@ public class AgroController
     /**
      * Imposta, per la competizione specificata, il suo prezzo per i partecipanti.
      * @param idCompetizione id della competizione da modificare
-     * @param nmax nuovo prezzo della competizione da impostare
+     * @param prezzo nuovo prezzo della competizione da impostare
      * @throws SQLException 
      */
-    protected void setPrezzoComp (int idCompetizione,float prezzo) throws SQLException
+    protected void setPrezzoComp (int idCompetizione, float prezzo) throws SQLException
     {
         Update q=new Update 
                 (TABLE_COMPETIZIONE,
@@ -807,7 +810,14 @@ public class AgroController
             return false;
     }
 
-    protected int getIndexOptionalCompetizione(Optional opt,Competizione comp) throws SQLException
+    /**
+     * Ottiene l'indice di un optional selezionabile dalla competizione
+     * @param opt optional scelto
+     * @param comp competizione scelta
+     * @return identificativo
+     * @throws SQLException 
+     */
+    protected int getIndexOptionalCompetizione(Optional opt, Competizione comp) throws SQLException
     {
         Request q= new Request (
                     new String [] {"idOptionalCompetizione"},
@@ -823,6 +833,11 @@ public class AgroController
             throw new SQLException();
     } 
    
+    /**
+     * Dato un optional, aggiorna quello che c'è correntemente nel databsae
+     * @param optional aggiornato
+     * @throws SQLException 
+     */
     protected void setOptional(Optional optional) throws SQLException
     {
         sendUpdate("UPDATE " + TABLE_OPTIONAL +
@@ -831,7 +846,15 @@ public class AgroController
                 " WHERE nome='" + optional.getNome() + "'");
     }
     
-    protected void _setOptionalPrenotazione (Optional o, Partecipante p, Competizione c, boolean scelto) throws SQLException
+    /**
+     * Imposta l'optional per una determinata prenotazione
+     * @param o optional scelto
+     * @param p partecipante che ha scelto l'optional
+     * @param c competizione la quale si deve iscrivere
+     * @param scelto se l'optional è stato selezionato o meno
+     * @throws SQLException
+     */
+    protected void setOptionalPrenotazione (Optional o, Partecipante p, Competizione c, boolean scelto) throws SQLException
     {
         String selezione=null;
         if ((_isOptionalPrenotato(p,o,c))&&(!scelto))
@@ -851,6 +874,12 @@ public class AgroController
         }
     }
     
+    /**
+     * Assegna l'optional ad una determinata competizione
+     * @param c competizione da modificare
+     * @param o optional scelto
+     * @throws SQLException
+     */
     protected void setOptionalCompetizione (Competizione c,Optional o) throws SQLException
     {
         boolean trovato=false;
@@ -872,10 +901,16 @@ public class AgroController
             sendUpdate(q.toString());
             Partecipante [] p=getPartecipanti(c.getId());
             for (int i=0;i<p.length;i++)
-                _setOptionalPrenotazione(o,p[i],c,false);
+                setOptionalPrenotazione(o,p[i],c,false);
         }
     }
     
+    /**
+     * Cancella l'optional da una determinata competizione
+     * @param c competizione da modificare
+     * @param o optional scelto
+     * @throws SQLException
+     */
     protected void dropOptionalCompetizione (Competizione c,Optional o) throws SQLException
     {
         boolean trovato=false;
@@ -900,6 +935,13 @@ public class AgroController
         }
     }
     
+    /**
+     * Elimina da una prenotazione un optional scelto dal partecipante
+     * @param o optional scelto da eliminare
+     * @param p partecipante che lo aveva selezionato inizialmente
+     * @param c competizione associata
+     * @throws SQLException 
+     */
     protected void dropOptionalPrenotazione (Optional o, Partecipante p, Competizione c) throws SQLException
     {
         Delete q=new Delete (
@@ -912,6 +954,15 @@ public class AgroController
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai partecipanti"> 
+    /**
+     * Aggiunge un partecipante nel database
+     * @param password password del partecipante
+     * @param p info del partecipante
+     * @throws SQLException
+     * @throws DefEmailException
+     * @throws DefCodFiscException
+     * @throws CampiVuotiException 
+     */
     protected void addPartecipante(String password, Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
         
@@ -1111,6 +1162,13 @@ public class AgroController
         return p;
     }
     
+    /**
+     * Ottiene l'indice di una prenotazione
+     * @param p partecipante
+     * @param c competizione
+     * @return
+     * @throws SQLException 
+     */
     protected int getIndexPrenotazione (Partecipante p, Competizione c) throws SQLException
     {
         Request q= new Request (
@@ -1127,7 +1185,15 @@ public class AgroController
             throw new SQLException();
     }
     
-    protected void _addIscrizioneCompetizione(Partecipante p, Competizione c,Optional [] opt) throws SQLException, SrcScadutaException
+    /**
+     * Crea un'iscrizione tra il partecipante e la competizione
+     * @param p partecipante che si deve iscrivere
+     * @param c competizione la quale il partecipante ha deciso di iscriversi
+     * @param opt optional scelti per la prenotazione
+     * @throws SQLException
+     * @throws SrcScadutaException 
+     */
+    protected void addIscrizioneCompetizione(Partecipante p, Competizione c,Optional [] opt) throws SQLException, SrcScadutaException
     {
         if(getNGiorniMancanti(c.getDataComp(),p.getDataSrc())>=365)
             throw new SrcScadutaException();
@@ -1163,6 +1229,12 @@ public class AgroController
         }   
     }
     
+    /**
+     * Cancella una prenotazione
+     * @param p partecipante della prenotazione
+     * @param c competizione della prenotazione
+     * @throws SQLException 
+     */
     protected void dropPrenotazione (Partecipante p, Competizione c) throws SQLException
     {
         if (isPrenotato(p.getMail(),c.getId()))
@@ -1188,7 +1260,29 @@ public class AgroController
         }
     }
     // </editor-fold>
-    // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai manager di competizione">
+    // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai manager di competizione e di sistema">
+    /**
+     * Ottiene la mail del manager di sistema
+     * @return indirizzo mail
+     * @throws SQLException 
+     */
+    protected String getSysMail () throws SQLException
+    {
+        Request q= new Request(
+                    new String []{"mail"},
+                   TABLE_UTENTE,
+                    new Condition ("tipo",String.valueOf(2),Request.Operator.Equal));
+        ResultSet rs=sendQuery(q.toString());
+        if (rs.next())
+            return rs.getString(1);
+        else
+            throw new SQLException();
+    }
+    /**
+     * Ottiene una lista dei manager di competizione
+     * @return lista dei manager
+     * @throws SQLException 
+     */
     protected Manager[] getManagers() throws SQLException
     {
         String query = "SELECT *\n" +
@@ -1208,22 +1302,12 @@ public class AgroController
     }
     // </editor-fold>
 
-    /**
-     * Invia una mail da parte dell'utente corrente
-     * @param receiver indirizzo mail del destinatario
-     * @param subject oggetto della mail
-     * @param text testo all'interno della mail
-     * @throws MessagingException 
-     */
-    public void sendMail(String receiver, String subject, String text) throws MessagingException
-    {
-        new AgroMail(getMail(), receiver, subject, text).send();
-    }
     
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai controlli sui campi">
     
     /**
      * Controlla se il tipo di competizione specificata è già presente nel sistema
+     * @return true se è già presente, viceversa false
      */
     private boolean checkTipoCompetizione(TipoCompetizione tipo) throws SQLException
     {
