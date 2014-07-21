@@ -8,10 +8,9 @@ package agroludos.gui;
 
 import agroludos.db.user.Utente;
 import agroludos.db.*;
-import agroludos.db.exception.CampiVuotiException;
+import agroludos.db.exception.*;
 import agroludos.db.components.Competizione;
 import agroludos.db.components.Optional;
-import agroludos.db.exception.SrcScadutaException;
 import java.awt.Component;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -29,12 +28,10 @@ public class JFrameHomePartec extends javax.swing.JFrame
     Utente agro;
     Competizione [] listComp;
     Optional [] listOpt;
-    
-    static String obj="AGROLUDOS";
-    static String iscrizione_text1="Un nuovo partecipante si è iscritto alla competizione del ";
-    static String modifica_text1="Un partecipante ha cambiato la scelta dei optional offriti dalla competizione da voi gestita del  ";
-    static String cancpren_text1="Un partecipante ha annullato la prenotazione per la competizione da voi gestita del ";
-    
+    private static final String obj="AGROLUDOS";
+    private static final String iscr="Un nuovo partecipante si è iscritto alla competizione del ";
+    static String mod="Un partecipante ha cambiato la scelta dei optional offriti dalla competizione da voi gestita del  ";
+    static String canc="Un partecipante ha annullato la prenotazione per la competizione da voi gestita del ";
     public JFrameHomePartec(Utente agro)
     {
         Shared.setDefaultLookAndFeel();
@@ -726,7 +723,8 @@ public class JFrameHomePartec extends javax.swing.JFrame
                     JOptionPane.showMessageDialog(null, "Prenotazione effettuata\ncon successo!\n"
                     , "Successo", JOptionPane.INFORMATION_MESSAGE);
             String mail_mc=listComp[jListDisponibili.getSelectedIndex()].getManager().getMail();
-            AgroMail m=new AgroMail(agro.getMailSys(),mail_mc,obj,iscrizione_text1+listComp[jListDisponibili.getSelectedIndex()].getDataCompString());
+            listComp[jListDisponibili.getSelectedIndex()].getDataCompString();
+            AgroMail m=new AgroMail(agro.getMailSys(),mail_mc,obj,iscr+listComp[jListDisponibili.getSelectedIndex()].getDataCompString());
             m.send();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Impossibile caricare le competizioni\n" +
@@ -896,11 +894,14 @@ public class JFrameHomePartec extends javax.swing.JFrame
             }
             
             JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
-                    , "Successo", JOptionPane.INFORMATION_MESSAGE);
-                        String mail_mc=listComp[jListDisponibili.getSelectedIndex()].getManager().getMail();
-            AgroMail m=new AgroMail(agro.getMailSys(),mail_mc,obj,modifica_text1+listComp[jListDisponibili.getSelectedIndex()].getDataCompString());
+                    , "Successo", JOptionPane.INFORMATION_MESSAGE); 
+                        
+            String mail_mc=listComp[jListDisponibili.getSelectedIndex()].getManager().getMail();
+            listComp[jListDisponibili.getSelectedIndex()].getDataCompString();
+            AgroMail m=new AgroMail(agro.getMailSys(),mail_mc,obj,mod+listComp[jListDisponibili.getSelectedIndex()].getDataCompString());
             m.send();
-                }catch (SQLException ex) {
+        }
+                catch (SQLException ex) {
                      Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (MessagingException ex) {
             Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
@@ -919,11 +920,11 @@ public class JFrameHomePartec extends javax.swing.JFrame
         {
             // TODO add your handling code here:
             agro.AnnullaPrenotazione(agro.getCompetizione(listComp[jListMyIscrizioni.getSelectedIndex()].getId()));
-            
             JOptionPane.showMessageDialog(null, "Annullamento prenotazione\n effettuato successo!\n"
             , "Successo", JOptionPane.INFORMATION_MESSAGE);
             String mail_mc=listComp[jListDisponibili.getSelectedIndex()].getManager().getMail();
-            AgroMail m=new AgroMail(agro.getMailSys(),mail_mc,obj,modifica_text1+listComp[jListDisponibili.getSelectedIndex()].getDataCompString());
+            listComp[jListDisponibili.getSelectedIndex()].getDataCompString();
+            AgroMail m=new AgroMail(agro.getMailSys(),mail_mc,obj,canc+listComp[jListDisponibili.getSelectedIndex()].getDataCompString());
             m.send();
         } 
         catch (SQLException ex) 
