@@ -1,7 +1,6 @@
 package agroludos.db.user;
 
 import agroludos.db.exception.SrcScadutaException;
-import agroludos.db.*;
 import agroludos.db.AgroController;
 import agroludos.db.components.*;
 import java.sql.*;
@@ -13,55 +12,9 @@ public class Utente extends AgroController
         super(statement, mail);
     }
     
-    public Competizione [] getCompetizioniDisponibili () throws SQLException
-    {
-       Competizione [] c= super._getCompetizioni();
-       int NComp=0;
-       for (int i=0;i<c.length;i++)
-       {
-           if((super.getNGiorniMancanti((Date)c[i].getDataComp())<=1)||(super.isPrenotato(super.getMail(), c[i].getId())))
-               c[i]=null;
-           else
-                NComp++;
-       }
-       Competizione [] c1=new Competizione[NComp];
-       for (int i=0,j=0;i<c.length;i++)
-       {
-           if(c[i]!=null)
-           {
-               c1[j]=c[i];
-               j++;
-           }
-       }
-       return c1;        
-    }
-    
-    public Competizione [] getCompetizioniPrenotate () throws SQLException
-    {
-       Competizione [] c= super._getCompetizioni();
-       int NComp=0;
-       for (int i=0;i<c.length;i++)
-       {
-           if((super.getNGiorniMancanti((Date)c[i].getDataComp())==0)||(!super.isPrenotato(super.getMail(), c[i].getId())))
-               c[i]=null;
-           else
-                NComp++;
-       }
-       Competizione [] c1=new Competizione[NComp];
-       for (int i=0,j=0;i<c.length;i++)
-       {
-           if(c[i]!=null)
-           {
-               c1[j]=c[i];
-               j++;
-           }
-       }
-       return c1;        
-    }
-    
     public void AnnullaPrenotazione (Competizione c) throws SQLException
     {
-        dropPrenotazione(super.getPartecipante(super.getMail()),c);
+        annullaPrenotazione(super.getPartecipante(super.getMail()),c);
     }
     
     public void addIscrizioneCompetizione(Competizione c, Optional [] opt) throws SQLException, SrcScadutaException
@@ -90,7 +43,7 @@ public class Utente extends AgroController
     
     public boolean isOptionalSelezionato (Optional opt,Competizione comp) throws SQLException
     {
-        return super._isOptionalPrenotato(super.getPartecipante(super.getMail()), opt, comp);
+        return super.isOptionalPrenotato(super.getPartecipante(super.getMail()), opt, comp);
     }
     
     public void setOptionalPrenotazione (Optional opt, Competizione comp,boolean scelto) throws SQLException

@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Xeeynamo/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/gui/JFrameLogin.java</file>
-            <file>file:/D:/Xeeynamo/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/gui/JFrameCreaComp.java</file>
-            <file>file:/D:/Xeeynamo/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/gui/JFrameRegistrazione.java</file>
-            <file>file:/D:/Xeeynamo/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/Agroludos.java</file>
-            <file>file:/D:/Xeeynamo/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/gui/JFrameManComp.java</file>
-            <file>file:/D:/Xeeynamo/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/gui/Shared.java</file>
-            <file>file:/D:/Xeeynamo/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/gui/JFrameMainSystem.java</file>
+            <file>file:/D:/Xeeynamo/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/AgroController.java</file>
+            <file>file:/D:/Xeeynamo/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/query/Request.java</file>
+            <file>file:/D:/Xeeynamo/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/FrontController.java</file>
+            <file>file:/D:/Xeeynamo/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/user/Anonimo.java</file>
         </group>
     </open-files>
 </project-private>
