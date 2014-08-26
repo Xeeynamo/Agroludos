@@ -1,12 +1,12 @@
 package agroludos.gui;
 
-import agroludos.Agroludos;
-import agroludos.db.user.ManagerCompetizione;
-import agroludos.db.user.Utente;
-import agroludos.db.user.ManagerSistema;
+import agroludos.*;
 import agroludos.db.*;
 import agroludos.db.exception.WrongLoginException;
 import agroludos.db.user.Anonimo;
+import agroludos.db.user.ManagerCompetizione;
+import agroludos.db.user.ManagerSistema;
+import agroludos.db.user.Utente;
 import java.sql.SQLException;
 import javax.swing.*;
 
@@ -16,11 +16,11 @@ import javax.swing.*;
  */
 public class JFrameLogin extends javax.swing.JFrame {
 
-    Anonimo agro;
+    FrontController fc;
     
-    public JFrameLogin(Anonimo agro)
+    public JFrameLogin(FrontController fc)
     {
-        this.agro = agro;
+        this.fc = fc;
         Shared.setDefaultLookAndFeel();
         initComponents();
     }
@@ -109,68 +109,25 @@ public class JFrameLogin extends javax.swing.JFrame {
     private void jLoginEntraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginEntraActionPerformed
         try
         {
-            AgroController user = agro.Login(jTextMail.getText(), jTextPassword.getText());
-            
-            JFrame jFrame;
-            if (user instanceof ManagerSistema)
-                jFrame = new JFrameMainSystem((ManagerSistema)user);
-            else if (user instanceof ManagerCompetizione)
-                jFrame = new JFrameManComp((ManagerCompetizione)user);
-            else if (user instanceof Utente)
-                jFrame = new JFrameHomePartec((Utente)user);
-            else
-                return;
-            this.setVisible(false);
-            jFrame.pack();
-            jFrame.setVisible(true);
+            fc.processRequest(FrontController.Request.Login,
+                    new String[]{jTextMail.getText(), jTextPassword.getText()});
         }
-        catch (WrongLoginException ex)
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
         {
-            Shared.showError(this, ex.toString());
-        }
-        catch (SQLException ex)
-        {
-            Shared.showError(this, "Impossibile effettuare il login, connessione fallita.\n" + ex.toString());
+            Shared.showError(this, e.toString());
         }
     }//GEN-LAST:event_jLoginEntraActionPerformed
 
     private void jLoginRegistratiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginRegistratiActionPerformed
-        new JFrameRegistrazione(agro).setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_jLoginRegistratiActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFrameLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFrameLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFrameLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFrameLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        try
+        {
+            fc.processRequest(FrontController.Request.FrameRegistrazione, null);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new JFrameLogin(Agroludos.Connect(null)).setVisible(true);
-        });
-    }
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+            Shared.showError(this, e.toString());
+        }
+    }//GEN-LAST:event_jLoginRegistratiActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jLoginEntra;
