@@ -1,12 +1,8 @@
 package agroludos;
 
-import agroludos.db.AgroMail;
 import agroludos.db.user.Anonimo;
 import agroludos.gui.JFrameLogin;
 import agroludos.gui.Shared;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.mail.MessagingException;
 
 public class Agroludos
 {
@@ -14,42 +10,25 @@ public class Agroludos
     private static final String DEFAULT_USERNAME = "root";
     private static final String DEFAULT_PASSWORD = "agroludos";
     
-    /**
-     * Connette ad un server
-     * @param args argomenti per la connessione
-     * Se null o la lunghezza è diversa da 3, connette al server di default.
-     * I parametri sono nome del server, username e password.
-     * @return 
-     */
-    public static Anonimo Connect(String[] args)
-    {
-        try
-        {
-            if (args == null || args.length != 3)
-                return new Anonimo(DEFAULT_SERVER, DEFAULT_USERNAME, DEFAULT_PASSWORD);
-            else
-                return new Anonimo(args[0], args[1], args[2]);
-        }
-        catch (Exception ex)
-        {
-            Shared.showError(null, "Impossibile stabilire una connessione col database.\nIl programma sarà terminato." + ex.toString());
-        }
-        return null;
-    }
-    
+    public static FrontController fc;
+ 
     public static void main(String[] args)
     {
-        try {
-            new AgroMail("ciao@gmail.com", "xeeynamo@hotmail.com", "AGROLUDOS", "penis").send();
-        } catch (MessagingException ex) {
-            Logger.getLogger(Agroludos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        Anonimo user = Connect(args);
-        if (user != null)
+        fc = new FrontController();
+ 
+        String[] param;
+        if (args == null || args.length != 3)
+            param = new String[]{DEFAULT_SERVER, DEFAULT_USERNAME, DEFAULT_PASSWORD};
+        else
+            param = new String[]{args[0], args[1], args[2]};
+        try
         {
-            JFrameLogin frame = new JFrameLogin(user);
-            frame.setVisible(true);
+            fc.processRequest(FrontController.Request.Initialize, param);
+            fc.processRequest(FrontController.Request.FrameLogin, null);
+        }
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+            agroludos.gui.Shared.showError(null, e.toString());
         }
     }
 }
