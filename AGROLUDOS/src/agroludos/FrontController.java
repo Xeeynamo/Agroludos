@@ -240,7 +240,7 @@ public class FrontController
                         currentFrame.setVisible(false);
                         currentFrame.dispose();
                     }
-                    //currentFrame = new JFrameRegistrazione(this);
+                    currentFrame = new JFrameRegistrazione(this);
                     currentFrame.setVisible(true);
                     break;
                 case FrameHome:
@@ -286,25 +286,10 @@ public class FrontController
         {
             Shared.showError(currentFrame, "Impossibile invire la mail.\n" + ex.toString());
         }
-        catch (WrongLoginException ex)
+        catch (WrongLoginException | CampiVuotiException |
+                DefCodFiscException | DefEmailException | SrcScadutaException ex)
         {
-            Shared.showError(currentFrame, ex.toString());
-        }
-        catch (CampiVuotiException ex)
-        {
-            Shared.showError(currentFrame, ex.toString());
-        }
-        catch (DefCodFiscException ex)
-        {
-            Shared.showError(currentFrame, ex.toString());
-        }
-        catch (DefEmailException ex)
-        {
-            Shared.showError(currentFrame, ex.toString());
-        }
-        catch (SrcScadutaException ex)
-        {
-            Shared.showError(currentFrame, ex.toString());
+            throw new InternalErrorException(ex.toString());
         }
         catch (ClassNotFoundException ex)
         {
