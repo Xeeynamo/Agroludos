@@ -141,10 +141,10 @@ public class FrontController
         throw new RequestNotSupportedException();
     }
     
-    public Object[] processRequest(Request request, Object ... param) throws DeniedRequestException, RequestNotSupportedException
+    public Object[] processRequest(Request request, Object ... param) throws DeniedRequestException, RequestNotSupportedException, InternalErrorException
     {
         if (!validateRequest(request))
-            Shared.showError(null, "Richiesta negata.");
+            throw new DeniedRequestException();
         try
         {
             switch (request)
@@ -231,7 +231,7 @@ public class FrontController
                         currentFrame.setVisible(false);
                         currentFrame.dispose();
                     }
-                    //currentFrame = new JFrameLogin(this);
+                    currentFrame = new JFrameLogin(this);
                     currentFrame.setVisible(true);
                     break;
                 case FrameRegistrazione:
@@ -320,7 +320,7 @@ public class FrontController
         }
         catch (SQLException ex)
         {
-            Shared.showError(null, "Impossibile stabilire una connessione col database.\n" +
+            throw new InternalErrorException("Impossibile stabilire una connessione col database.\n" +
                     ex.toString());
         }
         return null;
