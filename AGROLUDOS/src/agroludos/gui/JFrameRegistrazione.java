@@ -6,6 +6,10 @@
 
 package agroludos.gui;
 
+import agroludos.DeniedRequestException;
+import agroludos.FrontController;
+import agroludos.InternalErrorException;
+import agroludos.RequestNotSupportedException;
 import agroludos.db.components.Partecipante;
 import agroludos.db.exception.*;
 import agroludos.db.user.Anonimo;
@@ -22,9 +26,9 @@ import javax.swing.JOptionPane;
  */
 public class JFrameRegistrazione extends javax.swing.JFrame {
     
-    Anonimo agro;
-    public JFrameRegistrazione(Anonimo user) {
-        agro = user;
+    FrontController fc;
+    public JFrameRegistrazione(FrontController fc) {
+        this.fc = fc;
         Shared.setDefaultLookAndFeel();
         initComponents();
     }
@@ -268,7 +272,6 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
         SimpleDateFormat d1 = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat d2 = new SimpleDateFormat("dd/MM/yyyy");
         String Password;
-        JFrame jFrame;
         try {
             d2.parse(jRegistraDataSrc.getText());
             Password=DefinePass (jRegistratiPwd.getPassword(),jRegistratiPwd2.getPassword());
@@ -284,28 +287,22 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
                 d2.parse(jRegistraDataSrc.getText()),
                 jRegistraCertificatoSrc.getText());
             
-            agro.addPartecipante(Password,p);
-            
-            Shared.showDialog(this, "Registrazione", "Registrazione avvenuta con successo!");
-            
-            jFrame=new JFrameLogin(agro);
-            this.setVisible(false);
-            jFrame.pack();
-            jFrame.setVisible(true);
+            try
+            {
+                fc.processRequest(FrontController.Request.AddPartecipante, new Object[]{Password, p});
+                Shared.showDialog(this, "Registrazione", "Registrazione avvenuta con successo!");
+                fc.processRequest(FrontController.Request.FrameLogin, null);
+            }
+            catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+            {
+                Shared.showError(this, e.toString());
+            }
             
             
         } catch (ParseException e) {
             Shared.showError(this, "Data di nascita o data SRC non riconosciuta. Il formato corretto è DD/MM/YYYY.");
         } catch (DefPassException e) {
             Shared.showError(this, "Password inserite diverse.");
-        } catch (SQLException e) {
-            Shared.showError(this, "Impossibile stabilire una connessione col server.");
-        } catch (DefEmailException e) {
-            Shared.showError(this, e.toString());
-        } catch (DefCodFiscException e) {
-            Shared.showError(this, e.toString());
-        } catch (CampiVuotiException e) {
-            Shared.showError(this, e.toString());
         }
         
     }//GEN-LAST:event_jRegistraConfermaActionPerformed
