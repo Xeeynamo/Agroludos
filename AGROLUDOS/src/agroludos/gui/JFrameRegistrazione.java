@@ -44,6 +44,13 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
         else
             throw new DefPassException();
     }
+    
+    void CheckMaximumLength(String s, int maxlength) throws TooLongException
+    {
+        if (s.length() > maxlength)
+            throw new TooLongException(s);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -272,7 +279,15 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
         SimpleDateFormat d1 = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat d2 = new SimpleDateFormat("dd/MM/yyyy");
         String Password;
-        try {
+        try
+        {
+            CheckMaximumLength(jRegistraMail.getText(), 255);
+            CheckMaximumLength(jRegistraNome.getText(), 45);
+            CheckMaximumLength(jRegistraCognome.getText(), 45);
+            CheckMaximumLength(jRegistraIndirizzo.getText(), 255);
+            CheckMaximumLength(jRegistraCodFisc.getText(), 16);
+            CheckMaximumLength(jRegistraTesserasan.getText(), 20);
+            
             d2.parse(jRegistraDataSrc.getText());
             Password=DefinePass (jRegistratiPwd.getPassword(),jRegistratiPwd2.getPassword());
             Partecipante p = new Partecipante(
@@ -297,18 +312,17 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
             {
                 Shared.showError(this, e.toString());
             }
-            
-            
         } catch (ParseException e) {
             Shared.showError(this, "Data di nascita o data SRC non riconosciuta. Il formato corretto è DD/MM/YYYY.");
         } catch (DefPassException e) {
             Shared.showError(this, "Password inserite diverse.");
+        } catch (TooLongException e) {
+            Shared.showError(this, e.toString());
         }
         
     }//GEN-LAST:event_jRegistraConfermaActionPerformed
 
     private void jRegistraAnnullaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegistraAnnullaActionPerformed
-
             this.setVisible(false);  
             
     }//GEN-LAST:event_jRegistraAnnullaActionPerformed
