@@ -323,8 +323,14 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
     }//GEN-LAST:event_jRegistraConfermaActionPerformed
 
     private void jRegistraAnnullaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegistraAnnullaActionPerformed
-            this.setVisible(false);  
-            
+        try
+        {
+            fc.processRequest(FrontController.Request.FrameLogin, null);
+        }
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+            Shared.showError(this, e.toString());
+        }      
     }//GEN-LAST:event_jRegistraAnnullaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
