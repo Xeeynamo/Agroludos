@@ -31,7 +31,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
 {
     FrontController fc;
     //Utente agro;
-    //Competizione [] listComp;
+    Competizione [] listComp;
     Optional [] listOpt;
     private static final String obj="AGROLUDOS";
     private static final String iscr="Un nuovo partecipante si è iscritto alla competizione del ";
@@ -49,7 +49,8 @@ public class JFrameHomePartec extends javax.swing.JFrame
     {
         try
         {
-            Shared.CreateList(jListDisponibili,fc.processRequest(FrontController.Request.GetCompetizioniDisponibili,null));
+            listComp=(Competizione [])fc.processRequest(FrontController.Request.GetCompetizioniDisponibili,null);
+            Shared.CreateList(jListDisponibili,(Object []) listComp);
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
         {
@@ -59,7 +60,14 @@ public class JFrameHomePartec extends javax.swing.JFrame
     
     void CompetizioniPrenotateLoadList() throws SQLException
     {
-        Shared.CreateList(jListMyIscrizioni,listComp=agro.getCompetizioniPrenotate());
+        try
+        {
+            Shared.CreateList(jListMyIscrizioni,fc.processRequest(FrontController.Request.GetCompetizioniPrenotate,null));
+        }
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+            Shared.showError(this, e.toString());
+        }
     }
 
     /**
@@ -559,116 +567,131 @@ public class JFrameHomePartec extends javax.swing.JFrame
     void CompetizionePrenotataLoad (int index) throws SQLException
     {
         if (index < 0) return;
-        float prezzo_tot=0;
-        Competizione c=agro.getCompetizione(listComp[index].getId());
-        jLabelMyCosto.setText(String.valueOf(c.getPrezzo())+"€");
-        if(jCheckBoxMyOptional1.isSelected())
-            jCheckBoxMyOptional1.setSelected(false);
-        if(jCheckBoxMyOptional2.isSelected())
-            jCheckBoxMyOptional2.setSelected(false);
-        if(jCheckBoxMyOptional3.isSelected())
-            jCheckBoxMyOptional3.setSelected(false);
-        jCheckBoxMyOptional1.setEnabled(false);
-        jCheckBoxMyOptional2.setEnabled(false);
-        jCheckBoxMyOptional3.setEnabled(false);
-        jCheckBoxMyOptional1.setText("-");
-        jCheckBoxMyOptional1.setText("-");
-        jCheckBoxMyOptional1.setText("-");
-        jLabelMyOptionalCosto1.setText("-");
-        jLabelMyOptionalCosto1.setText("-");
-        jLabelMyOptionalCosto1.setText("-");
-        listOpt=c.getOptional();
-        if(listOpt!=null)
+        try
         {
-            for (int i=0;i<listOpt.length;i++)
+            float prezzo_tot=0;
+            Competizione c=(Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object[] {listComp[index].getId()})[0];
+            jLabelMyCosto.setText(String.valueOf(c.getPrezzo())+"€");
+            if(jCheckBoxMyOptional1.isSelected())
+                jCheckBoxMyOptional1.setSelected(false);
+            if(jCheckBoxMyOptional2.isSelected())
+                jCheckBoxMyOptional2.setSelected(false);
+            if(jCheckBoxMyOptional3.isSelected())
+                jCheckBoxMyOptional3.setSelected(false);
+            jCheckBoxMyOptional1.setEnabled(false);
+            jCheckBoxMyOptional2.setEnabled(false);
+            jCheckBoxMyOptional3.setEnabled(false);
+            jCheckBoxMyOptional1.setText("-");
+            jCheckBoxMyOptional1.setText("-");
+            jCheckBoxMyOptional1.setText("-");
+            jLabelMyOptionalCosto1.setText("-");
+            jLabelMyOptionalCosto1.setText("-");
+            jLabelMyOptionalCosto1.setText("-");
+            listOpt=c.getOptional();
+            if(listOpt!=null)
             {
-                if(listOpt[i].getNome().compareTo("Colazione")==0)
+                for (int i=0;i<listOpt.length;i++)
                 {
-                    jCheckBoxMyOptional1.setEnabled(true);
-                    jCheckBoxMyOptional1.setText(listOpt[i].getNome()); 
-                    jLabelMyOptionalCosto1.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
-                    if (agro.isOptionalSelezionato(listOpt[i], c))
+                    if(listOpt[i].getNome().compareTo("Colazione")==0)
                     {
-                        jCheckBoxMyOptional1.setSelected(true);
-                        prezzo_tot+=listOpt[i].getPrezzo();
-                    }
-                }
-                else if (listOpt[i].getNome().compareTo("Pranzo")==0)
-                    {
-                        jCheckBoxMyOptional2.setEnabled(true);
-                        jCheckBoxMyOptional2.setText(listOpt[i].getNome());
-                        jLabelMyOptionalCosto2.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
-                        if (agro.isOptionalSelezionato(listOpt[i], c))
+                        jCheckBoxMyOptional1.setEnabled(true);
+                        jCheckBoxMyOptional1.setText(listOpt[i].getNome()); 
+                        jLabelMyOptionalCosto1.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
+                        if ((Boolean)fc.processRequest(FrontController.Request.IsOptionalSelezionato,new Object[]{listOpt[i], c})[0])
                         {
-                            jCheckBoxMyOptional2.setSelected(true);
+                            jCheckBoxMyOptional1.setSelected(true);
                             prezzo_tot+=listOpt[i].getPrezzo();
                         }
                     }
-                    else
-                    {
-                        jCheckBoxMyOptional3.setEnabled(true);
-                        jCheckBoxMyOptional3.setText(listOpt[i].getNome());
-                        jLabelMyOptionalCosto3.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
-                        if (agro.isOptionalSelezionato(listOpt[i], c))
-                        {    
-                            jCheckBoxMyOptional3.setSelected(true);
-                            prezzo_tot+=listOpt[i].getPrezzo();
+                    else if (listOpt[i].getNome().compareTo("Pranzo")==0)
+                        {
+                            jCheckBoxMyOptional2.setEnabled(true);
+                            jCheckBoxMyOptional2.setText(listOpt[i].getNome());
+                            jLabelMyOptionalCosto2.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
+                            if ((Boolean)fc.processRequest(FrontController.Request.IsOptionalSelezionato,new Object[]{listOpt[i], c})[0])
+                            {
+                                jCheckBoxMyOptional2.setSelected(true);
+                                prezzo_tot+=listOpt[i].getPrezzo();
+                            }
                         }
-                    }
-            }    
+                        else
+                        {
+                            jCheckBoxMyOptional3.setEnabled(true);
+                            jCheckBoxMyOptional3.setText(listOpt[i].getNome());
+                            jLabelMyOptionalCosto3.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
+                            if((Boolean)fc.processRequest(FrontController.Request.IsOptionalSelezionato,new Object[]{listOpt[i], c})[0])
+                            {    
+                                jCheckBoxMyOptional3.setSelected(true);
+                                prezzo_tot+=listOpt[i].getPrezzo();
+                            }
+                        }
+                }    
+            }
+            jLabelMyPrezzoTotale.setText(String.valueOf(c.getPrezzo()+prezzo_tot));
+            jLabelMyManager.setText(c.getManager().getNome()+" "+c.getManager().getCognome());
+            jLabelMyManagerMail.setText(c.getManager().getMail());
+        } 
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+                Shared.showError(this, e.toString());
         }
-        jLabelMyPrezzoTotale.setText(String.valueOf(c.getPrezzo()+prezzo_tot));
-        jLabelMyManager.setText(c.getManager().getNome()+" "+c.getManager().getCognome());
-        jLabelMyManagerMail.setText(c.getManager().getMail());
     }
     
     void CompetizioneDisponibileLoad (int index) throws SQLException
     {
         if (index < 0) return;
-        Competizione c=agro.getCompetizione(listComp[index].getId());
-        jLabelNPart.setText(String.valueOf(c.getNMax()-c.getNPart()));
-        jLabelPrezzo_Comp.setText(String.valueOf(c.getPrezzo())+"€");
-        jCheckBoxOpt1.setEnabled(false);
-        jCheckBoxOpt2.setEnabled(false);
-        jCheckBoxOpt3.setEnabled(false);
-        jCheckBoxOpt1.setText("-");
-        jCheckBoxOpt2.setText("-");
-        jCheckBoxOpt3.setText("-");
-        jLabelPrezzoOpt1.setText("-");
-        jLabelPrezzoOpt2.setText("-");
-        jLabelPrezzoOpt3.setText("-");
-        listOpt=c.getOptional();
-        if(listOpt!=null)
-        {    
-        for (int i=0;i<listOpt.length;i++)
+        try
         {
-            if(listOpt[i].getNome().compareTo("Colazione")==0)
+            Competizione c=(Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object[] {listComp[index].getId()})[0];
+            jLabelNPart.setText(String.valueOf(c.getNMax()-c.getNPart()));
+            jLabelPrezzo_Comp.setText(String.valueOf(c.getPrezzo())+"€");
+            jCheckBoxOpt1.setEnabled(false);
+            jCheckBoxOpt2.setEnabled(false);
+            jCheckBoxOpt3.setEnabled(false);
+            jCheckBoxOpt1.setText("-");
+            jCheckBoxOpt2.setText("-");
+            jCheckBoxOpt3.setText("-");
+            jLabelPrezzoOpt1.setText("-");
+            jLabelPrezzoOpt2.setText("-");
+            jLabelPrezzoOpt3.setText("-");
+            listOpt=c.getOptional();
+            if(listOpt!=null)
+            {    
+            for (int i=0;i<listOpt.length;i++)
             {
-                jCheckBoxOpt1.setEnabled(true);
-                jCheckBoxOpt1.setText(listOpt[i].getNome()); 
-                jLabelPrezzoOpt1.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
-            }
-            else if(listOpt[i].getNome().compareTo("Pranzo")==0)
-                {  
-                   jCheckBoxOpt2.setEnabled(true);
-                   jCheckBoxOpt2.setText(listOpt[i].getNome()); 
-                   jLabelPrezzoOpt2.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
-                }
-                else
+                if(listOpt[i].getNome().compareTo("Colazione")==0)
                 {
-                   jCheckBoxOpt3.setEnabled(true);
-                   jCheckBoxOpt3.setText(listOpt[i].getNome()); 
-                   jLabelPrezzoOpt3.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
-                }               
+                    jCheckBoxOpt1.setEnabled(true);
+                    jCheckBoxOpt1.setText(listOpt[i].getNome()); 
+                    jLabelPrezzoOpt1.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
+                }
+                else if(listOpt[i].getNome().compareTo("Pranzo")==0)
+                    {  
+                        jCheckBoxOpt2.setEnabled(true);
+                        jCheckBoxOpt2.setText(listOpt[i].getNome()); 
+                        jLabelPrezzoOpt2.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
+                    }
+                    else
+                    {
+                        jCheckBoxOpt3.setEnabled(true);
+                        jCheckBoxOpt3.setText(listOpt[i].getNome()); 
+                        jLabelPrezzoOpt3.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
+                    }               
+            }
+            }
+            jLabelPrezzoTot.setText(String.valueOf(c.getPrezzo()));
+            jLabelMC.setText(c.getManager().getNome()+" "+c.getManager().getCognome());
+            jLabelMailMC.setText(c.getManager().getMail());
         }
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+                Shared.showError(this, e.toString());
         }
-        jLabelPrezzoTot.setText(String.valueOf(c.getPrezzo()));
-        jLabelMC.setText(c.getManager().getNome()+" "+c.getManager().getCognome());
-        jLabelMailMC.setText(c.getManager().getMail());
     }        
     private void jListDisponibiliValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListDisponibiliValueChanged
         try {
             // TODO add your handling code here:
+            //CompetizioneDisponibileLoad(jListDisponibili.getSelectedIndex());
             CompetizioneDisponibileLoad(jListDisponibili.getSelectedIndex());
         } catch (SQLException ex) {
             Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
@@ -722,29 +745,31 @@ public class JFrameHomePartec extends javax.swing.JFrame
                 }
             }
         }
-        try {
-            agro.addIscrizioneCompetizione(listComp[jListDisponibili.getSelectedIndex()],opt_scelti);
+        try 
+        {
+            fc.processRequest(FrontController.Request.AddIscrizioneCompetizione,new Object[]{listComp[jListDisponibili.getSelectedIndex()],opt_scelti});
+            //agro.addIscrizioneCompetizione(listComp[jListDisponibili.getSelectedIndex()],opt_scelti);
                     JOptionPane.showMessageDialog(null, "Prenotazione effettuata\ncon successo!\n"
                     , "Successo", JOptionPane.INFORMATION_MESSAGE);
             String mail_mc=listComp[jListDisponibili.getSelectedIndex()].getManager().getMail();
             listComp[jListDisponibili.getSelectedIndex()].getDataCompString();
-            AgroMail m=new AgroMail(agro.getMailSys(),mail_mc,obj,iscr+listComp[jListDisponibili.getSelectedIndex()].getDataCompString());
-            m.send();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Impossibile caricare le competizioni\n" +
-                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-        } catch (SrcScadutaException ex) {
-            JOptionPane.showMessageDialog(null,
-                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-        } catch (MessagingException ex) {
-            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
+            fc.processRequest(FrontController.Request.SendMail, new Object[] {mail_mc,obj,iscr+listComp[jListDisponibili.getSelectedIndex()].getDataCompString()});
+        } 
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+           Shared.showError(this, e.toString());
         }
+
         finally
         {
-            JFrame jFrame=new JFrameHomePartec(agro);
-            this.setVisible(false);
-            jFrame.pack();
-            jFrame.setVisible(true);
+            try
+            {
+                fc.processRequest(FrontController.Request.FrameHome, null);
+            }
+            catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+            {
+                Shared.showError(this, e.toString());
+            }        
         }
     }//GEN-LAST:event_jIscrizioneCompetizioneActionPerformed
 

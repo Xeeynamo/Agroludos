@@ -8,6 +8,7 @@ import agroludos.gui.*;
 import java.sql.SQLException;
 import javax.mail.MessagingException;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class FrontController
 {
