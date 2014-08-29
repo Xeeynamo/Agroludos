@@ -249,7 +249,7 @@ public class FrontController
                         currentFrame.setVisible(false);
                         currentFrame.dispose();
                     }
-                    //currentFrame = new JFrameHomePartec(this);
+                    currentFrame = new JFrameHomePartec(this);
                     currentFrame.setVisible(true);
                     break;
                 case FrameManagerCompetizione:

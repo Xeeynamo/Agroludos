@@ -6,6 +6,10 @@
 
 package agroludos.gui;
 
+import agroludos.DeniedRequestException;
+import agroludos.FrontController;
+import agroludos.InternalErrorException;
+import agroludos.RequestNotSupportedException;
 import agroludos.db.user.Utente;
 import agroludos.db.*;
 import agroludos.db.exception.*;
@@ -25,32 +29,32 @@ import javax.swing.*;
  */
 public class JFrameHomePartec extends javax.swing.JFrame
 {
-    Utente agro;
-    Competizione [] listComp;
+    FrontController fc;
+    //Utente agro;
+    //Competizione [] listComp;
     Optional [] listOpt;
     private static final String obj="AGROLUDOS";
     private static final String iscr="Un nuovo partecipante si è iscritto alla competizione del ";
     static String mod="Un partecipante ha cambiato la scelta dei optional offriti dalla competizione da voi gestita del  ";
     static String canc="Un partecipante ha annullato la prenotazione per la competizione da voi gestita del ";
-    public JFrameHomePartec(Utente agro)
-    {
+    public JFrameHomePartec(FrontController fc) throws DeniedRequestException, RequestNotSupportedException, InternalErrorException, SQLException
+    { 
+        this.fc=fc;
         Shared.setDefaultLookAndFeel();
-        try 
-        {
-            initComponents();
-            this.agro=agro;
-            CompetizioniDisponibiliLoadList();
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Impossibile caricare le competizioni\n" +
-                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-        }
+        initComponents();
+        CompetizioniDisponibiliLoadList();
     }
     
     void CompetizioniDisponibiliLoadList() throws SQLException
     {
-        Shared.CreateList(jListDisponibili,listComp=agro.getCompetizioniDisponibili());
+        try
+        {
+            Shared.CreateList(jListDisponibili,fc.processRequest(FrontController.Request.GetCompetizioniDisponibili,null));
+        }
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+            Shared.showError(this, e.toString());
+        }
     }
     
     void CompetizioniPrenotateLoadList() throws SQLException
