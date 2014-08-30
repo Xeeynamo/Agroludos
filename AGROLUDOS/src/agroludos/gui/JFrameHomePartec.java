@@ -62,7 +62,8 @@ public class JFrameHomePartec extends javax.swing.JFrame
     {
         try
         {
-            Shared.CreateList(jListMyIscrizioni,fc.processRequest(FrontController.Request.GetCompetizioniPrenotate,null));
+            listComp=(Competizione [])fc.processRequest(FrontController.Request.GetCompetizioniPrenotate,null);
+            Shared.CreateList(jListMyIscrizioni,listComp);
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
         {
@@ -907,16 +908,27 @@ public class JFrameHomePartec extends javax.swing.JFrame
 
     private void jButtonMyOptionalConfermaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMyOptionalConfermaActionPerformed
         // TODO add your handling code here:
-        try {
+        try 
+        {
             for (int i=0;i<listOpt.length;i++)
             {
                 
                 if(listOpt[i].getNome().compareTo("Colazione")==0)
-                    agro.setOptionalPrenotazione(listOpt[i],agro.getCompetizione(listComp[jListMyIscrizioni.getSelectedIndex()].getId()),jCheckBoxMyOptional1.isSelected());   
+                    fc.processRequest(FrontController.Request.SetOptionalPrenotazione, new Object[]
+                    {listOpt[i],
+                    (Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object[]{listComp[jListMyIscrizioni.getSelectedIndex()].getId()})[0],
+                    jCheckBoxMyOptional1.isSelected()});
+                    //agro.setOptionalPrenotazione(listOpt[i],agro.getCompetizione(listComp[jListMyIscrizioni.getSelectedIndex()].getId()),jCheckBoxMyOptional1.isSelected());   
                 else if(listOpt[i].getNome().compareTo("Pranzo")==0)
-                    agro.setOptionalPrenotazione(listOpt[i],agro.getCompetizione(listComp[jListMyIscrizioni.getSelectedIndex()].getId()),jCheckBoxMyOptional2.isSelected());
+                    fc.processRequest(FrontController.Request.SetOptionalPrenotazione, new Object[]
+                    {listOpt[i],
+                    (Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object[]{listComp[jListMyIscrizioni.getSelectedIndex()].getId()})[0],
+                    jCheckBoxMyOptional2.isSelected()});
                     else if(listOpt[i].getNome().compareTo("Pernotto")==0)
-                        agro.setOptionalPrenotazione(listOpt[i],agro.getCompetizione(listComp[jListMyIscrizioni.getSelectedIndex()].getId()),jCheckBoxMyOptional3.isSelected());
+                                fc.processRequest(FrontController.Request.SetOptionalPrenotazione, new Object[]
+                                {listOpt[i],
+                                (Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object[]{listComp[jListMyIscrizioni.getSelectedIndex()].getId()})[0],
+                                jCheckBoxMyOptional3.isSelected()});
 
                 
 
@@ -925,22 +937,25 @@ public class JFrameHomePartec extends javax.swing.JFrame
             JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
                     , "Successo", JOptionPane.INFORMATION_MESSAGE); 
                         
-            String mail_mc=listComp[jListDisponibili.getSelectedIndex()].getManager().getMail();
-            listComp[jListDisponibili.getSelectedIndex()].getDataCompString();
-            AgroMail m=new AgroMail(agro.getMailSys(),mail_mc,obj,mod+listComp[jListDisponibili.getSelectedIndex()].getDataCompString());
-            m.send();
+            String mail_mc=listComp[jListMyIscrizioni.getSelectedIndex()].getManager().getMail();
+            listComp[jListMyIscrizioni.getSelectedIndex()].getDataCompString();
+            fc.processRequest(FrontController.Request.SendMail, new Object[] {mail_mc,obj,mod+listComp[jListMyIscrizioni.getSelectedIndex()].getDataCompString()});
         }
-                catch (SQLException ex) {
-                     Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (MessagingException ex) {
-            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
+
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+           Shared.showError(this, e.toString());
         }
                 finally
                 {
-                    JFrame jFrame=new JFrameHomePartec(agro);
-                    this.setVisible(false);
-                    jFrame.pack();
-                    jFrame.setVisible(true);
+                    try
+                    {
+                        fc.processRequest(FrontController.Request.FrameHome, null);
+                    }
+                    catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+                    {
+                        Shared.showError(this, e.toString());
+                    }
                 }   
     }//GEN-LAST:event_jButtonMyOptionalConfermaActionPerformed
 
@@ -948,26 +963,29 @@ public class JFrameHomePartec extends javax.swing.JFrame
         try 
         {
             // TODO add your handling code here:
-            agro.AnnullaPrenotazione(agro.getCompetizione(listComp[jListMyIscrizioni.getSelectedIndex()].getId()));
+           // agro.AnnullaPrenotazione(agro.getCompetizione(listComp[jListMyIscrizioni.getSelectedIndex()].getId()));
+            fc.processRequest(FrontController.Request.AnnullaPrenotazione,new Object []{(Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object[]{listComp[jListMyIscrizioni.getSelectedIndex()].getId()})[0]});
             JOptionPane.showMessageDialog(null, "Annullamento prenotazione\n effettuato successo!\n"
             , "Successo", JOptionPane.INFORMATION_MESSAGE);
-            String mail_mc=listComp[jListDisponibili.getSelectedIndex()].getManager().getMail();
-            listComp[jListDisponibili.getSelectedIndex()].getDataCompString();
-            AgroMail m=new AgroMail(agro.getMailSys(),mail_mc,obj,canc+listComp[jListDisponibili.getSelectedIndex()].getDataCompString());
-            m.send();
+            String mail_mc=listComp[jListMyIscrizioni.getSelectedIndex()].getManager().getMail();
+            listComp[jListMyIscrizioni.getSelectedIndex()].getDataCompString();
+            fc.processRequest(FrontController.Request.SendMail, new Object[] {mail_mc,obj,canc+listComp[jListMyIscrizioni.getSelectedIndex()].getDataCompString()});
         } 
-        catch (SQLException ex) 
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
         {
-            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MessagingException ex) {
-            Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
+           Shared.showError(this, e.toString());
         }
+        
         finally
         {
-            JFrame jFrame=new JFrameHomePartec(agro);
-            this.setVisible(false);
-            jFrame.pack();
-            jFrame.setVisible(true);
+                    try
+                    {
+                        fc.processRequest(FrontController.Request.FrameHome, null);
+                    }
+                    catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+                    {
+                        Shared.showError(this, e.toString());
+                    }
         }
     }//GEN-LAST:event_jButtonMyAnnullaIscrizioneActionPerformed
 

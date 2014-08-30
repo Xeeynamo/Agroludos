@@ -186,7 +186,10 @@ public class FrontController
                 case GetCompetizioniPrenotate:
                     return user.getCompetizioniPrenotate();
                 case AnnullaPrenotazione:
-                    user.annullaPrenotazione((Partecipante)param[0], (Competizione)param[1]);
+                    user.annullaPrenotazione
+                        ((Partecipante)processRequest(Request.GetPartecipante,
+                            new Object[] { user.getMail() })[0],
+                        (Competizione)param[0]);
                     break;
                 case GetPartecipante:
                     return new Object[]
@@ -209,16 +212,18 @@ public class FrontController
                     return new Object[]
                     {
                         user.isOptionalPrenotato(
-                            (Partecipante)param[0],
-                            (Optional)param[1],
-                            (Competizione)param[2])
+                            (Partecipante)processRequest(Request.GetPartecipante,
+                                    new Object[] { user.getMail() })[0],
+                            (Optional)param[0],
+                            (Competizione)param[1])
                     };
                 case SetOptionalPrenotazione:
                     user.setOptionalPrenotazione(
                             (Optional)param[0],
-                            (Partecipante)param[1],
-                            (Competizione)param[2],
-                            (boolean)param[3]);
+                            (Partecipante)processRequest(Request.GetPartecipante,
+                                    new Object[] { user.getMail() })[0],
+                            (Competizione)param[1],
+                            (boolean)param[2]);
                     break;
                 case GetOptional:
                     return user.getOptional();
