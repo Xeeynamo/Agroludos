@@ -77,6 +77,7 @@ public class FrontController
         
         GetCompetizioniDisponibili,
         GetCompetizioniPrenotate,
+        GetCompetizione,
         AnnullaPrenotazione,
         AddIscrizioneCompetizione,
         GetCompetizioneFromId,
@@ -85,6 +86,8 @@ public class FrontController
         GetOptional,
         SetOptional,
         GetPartecipante,
+        GetPartecipantiMinimi,
+        GetPartecipanteCompetizioni,
         
         FrameLogin,
         FrameRegistrazione,
@@ -103,6 +106,7 @@ public class FrontController
         
         new Pair(Request.GetCompetizioniDisponibili, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetCompetizioniPrenotate, new UserType[]{UserType.Partecipante}),
+        new Pair(Request.GetCompetizione, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.AnnullaPrenotazione, new UserType[]{UserType.Partecipante}),
         new Pair(Request.AddIscrizioneCompetizione, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetCompetizioneFromId, new UserType[]{UserType.Partecipante}),
@@ -111,6 +115,8 @@ public class FrontController
         new Pair(Request.GetOptional, new UserType[]{UserType.ManagerCompetizione, UserType.ManagerSistema}),
         new Pair(Request.SetOptional, new UserType[]{UserType.ManagerSistema}),        new Pair(Request.SetOptionalPrenotazione, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetPartecipante, new UserType[]{UserType.Partecipante, UserType.ManagerCompetizione, UserType.ManagerSistema}),
+        new Pair(Request.GetPartecipantiMinimi, new UserType[]{UserType.ManagerSistema}),
+        new Pair(Request.GetPartecipanteCompetizioni, new UserType[]{UserType.ManagerSistema}),
         
         new Pair(Request.FrameLogin, new UserType[]{UserType.Anonimo}),
         new Pair(Request.FrameRegistrazione, new UserType[]{UserType.Anonimo}),
@@ -185,6 +191,11 @@ public class FrontController
                     return user.getCompetizioniDisponibili();
                 case GetCompetizioniPrenotate:
                     return user.getCompetizioniPrenotate();
+                case GetCompetizione:
+                    return new Object[]
+                    {
+                        user.getCompetizione((Integer)param[0])
+                    };
                 case AnnullaPrenotazione:
                     if (user instanceof agroludos.db.user.Utente)
                         user.annullaPrenotazione
@@ -233,6 +244,10 @@ public class FrontController
                 case SetOptional:
                     user.setOptional((Optional)param[0]);
                     break;
+                case GetPartecipantiMinimi:
+                    return user.getPartecipantiMinimal();
+                case GetPartecipanteCompetizioni:
+                    return user.getPartecipanteCompetizioni((String)param[0]);
                     
                 case FrameLogin:
                     if (currentFrame != null)

@@ -634,7 +634,7 @@ public class AgroController
      * @return lista di id di competizioni
      * @throws SQLException 
      */
-    public int[] getPartecipanteCompetizioni(String mail) throws SQLException
+    public Integer[] getPartecipanteCompetizioni(String mail) throws SQLException
     {
         Request q = new Request(
                 new String[]
@@ -645,7 +645,7 @@ public class AgroController
                 new Condition("partecipante", "\"" + mail + "\"", Request.Operator.Equal)
         );
         ResultSet rs = sendQuery(q.toString());
-        int[] id = new int[getResultSetLength(rs)];
+        Integer[] id = new Integer[getResultSetLength(rs)];
         for (int i = 0; i < id.length; i++, rs.next())
         {
             id[i] = rs.getInt("competizione");

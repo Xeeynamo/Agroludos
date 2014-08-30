@@ -7,13 +7,17 @@
 package agroludos.gui;
 
 import agroludos.Agroludos;
-import agroludos.db.user.ManagerSistema;
+import agroludos.DeniedRequestException;
+import agroludos.FrontController;
+import agroludos.InternalErrorException;
+import agroludos.RequestNotSupportedException;
 import agroludos.db.components.*;
+import agroludos.db.user.ManagerSistema;
 import java.awt.*;
-import javax.swing.*;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.*;
 
 /**
  *
@@ -21,7 +25,7 @@ import java.util.logging.Logger;
  */
 public class JFrameMainSystem extends javax.swing.JFrame {
 
-    private final ManagerSistema agro;
+    private final FrontController fc;
     // Scheda MANAGER
     private Manager[] listManager;
     private Competizione[] listManagerCompetizioni;
@@ -34,8 +38,8 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     private Partecipante[] listPartecipanti;
     private Competizione[] listPartecipanteCompetizioni;
     
-    public JFrameMainSystem(ManagerSistema agroSysMan) {
-        agro = agroSysMan;
+    public JFrameMainSystem(FrontController fc) {
+        this.fc = fc;
         Shared.setDefaultLookAndFeel();
         initComponents();
     }
@@ -764,27 +768,43 @@ public class JFrameMainSystem extends javax.swing.JFrame {
      */
     void PartecipantiLoadList() throws SQLException
     {
-        Shared.CreateList(jListaUtenti, listPartecipanti = agro.getPartecipantiMinimal());
+        try {
+            listManager = (Manager[])fc.processRequest(FrontController.Request.GetPartecipantiMinimi, null);
+            Shared.CreateList(jListaUtenti, listPartecipanti);
+        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
+            Shared.showError(this, e.toString());
+        }
     }
     void PartecipanteLoad(int index) throws SQLException
     {
-        if (index < 0) return;
-        Partecipante p = agro.getPartecipante(listPartecipanti[index].getMail());
-        jUtenteNome.setText(p.getNome());
-        jUtenteCognome.setText(p.getCognome());
-        jUtenteIndirizzo.setText(p.getIndirizzo());
-        jUtenteNascita.setText(p.getDataNascitaString());
-        jUtenteSesso.setText(String.valueOf(p.getSesso()));
-        jUtenteTesseraSan.setText(p.getTesseraSan());
-        jUtenteMail.setText(p.getMail());
-        jUtenteDataSrc.setText(p.getDataSrcString());
-        jUtenteCertificatoSrc.setText(p.getSrc());
-        
-        int[] idCompetizioni = agro.getPartecipanteCompetizioni(p.getMail());
-        listPartecipanteCompetizioni = new Competizione[idCompetizioni.length];
-        for (int i = 0; i < idCompetizioni.length; i++)
-            listPartecipanteCompetizioni[i] = agro.getCompetizione(idCompetizioni[i]);
-        Shared.CreateList(jListaUtentiIscrizioni, listPartecipanteCompetizioni);
+        try {
+            if (index < 0) return;
+            Object[] result = fc.processRequest(FrontController.Request.GetPartecipante,
+                    new Object[]{listPartecipanti[index].getMail()});
+            Partecipante p = (Partecipante)result[0];
+            jUtenteNome.setText(p.getNome());
+            jUtenteCognome.setText(p.getCognome());
+            jUtenteIndirizzo.setText(p.getIndirizzo());
+            jUtenteNascita.setText(p.getDataNascitaString());
+            jUtenteSesso.setText(String.valueOf(p.getSesso()));
+            jUtenteTesseraSan.setText(p.getTesseraSan());
+            jUtenteMail.setText(p.getMail());
+            jUtenteDataSrc.setText(p.getDataSrcString());
+            jUtenteCertificatoSrc.setText(p.getSrc());
+            
+            result = fc.processRequest(FrontController.Request.GetPartecipanteCompetizioni,
+                    new Object[]{p.getMail()});
+            Integer[] idCompetizioni = (Integer[])result;
+            listPartecipanteCompetizioni = new Competizione[idCompetizioni.length];
+            for (int i = 0; i < idCompetizioni.length; i++)
+            {
+                result = fc.processRequest(FrontController.Request.GetCompetizione, new Object[]{idCompetizioni[i]});
+                listPartecipanteCompetizioni[i] = (Competizione)result[0];
+            }
+            Shared.CreateList(jListaUtentiIscrizioni, listPartecipanteCompetizioni);
+        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
+            Shared.showError(this, e.toString());
+        }
     }
     // </editor-fold>
     
@@ -917,42 +937,6 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jListCompetizioniValueChanged
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFrameMainSystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFrameMainSystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFrameMainSystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFrameMainSystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            try {
-                new JFrameMainSystem((ManagerSistema)Agroludos.Connect(null).Login("a", "a")).setVisible(true);
-            } catch (Exception ex) {
-                Shared.showError(null, ex.toString());
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox jCheckAnnullate;
