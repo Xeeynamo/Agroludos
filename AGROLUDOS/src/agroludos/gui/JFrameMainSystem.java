@@ -689,15 +689,27 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda i manager">
     private void ManagerLoadList() throws SQLException
     {
-        Shared.CreateList(jListaManager, listManager = agro.getManagers());
+        try
+        {
+            Object[] request = fc.processRequest(FrontController.Request.GetManagers, null);
+            listManager = (Manager[])request;
+            Shared.CreateList(jListaManager, listManager);
+        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
+            Shared.showError(this, e.toString());
+        }
     }
     private void ManagerSelected(int index) throws SQLException
     {
         if (index < 0) return;
         String mail = listManager[index].getMail();
-        Shared.CreateList(jListManagerCompetizioni, listManagerCompetizioni =
-                agro.getCompetizioni(mail));
-        jLabelManagerMail.setText(mail);
+        try
+        {
+            Shared.CreateList(jListManagerCompetizioni, listManagerCompetizioni =
+                    agro.getCompetizioni(mail));
+            jLabelManagerMail.setText(mail);
+        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
+            Shared.showError(this, e.toString());
+        }
     }
     private void ManagerSelectedCompetition(int index) throws SQLException
     {
@@ -732,8 +744,12 @@ public class JFrameMainSystem extends javax.swing.JFrame {
      */
     void ReloadOpitonalTab() throws SQLException
     {
-        listOptional = agro.getOptional();
-        Shared.CreateList(jListOptional, listOptional);
+        try {
+            listOptional = (Optional[])fc.processRequest(FrontController.Request.GetOptional, null);
+            Shared.CreateList(jListOptional, listOptional);
+        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
+            Shared.showError(this, e.toString());
+        }
     }
     /**
      * Aggiorna tutte le proprietà annesse ad uno specifico optional
@@ -757,9 +773,15 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         Optional opt = new Optional(listOptional[index].getNome(),
             jOptionalDescription.getText(),
             (float)jOptionalPrice.getValue());
-        agro.setOptional(opt);
-        listOptional[index] = opt;
-        ReloadOptional(index);
+        
+        try {
+            fc.processRequest(FrontController.Request.SetOptional,
+                    new Object[]{opt});
+            listOptional[index] = opt;
+            ReloadOptional(index);
+        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
+            Shared.showError(this, e.toString());
+        }
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda gli utenti">
@@ -769,7 +791,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     void PartecipantiLoadList() throws SQLException
     {
         try {
-            listManager = (Manager[])fc.processRequest(FrontController.Request.GetPartecipantiMinimi, null);
+            listPartecipanti = (Partecipante[])fc.processRequest(FrontController.Request.GetPartecipantiMinimal, null);
             Shared.CreateList(jListaUtenti, listPartecipanti);
         } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
             Shared.showError(this, e.toString());
@@ -808,6 +830,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     }
     // </editor-fold>
     
+    // <editor-fold defaultstate="collapsed" desc="Eventi della finestra">
     /**
      * Chiamata quando si cambia scheda
      */
@@ -936,7 +959,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jListCompetizioniValueChanged
-
+    // </editor-fold>
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox jCheckAnnullate;

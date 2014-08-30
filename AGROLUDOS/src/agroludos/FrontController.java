@@ -75,6 +75,7 @@ public class FrontController
         SendMail,
         SendMailToSys,
         
+        GetManagers,
         GetCompetizioniDisponibili,
         GetCompetizioniPrenotate,
         GetCompetizione,
@@ -86,7 +87,7 @@ public class FrontController
         GetOptional,
         SetOptional,
         GetPartecipante,
-        GetPartecipantiMinimi,
+        GetPartecipantiMinimal,
         GetPartecipanteCompetizioni,
         
         FrameLogin,
@@ -104,6 +105,7 @@ public class FrontController
         new Pair(Request.SendMail, new UserType[]{UserType.Anonimo, UserType.Partecipante, UserType.ManagerCompetizione, UserType.ManagerSistema}),
         new Pair(Request.SendMailToSys, new UserType[]{UserType.Partecipante, UserType.ManagerCompetizione}),
         
+        new Pair(Request.GetManagers, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.GetCompetizioniDisponibili, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetCompetizioniPrenotate, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetCompetizione, new UserType[]{UserType.ManagerSistema}),
@@ -115,7 +117,7 @@ public class FrontController
         new Pair(Request.GetOptional, new UserType[]{UserType.ManagerCompetizione, UserType.ManagerSistema}),
         new Pair(Request.SetOptional, new UserType[]{UserType.ManagerSistema}),        new Pair(Request.SetOptionalPrenotazione, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetPartecipante, new UserType[]{UserType.Partecipante, UserType.ManagerCompetizione, UserType.ManagerSistema}),
-        new Pair(Request.GetPartecipantiMinimi, new UserType[]{UserType.ManagerSistema}),
+        new Pair(Request.GetPartecipantiMinimal, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.GetPartecipanteCompetizioni, new UserType[]{UserType.ManagerSistema}),
         
         new Pair(Request.FrameLogin, new UserType[]{UserType.Anonimo}),
@@ -187,6 +189,8 @@ public class FrontController
                     user.sendMail(user.getSysMail(), (String)param[0], (String)param[1]);
                     break;
                     
+                case GetManagers:
+                    return user.getManagers();
                 case GetCompetizioniDisponibili:
                     return user.getCompetizioniDisponibili();
                 case GetCompetizioniPrenotate:
@@ -244,7 +248,7 @@ public class FrontController
                 case SetOptional:
                     user.setOptional((Optional)param[0]);
                     break;
-                case GetPartecipantiMinimi:
+                case GetPartecipantiMinimal:
                     return user.getPartecipantiMinimal();
                 case GetPartecipanteCompetizioni:
                     return user.getPartecipanteCompetizioni((String)param[0]);
@@ -300,7 +304,7 @@ public class FrontController
                         currentFrame.setVisible(false);
                         currentFrame.dispose();
                     }
-                    //currentFrame = new JFrameMainSystem(this);
+                    currentFrame = new JFrameMainSystem(this);
                     currentFrame.setVisible(true);
                     break;
                    
