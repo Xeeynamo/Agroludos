@@ -704,8 +704,9 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         String mail = listManager[index].getMail();
         try
         {
-            Shared.CreateList(jListManagerCompetizioni, listManagerCompetizioni =
-                    agro.getCompetizioni(mail));
+            Object[] result = fc.processRequest(FrontController.Request.GetCompetizioni, mail);
+            listManagerCompetizioni = (Competizione[])result;
+            Shared.CreateList(jListManagerCompetizioni, listManagerCompetizioni);
             jLabelManagerMail.setText(mail);
         } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
             Shared.showError(this, e.toString());
@@ -713,9 +714,15 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     }
     private void ManagerSelectedCompetition(int index) throws SQLException
     {
-        if (index < 0) return;
-        listManagerCompetizioniOptional = agro.getCompetizioneOptional(listManagerCompetizioni[index].getId());
-        Shared.CreateList(jManagerOptionalList, listManagerCompetizioniOptional);
+        try {
+            if (index < 0) return;
+            Object[] result = fc.processRequest(FrontController.Request.GetCompetizioneOptionals,
+                    new Integer[]{listManagerCompetizioni[index].getId()});
+            listManagerCompetizioniOptional = (Optional[])result;
+            Shared.CreateList(jManagerOptionalList, listManagerCompetizioniOptional);
+        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
+            Shared.showError(this, e.toString());
+        }
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda le competizioni">

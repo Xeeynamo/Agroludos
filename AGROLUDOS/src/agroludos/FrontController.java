@@ -79,6 +79,8 @@ public class FrontController
         GetCompetizioniDisponibili,
         GetCompetizioniPrenotate,
         GetCompetizione,
+        GetCompetizioni,
+        GetCompetizioneOptionals,
         AnnullaPrenotazione,
         AddIscrizioneCompetizione,
         GetCompetizioneFromId,
@@ -109,6 +111,8 @@ public class FrontController
         new Pair(Request.GetCompetizioniDisponibili, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetCompetizioniPrenotate, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetCompetizione, new UserType[]{UserType.ManagerSistema}),
+        new Pair(Request.GetCompetizioni, new UserType[]{UserType.ManagerSistema}),
+        new Pair(Request.GetCompetizioneOptionals, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.AnnullaPrenotazione, new UserType[]{UserType.Partecipante}),
         new Pair(Request.AddIscrizioneCompetizione, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetCompetizioneFromId, new UserType[]{UserType.Partecipante}),
@@ -200,6 +204,10 @@ public class FrontController
                     {
                         user.getCompetizione((Integer)param[0])
                     };
+                case GetCompetizioni:
+                    return user.getCompetizioni((String)param[0]);
+                case GetCompetizioneOptionals:
+                    return user.getCompetizioneOptional((Integer)param[0]);
                 case AnnullaPrenotazione:
                     if (user instanceof agroludos.db.user.Utente)
                         user.annullaPrenotazione
