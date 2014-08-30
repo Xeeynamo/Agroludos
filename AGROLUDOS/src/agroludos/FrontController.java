@@ -186,10 +186,11 @@ public class FrontController
                 case GetCompetizioniPrenotate:
                     return user.getCompetizioniPrenotate();
                 case AnnullaPrenotazione:
-                    user.annullaPrenotazione
-                        ((Partecipante)processRequest(Request.GetPartecipante,
-                            new Object[] { user.getMail() })[0],
-                        (Competizione)param[0]);
+                    if (user instanceof agroludos.db.user.Utente)
+                        user.annullaPrenotazione
+                            ((Partecipante)processRequest(Request.GetPartecipante,
+                                new Object[] { user.getMail() })[0],
+                                (Competizione)param[0]);
                     break;
                 case GetPartecipante:
                     return new Object[]
@@ -209,21 +210,23 @@ public class FrontController
                         user.getCompetizione((int)param[0])
                     };
                 case IsOptionalSelezionato:
-                    return new Object[]
-                    {
-                        user.isOptionalPrenotato(
-                            (Partecipante)processRequest(Request.GetPartecipante,
-                                    new Object[] { user.getMail() })[0],
-                            (Optional)param[0],
-                            (Competizione)param[1])
-                    };
+                    if (user instanceof agroludos.db.user.Utente)
+                        return new Object[]
+                        {
+                            user.isOptionalPrenotato(
+                                (Partecipante)processRequest(Request.GetPartecipante,
+                                        new Object[] { user.getMail() })[0],
+                                (Optional)param[0],
+                                (Competizione)param[1])
+                        };
                 case SetOptionalPrenotazione:
-                    user.setOptionalPrenotazione(
-                            (Optional)param[0],
-                            (Partecipante)processRequest(Request.GetPartecipante,
-                                    new Object[] { user.getMail() })[0],
-                            (Competizione)param[1],
-                            (boolean)param[2]);
+                    if (user instanceof agroludos.db.user.Utente)
+                        user.setOptionalPrenotazione(
+                                (Optional)param[0],
+                                (Partecipante)processRequest(Request.GetPartecipante,
+                                        new Object[] { user.getMail() })[0],
+                                (Competizione)param[1],
+                                (boolean)param[2]);
                     break;
                 case GetOptional:
                     return user.getOptional();

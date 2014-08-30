@@ -141,7 +141,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
 
         jLabel12.setText("Costo competizione");
 
-        jLabelMailMC.setText("marco.rossi@agroludos.it");
+        jLabelMailMC.setText("-");
 
         jLabelPrezzo_Comp.setText("-");
 

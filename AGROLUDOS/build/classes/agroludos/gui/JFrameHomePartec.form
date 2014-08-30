@@ -175,7 +175,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelMailMC">
               <Properties>
-                <Property name="text" type="java.lang.String" value="marco.rossi@agroludos.it"/>
+                <Property name="text" type="java.lang.String" value="-"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelPrezzo_Comp">
