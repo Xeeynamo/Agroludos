@@ -319,6 +319,13 @@ public class FrontController
          */
         AddCompetizione,
         /**
+         * Annulla la competizione desiderata, facendola risultare al sistema,
+         * appunto, come annullata
+         * 
+         * @param int ID della competizione da annullare
+         */
+        AnnullaCompetizione,
+        /**
          * Visualizza la finestra del Login
          */
         FrameLogin,
@@ -374,6 +381,7 @@ public class FrontController
         new Pair(Request.GetIdFromCompetizione, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.GetMailFromPartecipante, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.GetCompetizioneTipi, new UserType[]{UserType.ManagerCompetizione}),
+        new Pair(Request.AnnullaCompetizione, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.AddCompetizione, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.FrameLogin, new UserType[]{UserType.Anonimo}),
         new Pair(Request.FrameRegistrazione, new UserType[]{UserType.Anonimo}),
@@ -532,6 +540,9 @@ public class FrontController
                     (int)param[2],0,(TipoCompetizione)param[3],
                     new Manager ("","",user.getMail()),(Date)param[4],(Optional[])param[5]);
                     user.creaCompetizione(c);
+                    break;
+                case AnnullaCompetizione:
+                    user.annullaCompetizione((int)param[0]);
                     break;
                 case FrameLogin:
                     if (currentFrame != null)

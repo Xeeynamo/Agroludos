@@ -609,6 +609,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCreaCompetizioneActionPerformed
 
     private void jButtonAnnullaCompetizioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnnullaCompetizioneActionPerformed
+        int IdC=0;
         if (jListCompetizioni.getSelectedIndex() < 0)
             return;
         if (JOptionPane.showConfirmDialog(this,
@@ -617,12 +618,14 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) ==
                 JOptionPane.YES_OPTION)
         {
-            try {
-                fc.processRequest(FrontController.Request., listPartecipanti)
-                agro.annullaCompetizione(jListCompetizioni.getSelectedIndex());
-            } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Impossibile annullare la competizione\n" +
-                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+            try 
+            {
+                IdC= (int)fc.processRequest(FrontController.Request.GetIdFromCompetizione,new Object [] {listCompetizioni[jListCompetizioni.getSelectedIndex()]})[0];
+                fc.processRequest(FrontController.Request.AnnullaCompetizione,new Object []{IdC});
+            }
+            catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+            {
+                Shared.showError(this, e.toString());
             }
             LoadListCompetizioni();
         }
