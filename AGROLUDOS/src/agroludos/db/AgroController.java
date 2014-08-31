@@ -202,7 +202,8 @@ public class AgroController
     
     public Competizione [] getCompetizioniDisponibili () throws SQLException
     {
-       Competizione [] c= _getCompetizioni();
+       //Competizione [] c= _getCompetizioni();
+       Competizione [] c=getCompetizioniMinimal(1);
        int NComp=0;
        for (int i=0;i<c.length;i++)
        {
@@ -216,7 +217,8 @@ public class AgroController
        {
            if(c[i]!=null)
            {
-               c1[j]=c[i];
+               c1[j]=getCompetizione(c[i].getId());
+               //c1[j]=c[i];
                j++;
            }
        }
