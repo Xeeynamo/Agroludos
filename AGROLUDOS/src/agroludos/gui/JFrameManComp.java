@@ -643,8 +643,10 @@ public final class JFrameManComp extends javax.swing.JFrame {
     private void jButtonApplicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonApplicaActionPerformed
         try 
         {
-            Competizione c = agro.getCompetizione(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId());
-            if (agro.isModificaScaduto(c))
+            
+            int IdC=(int)fc.processRequest(FrontController.Request.GetIdFromCompetizione,new Object []{listCompetizioni[jListCompetizioni.getSelectedIndex()]})[0];
+            Competizione c=(Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object[] {IdC})[0];
+            if ((boolean)fc.processRequest(FrontController.Request.isModificaScaduto,new Object[]{c})[0])
                 throw new ModificaCompScadutaException();
             float prezzo_mod = Float.parseFloat(jCompPrezzo.getValue().toString());
             if ((int)jPartecMax.getValue()!=c.getNMax())

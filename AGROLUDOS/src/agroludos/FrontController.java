@@ -77,9 +77,10 @@ public class FrontController
          * nel sistema o non indicano nessun utente in generale non apre alcuna 
          * finestra
          * 
-         * @param
-         *      Email;
-         *      Password;
+         * @param 
+         * String Email. 
+         * String Password.
+         * 
          * @return
          *      Successo: presenta una nuova finestra dedicata in base
          *                 alla tipologia dell'utente loggato (se l'utente è
@@ -326,6 +327,15 @@ public class FrontController
          */
         AnnullaCompetizione,
         /**
+         * Indica se ad una data competizione si possano ancora effettuare
+         * o meno modifiche
+         * 
+         * @param Competizione la competizione interessata
+         * 
+         * @result true/false
+         */
+        isModificaScaduto,
+        /**
          * Visualizza la finestra del Login
          */
         FrameLogin,
@@ -383,6 +393,7 @@ public class FrontController
         new Pair(Request.GetCompetizioneTipi, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.AnnullaCompetizione, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.AddCompetizione, new UserType[]{UserType.ManagerCompetizione}),
+        new Pair(Request.isModificaScaduto, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.FrameLogin, new UserType[]{UserType.Anonimo}),
         new Pair(Request.FrameRegistrazione, new UserType[]{UserType.Anonimo}),
         new Pair(Request.FrameHome, new UserType[]{UserType.Partecipante}),
@@ -544,6 +555,12 @@ public class FrontController
                 case AnnullaCompetizione:
                     user.annullaCompetizione((int)param[0]);
                     break;
+                case isModificaScaduto:
+                    Competizione b=(Competizione)param[0];
+                    if(user.getNGiorniMancanti(b.getDataComp())<2)
+                        return new Object[]{true};
+                    else
+                        return new Object[]{false};
                 case FrameLogin:
                     if (currentFrame != null)
                     {
