@@ -7,9 +7,13 @@
 package agroludos.gui;
 
 import agroludos.Agroludos;
+import agroludos.DeniedRequestException;
+import agroludos.FrontController;
+import agroludos.InternalErrorException;
+import agroludos.RequestNotSupportedException;
 import agroludos.db.components.*;
-import agroludos.db.user.ManagerCompetizione;
 import agroludos.db.exception.*;
+import agroludos.db.user.ManagerCompetizione;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,12 +25,13 @@ import javax.swing.*;
  */
 public final class JFrameManComp extends javax.swing.JFrame {
 
-    ManagerCompetizione agro;
+    FrontController fc;
     Competizione[] listCompetizioni;
     Partecipante[] listPartecipanti;
     
-    public JFrameManComp(ManagerCompetizione agro) {
-        this.agro = agro;
+    public JFrameManComp(FrontController fc) 
+    {
+        this.fc=fc;
         Shared.setDefaultLookAndFeel();
         initComponents();
         LoadListCompetizioni();
@@ -506,13 +511,16 @@ public final class JFrameManComp extends javax.swing.JFrame {
 
     void LoadListCompetizioni()
     {
-        try {
-            listCompetizioni = agro.getCompetizioni();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Impossibile caricare la lista delle competizioni\n" +
-                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        try 
+        {
+            listCompetizioni = (Competizione[])fc.processRequest(FrontController.Request.GetCompetizioni,null);
+            Shared.CreateList(jListCompetizioni,(Object []) listCompetizioni);
         }
-        Shared.CreateList(jListCompetizioni, listCompetizioni);
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+            Shared.showError(this, e.toString());
+        }
+        
     }
     void SelezionaCompetizione(int index) throws SQLException
     {

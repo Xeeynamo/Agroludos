@@ -111,7 +111,7 @@ public class FrontController
         new Pair(Request.GetCompetizioniDisponibili, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetCompetizioniPrenotate, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetCompetizione, new UserType[]{UserType.ManagerSistema}),
-        new Pair(Request.GetCompetizioni, new UserType[]{UserType.ManagerSistema}),
+        new Pair(Request.GetCompetizioni, new UserType[]{UserType.ManagerCompetizione,UserType.ManagerSistema}),
         new Pair(Request.GetCompetizioneOptionals, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.AnnullaPrenotazione, new UserType[]{UserType.Partecipante}),
         new Pair(Request.AddIscrizioneCompetizione, new UserType[]{UserType.Partecipante}),
@@ -205,7 +205,11 @@ public class FrontController
                         user.getCompetizione((Integer)param[0])
                     };
                 case GetCompetizioni:
-                    return user.getCompetizioni((String)param[0]);
+                    if (user instanceof ManagerCompetizione)
+                        return user.getCompetizioni(user.getMail());
+                    else if (user instanceof ManagerSistema)
+                        return user.getCompetizioni((String)param[0]);
+                    break;
                 case GetCompetizioneOptionals:
                     return user.getCompetizioneOptional((Integer)param[0]);
                 case AnnullaPrenotazione:
@@ -294,7 +298,7 @@ public class FrontController
                         currentFrame.setVisible(false);
                         currentFrame.dispose();
                     }
-                    //currentFrame = new JFrameManComp(this);
+                    currentFrame = new JFrameManComp(this);
                     currentFrame.setVisible(true);
                     break;
                 case FrameCreaCompetizione:
