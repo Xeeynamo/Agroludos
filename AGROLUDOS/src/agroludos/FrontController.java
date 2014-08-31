@@ -5,6 +5,7 @@ import agroludos.db.components.*;
 import agroludos.db.exception.*;
 import agroludos.db.user.*;
 import agroludos.gui.*;
+import java.util.Date;
 import java.sql.SQLException;
 import javax.mail.MessagingException;
 import javax.swing.JFrame;
@@ -302,6 +303,21 @@ public class FrontController
          * @return Mail associata al partecipante
          */
         GetMailFromPartecipante,
+    /**
+     * Ottiene una lista dei vari tipi di competizione presenti
+     *
+     * @return lista di tipi di competizione
+     */
+        GetCompetizioneTipi,
+        /**
+         * Crea e registra una nuova competizione gestita dal manager
+         * di competizione che l'ha creato
+         * 
+         * @param prezzo, numero minimo di partecipanti, numero massimo di
+         * partecipanti, tipologia di competizione, data svolgimento, lista
+         * degli optional messi a disposizione per la competizione
+         */
+        AddCompetizione,
         /**
          * Visualizza la finestra del Login
          */
@@ -357,6 +373,8 @@ public class FrontController
         new Pair(Request.GetPartecipanteCompetizioni, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.GetIdFromCompetizione, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.GetMailFromPartecipante, new UserType[]{UserType.ManagerCompetizione}),
+        new Pair(Request.GetCompetizioneTipi, new UserType[]{UserType.ManagerCompetizione}),
+        new Pair(Request.AddCompetizione, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.FrameLogin, new UserType[]{UserType.Anonimo}),
         new Pair(Request.FrameRegistrazione, new UserType[]{UserType.Anonimo}),
         new Pair(Request.FrameHome, new UserType[]{UserType.Partecipante}),
@@ -503,6 +521,14 @@ public class FrontController
                     return new Object[]{ user.getIdFromCompetizione((Competizione)param[0])};
                 case GetMailFromPartecipante:
                     return new Object []{user.getMailFromPartecipante((Partecipante) param[0])};
+                case GetCompetizioneTipi:
+                    return user.getCompetizioneTipi();
+                case AddCompetizione:
+                    Competizione c=new Competizione (0,(float)param[0],(int)param[1],
+                    (int)param[2],0,(TipoCompetizione)param[3],
+                    new Manager ("","",user.getMail()),(Date)param[4],(Optional[])param[5]);
+                    user.creaCompetizione(c);
+                    break;
                 case FrameLogin:
                     if (currentFrame != null)
                     {
@@ -545,7 +571,7 @@ public class FrontController
                         currentFrame.setVisible(false);
                         currentFrame.dispose();
                     }
-                    //currentFrame = new JFrameCreaComp(this);
+                    currentFrame = new JFrameCreaComp(this);
                     currentFrame.setVisible(true);
                     break;
                 case FrameManagerSistema:
