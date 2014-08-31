@@ -618,6 +618,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 JOptionPane.YES_OPTION)
         {
             try {
+                fc.processRequest(FrontController.Request., listPartecipanti)
                 agro.annullaCompetizione(jListCompetizioni.getSelectedIndex());
             } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Impossibile annullare la competizione\n" +
@@ -727,7 +728,10 @@ public final class JFrameManComp extends javax.swing.JFrame {
 
     private void jButtonCancellaPartecipanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancellaPartecipanteActionPerformed
         // TODO add your handling code here:
-        
+        int IdC=0;
+        String MailP="";
+        Competizione C=null;
+        Partecipante P=null;
         try 
         {
             if (jListPartecipanti.getSelectedIndex()!=-1)
@@ -736,19 +740,31 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 "Conferma annullamento competizione",
                 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) ==
                 JOptionPane.YES_OPTION)
-                agro.dropPrenotazione(agro.getCompetizione(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId()), agro.getPartecipante(listPartecipanti[jListPartecipanti.getSelectedIndex()].getMail()));
+                {
+                //agro.dropPrenotazione(agro.getCompetizione(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId()), agro.getPartecipante(listPartecipanti[jListPartecipanti.getSelectedIndex()].getMail()));
+                IdC= (int)fc.processRequest(FrontController.Request.GetIdFromCompetizione,new Object [] {listCompetizioni[jListCompetizioni.getSelectedIndex()]})[0];
+                C=(Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object []{IdC})[0];
+                MailP=(String)fc.processRequest(FrontController.Request.GetMailFromPartecipante, new Object []{listPartecipanti[jListPartecipanti.getSelectedIndex()]})[0];
+                P=(Partecipante)fc.processRequest(FrontController.Request.GetPartecipante, new Object[]{MailP})[0];
+                fc.processRequest(FrontController.Request.AnnullaPrenotazione, new Object []{P,C});
                 JOptionPane.showMessageDialog(null, "Annullamento effettuato\ncon successo!\n"
                         , "Successo", JOptionPane.INFORMATION_MESSAGE);
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Impossibile annullare la prenotazione." +
-                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+                }
+        } 
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+            Shared.showError(this, e.toString());
         }
         finally
         {
-            JFrame jFrame=new JFrameManComp(agro);
-            this.setVisible(false);
-            jFrame.pack();
-            jFrame.setVisible(true);
+            try
+            {
+                fc.processRequest(FrontController.Request.FrameManagerCompetizione,null);
+            }
+            catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+            {
+                Shared.showError(this, e.toString());
+            }
         }
     }//GEN-LAST:event_jButtonCancellaPartecipanteActionPerformed
 

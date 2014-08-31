@@ -360,7 +360,7 @@ public class FrontController
         new Pair(Request.GetCompetizione, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.GetCompetizioni, new UserType[]{UserType.ManagerCompetizione,UserType.ManagerSistema}),
         new Pair(Request.GetCompetizioneOptionals, new UserType[]{UserType.Partecipante,UserType.ManagerCompetizione,UserType.ManagerSistema}),
-        new Pair(Request.AnnullaPrenotazione, new UserType[]{UserType.Partecipante}),
+        new Pair(Request.AnnullaPrenotazione, new UserType[]{UserType.Partecipante,UserType.ManagerCompetizione}),
         new Pair(Request.AddIscrizioneCompetizione, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetCompetizioneFromId, new UserType[]{UserType.Partecipante,UserType.ManagerCompetizione}),
         new Pair(Request.IsOptionalSelezionato, new UserType[]{UserType.Partecipante}),
@@ -469,6 +469,10 @@ public class FrontController
                             ((Partecipante)processRequest(Request.GetPartecipante,
                                 new Object[] { user.getMail() })[0],
                                 (Competizione)param[0]);
+                    else if (user instanceof ManagerCompetizione)
+                        user.annullaPrenotazione
+                            ((Partecipante)param[0],
+                                (Competizione)param[1]);
                     break;
                 case GetPartecipante:
                     return new Object[]
