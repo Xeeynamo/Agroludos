@@ -70,33 +70,239 @@ public class FrontController
     public enum Request
     {
         Initialize,
+        /**
+         * restituisce la finestra dedicata all'utente appena loggato. Se ci 
+         * sono dei dati che non corrispondono ad un particolare utente presente
+         * nel sistema o non indicano nessun utente in generale non apre alcuna 
+         * finestra
+         * 
+         * @param
+         *      Email;
+         *      Password;
+         * @return
+         *      Successo: presenta una nuova finestra dedicata in base
+         *                 alla tipologia dell'utente loggato (se l'utente è
+         *                 un partecipante alle competizioni, allora aprirà la
+         *                 finestra per abilitare il partecipante alle funzioni
+         *                 a lui desiderate);
+         *      
+         *      Fallimento: non cambia nulla e rimane nella stessa finestra
+         *                   cui si stava operando
+         */
         Login,
+        /**
+         * Aggiunge un nuovo utente di tipo "Partecipante" nel sistema. In caso
+         * però di dati ridondanti (un altro utente con la stessa email o con
+         * lo stesso codice fiscale) o in presenza di campi lasciati vuoti
+         * nell'atto della registrazione dei dati allora il sistema non
+         * aggiungerà il nuovo utente
+         * 
+         * @param
+         *      Password;
+         *      Partecipante
+         *
+         * @return
+         *      Successo: il nuovo utente di tipo "Partecipante" è stato
+         *                registrato nel sistema e quindi può accedervi;
+         *      
+         *      Fallimento: il nuovo utente non è stato registrato nel sistema
+         *                  quindi non può accedervi
+         */
         AddPartecipante,
         SendMail,
         SendMailToSys,
-        
+        /**
+         * Restituisce tutti i manager di competizioni presenti nel sistema.
+         * 
+         * @param
+         * 
+         * @return lista dei Manager di Competizioni presenti nel sistema
+         */
         GetManagers,
+        /**
+         * Restituisce tutte le competizioni a cui un dato partecipante può 
+         * prenotarsi
+         * 
+         * @param
+         * 
+         * @return lista delle Competizioni disponibili
+         */
         GetCompetizioniDisponibili,
+        /**
+         * Restituisce tutte le competizioni a cui un dato partecipante si è
+         * già prenotato e che devono essere ancora svolte
+         * 
+         * @param
+         * 
+         * @return lista delle Competizioni prenotate
+         */
         GetCompetizioniPrenotate,
+        /**
+         * Restituisce una data competizione passando come parametro il suo:
+         *      -ID, oppure;
+         *      -la mail del Manager competizione e data cui dovrebbe svolgersi tale
+         *      competizione.
+         * 
+         * @param SOLO ID,oppure; Email Manager Competizione e data.
+         * 
+         * @return la Competizione desiderata, oppure null
+         */
         GetCompetizione,
+    /**
+     * Ottiene una lista di competizioni gestite da uno specifico manager.
+     * Le competizioni annullate non saranno incluse nella lista.
+     * 
+     * @param 
+     * usata da Manager Sistema ->  mail del manager di competizione;
+     * usata da Manager Competizione -> nulla.
+     * 
+     * @return lista delle competizioni gestite dal manager specificato
+     */
         GetCompetizioni,
+      /**
+     * Ottiene una lista di optional usata dalla competizione specificata
+     * 
+     * @param idCompetizione da analizzare
+     * 
+     * @return lista degli optional
+     */
         GetCompetizioneOptionals,
+        /**
+         * Annulla la prenotazione effettuata da un dato partecipante per
+         * una data competizione
+         * 
+         * @param
+         * usata da Partecipante -> Competizione da cui annullare la prenotazione;
+         * usata da Manager Competizione -> partecipante,Competizione per 
+         * annullare la prenotazione.
+         * 
+         * @return
+         */
         AnnullaPrenotazione,
+        /**
+         * Effettua la prenotazione di un partecipante ad una data competizione,
+         * tranne nel caso in cui il certificato SRC del suddetto partecipante
+         * non sia valida per la data di quella competizione
+         * 
+         * @param
+         * Competizione su cui effettuare la prenotazione;
+         * Lista di Optional richiesti dal partecipante
+         * 
+         * @return
+         * Successo: la prenotazione è registrata nel sistema;
+         * Fallimento: non viene segnalata alcuna prenotazione;
+
+         */
         AddIscrizioneCompetizione,
-        GetCompetizioneFromId,
-        IsOptionalSelezionato,
-        SetOptionalPrenotazione,
-        GetOptional,
-        SetOptional,
-        GetPartecipante,
-        GetPartecipantiMinimal,
-        GetPartecipanteCompetizioni,
         
+     /**
+     * Restituisce una data competizione tramite il suo ID
+     * 
+     * @param idCompetizione da analizzare
+     * 
+     * @return Competizione associata all'ID
+     */
+        GetCompetizioneFromId,
+        /**
+         * Ritorna true se nella prenotazione effettuata da un partecipante
+         * ad una data competizione ha indicato di usufruire di un dato 
+         * optional, altrimenti false (potrebbe anche significare che il part.
+         * non abbia effettuato alcuna prenotazione per tale competizione)
+         * 
+         * 
+         * @param 
+         * 
+         * usata da Partecipante->l'Optional da controllare se è stato 
+         * selezionato o meno,
+         * la Competizione su cui è stata effettuata la prenotazione da controllare
+         * 
+         * @return true,false
+         */
+        IsOptionalSelezionato,
+        /**
+         * Data una prenotazione, fa si che un dato optional possa risultare
+         * richiesto o meno dal partecipante
+         * 
+         * @param
+         * usata da Partecipante->l'Optional quale si desidera far risultare
+         * richiesto/non richiesto dal partecipante,
+         * la Competizione su cui è stata effetuata la prenotazione,
+         * true/false per indicare se tale Optional deve risultare;
+         * richiesto/non richiesto
+         * 
+         * @return
+         */
+        SetOptionalPrenotazione,
+            /**
+     * Ottiene una lista di tutti gli optional presenti nel database
+     * @return lista degli optional
+     */
+        GetOptional,
+        /**
+         * Modifica del prezzo e/o delle descrizioni di un'optional da
+         * effetuare nel sistema
+         * 
+         *  @param Optional modificato
+         * 
+         * @return
+         */
+        SetOptional,
+    /**
+     * Restituisce un  partecipante tramite la sua email
+     * 
+     * @param email da analizzare
+     * 
+     * @return Partecipante associato all'email
+     */
+        GetPartecipante,
+    /**
+     * Ottiene le informazioni base di un partecipante, quali mail nome e cognome.
+     * Questa funzione serve per permettere di restituire una lista di partecipanti,
+     * ma senza appesantire troppo le query ed il client. Infatti non vi sarà
+     * bisogno di dover caricare tutti i partecipanti insieme, ma solo caricare le
+     * informazioni strettamente necessarie per poi entrare nel dettaglio di un
+     * partecipante uno alla volta. Si noti che ogni partecipante restituito da
+     * questa funzione, presenterà isValid() sempre falso poiché gli altri campi
+     * vengono lasciati vuoti. Si noti come la lista sia ordinata per cognome.
+     * 
+     * @return lista dei partecipanti
+     */
+        GetPartecipantiMinimal,
+    /**
+     * Ottiene una lista di id delle competizioni a cui un partecipante si è iscritto
+     * 
+     * @param mail email del partecipante 
+     * 
+     * @return lista di id di competizioni
+     *  
+     */
+        GetPartecipanteCompetizioni,
+        /**
+         * Visualizza la finestra del Login
+         */
         FrameLogin,
+        /**
+         * Visualizza la finestra della registrazione
+         */
         FrameRegistrazione,
+        /**
+         * Visualizza la finestra dedicata all'utente di tipo "Partecipante"
+         */
         FrameHome,
+        /**
+         * Visualizza la finestra dedicata all'utente di tipo "Manager
+         * Competizioni"
+         */
         FrameManagerCompetizione,
+        /**
+         * Visualizza la finestra dedicata alla creazione di una competizione
+         * da parte di un utente di tipo "Manager Competizioni"
+         */
         FrameCreaCompetizione,
+        /**
+         * Visualizza la finestra dedicata all'utente di tipo "Manager
+         * Sistema"
+         */
         FrameManagerSistema,
     }
     private static final Pair[] pair =
