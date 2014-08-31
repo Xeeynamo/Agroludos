@@ -525,8 +525,14 @@ public final class JFrameManComp extends javax.swing.JFrame {
     void SelezionaCompetizione(int index) throws SQLException
     {
         if (index < 0) return;
-        Competizione c = agro.getCompetizione(listCompetizioni[index].getId());
-        Optional [] opt=agro.getOptional();
+        try
+        {
+        //Competizione c = agro.getCompetizione(listCompetizioni[index].getId());
+        //Optional [] opt=agro.getOptional();
+        Competizione c=(Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object[] {listCompetizioni[index].getId()})[0];
+        int IdC=(int)fc.processRequest(FrontController.Request.GetIdFromCompetizione,new Object []{c})[0];
+        //Optional [] opt=(Optional[])fc.processRequest(FrontController.Request.GetCompetizioneOptionals,new Object []{c.getId()});
+        Optional [] opt=(Optional[])fc.processRequest(FrontController.Request.GetOptional,null);
         jLabelPartecCur.setText(String.valueOf(c.getNPart()));
         jPartecMax.setValue(c.getNMax());
         jPartecMin.setValue(c.getNMin());
@@ -537,7 +543,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
         jLabelOptional1Prezzo.setText(String.valueOf(opt[0].getPrezzo())+"€");
         jLabelOptional2Prezzo.setText(String.valueOf(opt[1].getPrezzo())+"€");
         jLabelOptional3Prezzo.setText(String.valueOf(opt[2].getPrezzo())+"€");
-        for (Optional o : c.getOptional())
+        for (Optional o : (Optional[])fc.processRequest(FrontController.Request.GetCompetizioneOptionals,new Object []{IdC}))
         {
             if (jOptional1nome.getText().compareTo(o.getNome()) == 0)
                 jOptional1nome.setSelected(true);
@@ -550,13 +556,24 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 
         }
         
-        listPartecipanti = agro.getPartecipanti(c.getId());
-        Shared.CreateList(jListPartecipanti, listPartecipanti);
+        //listPartecipanti = agro.getPartecipanti(c.getId());
+        int idC=(int)fc.processRequest(FrontController.Request.GetIdFromCompetizione,new Object[]{c})[0];
+        listPartecipanti=(Partecipante [])fc.processRequest(FrontController.Request.GetPartecipantiCompetizione,new Object []{idC});
+        Shared.CreateList(jListPartecipanti,(Object []) listPartecipanti);
+        }
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+            Shared.showError(this, e.toString());
+        }
     }
     void PartecipanteLoad(int index) throws SQLException
     {
         if (index < 0) return;
-        Partecipante p = agro.getPartecipante(listPartecipanti[index].getMail());
+        try
+        {
+        //Partecipante p = agro.getPartecipante(listPartecipanti[index].getMail());
+        String PMail=(String)fc.processRequest(FrontController.Request.GetMailFromPartecipante,new Object[]{listPartecipanti[index]})[0];
+        Partecipante p=(Partecipante) fc.processRequest(FrontController.Request.GetPartecipante,new Object []{PMail})[0];
         jUtenteNome.setText(p.getNome());
         jUtenteCognome.setText(p.getCognome());
         jUtenteIndirizzo.setText(p.getIndirizzo());
@@ -566,6 +583,11 @@ public final class JFrameManComp extends javax.swing.JFrame {
         jUtenteMail.setText(p.getMail());
         jUtenteDataSrc.setText(p.getDataSrcString());
         jUtenteCertificatoSrc.setText(p.getSrc());
+        }
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+            Shared.showError(this, e.toString());
+        }
     }
     
     private void jButtonCreaCompetizioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreaCompetizioneActionPerformed

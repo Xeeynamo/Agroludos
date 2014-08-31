@@ -255,6 +255,15 @@ public class FrontController
      * @return Partecipante associato all'email
      */
         GetPartecipante,
+        /**
+         * Restituisce la lista dei partecipanti che si sono prenotati ad
+         * una data competizione
+         * 
+         * @param id della competizione da analizzare
+         * 
+         * @return lista di partecipanti
+         */
+        GetPartecipantiCompetizione,
     /**
      * Ottiene le informazioni base di un partecipante, quali mail nome e cognome.
      * Questa funzione serve per permettere di restituire una lista di partecipanti,
@@ -277,6 +286,22 @@ public class FrontController
      *  
      */
         GetPartecipanteCompetizioni,
+        /**
+         * Restituisce l'ID associata ad una data Competizione
+         * 
+         *  @param Competizione da analizzare
+         * 
+         * @return ID associata alla competizione
+         */
+        GetIdFromCompetizione,
+        /**
+         * Restituisce l'email associata ad un dato partecipante
+         * 
+         *  @param Partecipante da analizzare
+         * 
+         * @return Mail associata al partecipante
+         */
+        GetMailFromPartecipante,
         /**
          * Visualizza la finestra del Login
          */
@@ -318,18 +343,20 @@ public class FrontController
         new Pair(Request.GetCompetizioniPrenotate, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetCompetizione, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.GetCompetizioni, new UserType[]{UserType.ManagerCompetizione,UserType.ManagerSistema}),
-        new Pair(Request.GetCompetizioneOptionals, new UserType[]{UserType.ManagerSistema}),
+        new Pair(Request.GetCompetizioneOptionals, new UserType[]{UserType.Partecipante,UserType.ManagerCompetizione,UserType.ManagerSistema}),
         new Pair(Request.AnnullaPrenotazione, new UserType[]{UserType.Partecipante}),
         new Pair(Request.AddIscrizioneCompetizione, new UserType[]{UserType.Partecipante}),
-        new Pair(Request.GetCompetizioneFromId, new UserType[]{UserType.Partecipante}),
+        new Pair(Request.GetCompetizioneFromId, new UserType[]{UserType.Partecipante,UserType.ManagerCompetizione}),
         new Pair(Request.IsOptionalSelezionato, new UserType[]{UserType.Partecipante}),
         new Pair(Request.SetOptionalPrenotazione, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetOptional, new UserType[]{UserType.ManagerCompetizione, UserType.ManagerSistema}),
         new Pair(Request.SetOptional, new UserType[]{UserType.ManagerSistema}),        new Pair(Request.SetOptionalPrenotazione, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetPartecipante, new UserType[]{UserType.Partecipante, UserType.ManagerCompetizione, UserType.ManagerSistema}),
+        new Pair(Request.GetPartecipantiCompetizione, new UserType[]{UserType.ManagerCompetizione, UserType.ManagerSistema}),
         new Pair(Request.GetPartecipantiMinimal, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.GetPartecipanteCompetizioni, new UserType[]{UserType.ManagerSistema}),
-        
+        new Pair(Request.GetIdFromCompetizione, new UserType[]{UserType.ManagerCompetizione}),
+        new Pair(Request.GetMailFromPartecipante, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.FrameLogin, new UserType[]{UserType.Anonimo}),
         new Pair(Request.FrameRegistrazione, new UserType[]{UserType.Anonimo}),
         new Pair(Request.FrameHome, new UserType[]{UserType.Partecipante}),
@@ -466,11 +493,16 @@ public class FrontController
                 case SetOptional:
                     user.setOptional((Optional)param[0]);
                     break;
+                case GetPartecipantiCompetizione:
+                    return user.getPartecipanti((int)param[0]);
                 case GetPartecipantiMinimal:
                     return user.getPartecipantiMinimal();
                 case GetPartecipanteCompetizioni:
                     return user.getPartecipanteCompetizioni((String)param[0]);
-                    
+                case GetIdFromCompetizione:
+                    return new Object[]{ user.getIdFromCompetizione((Competizione)param[0])};
+                case GetMailFromPartecipante:
+                    return new Object []{user.getMailFromPartecipante((Partecipante) param[0])};
                 case FrameLogin:
                     if (currentFrame != null)
                     {

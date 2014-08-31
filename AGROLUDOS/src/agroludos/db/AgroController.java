@@ -302,6 +302,11 @@ public class AgroController
             sendUpdate(insert.toString());
         }
     }
+    
+    public int getIdFromCompetizione(Competizione c)
+    {
+        return c.getId();
+    }
     /**
      * Ottiene una lista minimale delle competizioni a parte da un filtro
      * @param filter è un numero che, con un OR tra bit, crea un filtro:
@@ -958,6 +963,10 @@ public class AgroController
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai partecipanti"> 
+    public String getMailFromPartecipante (Partecipante p)
+    {
+        return p.getMail();
+    }
     public void addPartecipante(String password, Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
         
