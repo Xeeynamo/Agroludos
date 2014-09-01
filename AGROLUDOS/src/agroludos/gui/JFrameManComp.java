@@ -649,13 +649,13 @@ public final class JFrameManComp extends javax.swing.JFrame {
             if ((boolean)fc.processRequest(FrontController.Request.isModificaScaduto,new Object[]{c})[0])
                 throw new ModificaCompScadutaException();
             float prezzo_mod = Float.parseFloat(jCompPrezzo.getValue().toString());
-            if ((int)jPartecMax.getValue()!=c.getNMax())
-                agro.setNPartMax(c.getId(), (int)jPartecMax.getValue());
-            if ((int)jPartecMin.getValue()!=c.getNMin())
-                agro.setNPartMin(c.getId(),(int)jPartecMin.getValue());
-            if (prezzo_mod!=c.getPrezzo())
-                agro.setPrezzoComp(c.getId(),prezzo_mod);
-            Optional [] opt_c=agro.getOptional(c.getId());
+            if ((int)jPartecMax.getValue()!=(int)fc.processRequest(FrontController.Request.getNPartMax, new Object []{IdC})[0])
+                fc.processRequest(FrontController.Request.setNPartMax,new Object []{IdC,(int)jPartecMax.getValue()});
+            if ((int)jPartecMin.getValue()!=(int)fc.processRequest(FrontController.Request.getNPartMin, new Object []{IdC})[0])
+                fc.processRequest(FrontController.Request.setNPartMin,new Object []{IdC,(int)jPartecMin.getValue()});
+            if (prezzo_mod!=(float)fc.processRequest(FrontController.Request.getPrezzoComp, new Object []{IdC})[0])
+                fc.processRequest(FrontController.Request.setPrezzoComp,new Object[]{IdC,prezzo_mod});
+            Optional [] opt_c=(Optional [])fc.processRequest(FrontController.Request.GetCompetizioneOptionals,new Object []{IdC});
             boolean opt [] =new boolean [3];
             int nOpt=0;
             if (jOptional1nome.isSelected())
@@ -694,19 +694,19 @@ public final class JFrameManComp extends javax.swing.JFrame {
                         optional_nome="";
                         break;
                 }
+                Optional o=(Optional)fc.processRequest(FrontController.Request.getOptional,new Object[]{optional_nome})[0];
                 if (opt[i])
-                    agro.setOptionalCompetizione(c,agro.getOptional(optional_nome));
+                    fc.processRequest(FrontController.Request.setOptionalCompetizione,new Object[]{c,o});
                 else
-                    agro.dropOptionalCompetizione(c,agro.getOptional(optional_nome));
+                    fc.processRequest(FrontController.Request.dropOptionalCompetizione, new Object[]{c,o});
             }
                         JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
                         , "Successo", JOptionPane.INFORMATION_MESSAGE);
             
         }
-        catch (SQLException ex)
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
         {
-            JOptionPane.showMessageDialog(null, "Impossibile modificare la competizione selezionata" +
-                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+            Shared.showError(this, e.toString());
         }
         catch (ModificaCompScadutaException ex)
         {
@@ -715,10 +715,14 @@ public final class JFrameManComp extends javax.swing.JFrame {
         }
         finally
         {
-            JFrame jFrame=new JFrameManComp(agro);
-            this.setVisible(false);
-            jFrame.pack();
-            jFrame.setVisible(true);
+            try
+            {
+                fc.processRequest(FrontController.Request.FrameManagerCompetizione,null);
+            }
+            catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+            {
+                Shared.showError(this, e.toString());
+            }
         }
     }//GEN-LAST:event_jButtonApplicaActionPerformed
 

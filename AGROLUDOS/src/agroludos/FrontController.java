@@ -77,9 +77,8 @@ public class FrontController
          * nel sistema o non indicano nessun utente in generale non apre alcuna 
          * finestra
          * 
-         * @param 
-         * String Email. 
-         * String Password.
+         * @param String Email; 
+         * @param String Password;
          * 
          * @return
          *      Successo: presenta una nuova finestra dedicata in base
@@ -87,9 +86,10 @@ public class FrontController
          *                 un partecipante alle competizioni, allora aprirà la
          *                 finestra per abilitare il partecipante alle funzioni
          *                 a lui desiderate);
-         *      
+         * 
+         *@return  
          *      Fallimento: non cambia nulla e rimane nella stessa finestra
-         *                   cui si stava operando
+         *                   cui si stava operando;
          */
         Login,
         /**
@@ -100,13 +100,15 @@ public class FrontController
          * aggiungerà il nuovo utente
          * 
          * @param
-         *      Password;
-         *      Partecipante
+         *      String Password;
+         * @param
+         *      Partecipante partecipante da registrare nel sistema
          *
          * @return
          *      Successo: il nuovo utente di tipo "Partecipante" è stato
          *                registrato nel sistema e quindi può accedervi;
-         *      
+         * 
+         * @return
          *      Fallimento: il nuovo utente non è stato registrato nel sistema
          *                  quindi non può accedervi
          */
@@ -141,11 +143,15 @@ public class FrontController
         GetCompetizioniPrenotate,
         /**
          * Restituisce una data competizione passando come parametro il suo:
-         *      -ID, oppure;
-         *      -la mail del Manager competizione e data cui dovrebbe svolgersi tale
+         *      <p>-<strong>ID</strong>, oppure;
+         *      <p>-la <strong>mail</strong> del Manager competizione e <strong>data</strong>cui dovrebbe svolgersi tale
          *      competizione.
          * 
-         * @param SOLO ID,oppure; Email Manager Competizione e data.
+         * @param int ID;
+         * <p>-----------------------------
+         * @param String Email Manager Competizione data;
+         * @param Date Data
+         * svolgimento competizione;
          * 
          * @return la Competizione desiderata, oppure null
          */
@@ -155,8 +161,8 @@ public class FrontController
      * Le competizioni annullate non saranno incluse nella lista.
      * 
      * @param 
-     * usata da Manager Sistema ->  mail del manager di competizione;
-     * usata da Manager Competizione -> nulla.
+     * String mail del manager di competizione (se usata da <strong>Manager Sistema</strong>);
+     * @param null (se usata da <strong>Manager Competizione</strong>)
      * 
      * @return lista delle competizioni gestite dal manager specificato
      */
@@ -338,6 +344,85 @@ public class FrontController
          */
         isModificaScaduto,
         /**
+         * Imposta ad una determinata competizione un nuovo valore quale
+         * indicherà il numero massimo di partecipanti quali potranno prenotarsi
+         * alla suddetta competizione
+         * 
+         * @param int ID della competizione desiderata
+         * @param int il numero che indicherà la soglia massima dei partecipanti
+         * 
+         * 
+         */
+        setNPartMax,
+        /**
+         * Imposta ad una determinata competizione un nuovo valore quale
+         * indicherà il numero minimo di partecipanti è garantita/richiesta
+         * la presenza affinchè la competizione possa avere luogo
+         * 
+         * @param int ID della competizione desiderata
+         * @param int il numero che indicherà la soglia minima dei partecipanti
+         * 
+         * 
+         */
+        setNPartMin,
+        /**
+         * Restituisce il numero massimo di partecipanti iscrivibili
+         * ad una data competizione
+         * 
+         * @param int ID della competizione desiderata
+         * 
+         * @result numero massimo dei partecipanti iscrivibili
+         */
+        getNPartMax,
+        /**
+         * Restituisce il numero minimo di partecipanti richiesti/garantiti
+         * affinchè la competizione possa avere luogo
+         * 
+         * @param int ID della competizione desiderata
+         * 
+         * @result numero minimo dei partecipanti
+         */
+        getNPartMin,
+        /**
+         * Restituisce il costo per l'iscrizione ad una data competizione
+         * 
+         * @param int ID della competizione desiderata
+         * 
+         * @result prezzo dell'iscrizione
+         */
+        getPrezzoComp,
+        /**
+         * Imposta ad una determinata competizione il prezzo per l'iscrizione
+         * 
+         * @param int ID della competizione desiderata
+         * @param float prezzo da impostare
+         */
+        setPrezzoComp,
+        /**
+         * Rende disponibile un dato optional ad una data competizione
+         * 
+         * @param Competizione la competizione su cui si vuole rendere
+         * disponibile il dato optional
+         * @param Optional l'optional che si vuole mettere a disposizione
+         */
+        setOptionalCompetizione,
+        /**
+         * Rende INdisponibile un dato optional per una data competizione
+         * 
+         * @param Competizione la competizione su cui si vuole rendere
+         * INdisponibile il dato optional
+         * @param Optional l'optional da rendere INdisponibile
+         */
+        dropOptionalCompetizione,
+        /**
+         * Restituisce tutte le informazioni relative all'optional desiderato
+         * 
+         * @param String nome dell'optional desiderato
+         * 
+         * @result L'optional desiderato
+         */
+        getOptional,
+        /**
          * Visualizza la finestra del Login
          */
         FrameLogin,
@@ -398,6 +483,15 @@ public class FrontController
         new Pair(Request.AnnullaCompetizione, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.AddCompetizione, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.isModificaScaduto, new UserType[]{UserType.ManagerCompetizione}),
+        new Pair(Request.setNPartMax, new UserType[]{UserType.ManagerCompetizione}),
+        new Pair(Request.setNPartMin, new UserType[]{UserType.ManagerCompetizione}),
+        new Pair(Request.getNPartMin, new UserType[]{UserType.ManagerCompetizione}),
+        new Pair(Request.getNPartMax, new UserType[]{UserType.ManagerCompetizione}),
+        new Pair(Request.getPrezzoComp, new UserType[]{UserType.ManagerCompetizione}),
+        new Pair(Request.setPrezzoComp, new UserType[]{UserType.ManagerCompetizione}),
+        new Pair(Request.setOptionalCompetizione, new UserType[]{UserType.ManagerCompetizione}),
+        new Pair(Request.dropOptionalCompetizione, new UserType[]{UserType.ManagerCompetizione}),
+        new Pair(Request.getOptional, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.FrameLogin, new UserType[]{UserType.Anonimo}),
         new Pair(Request.FrameRegistrazione, new UserType[]{UserType.Anonimo}),
         new Pair(Request.FrameHome, new UserType[]{UserType.Partecipante}),
@@ -432,6 +526,7 @@ public class FrontController
     {
         if (!validateRequest(request))
             throw new DeniedRequestException();
+        Competizione c;
         try
         {
             switch (request)
@@ -555,7 +650,7 @@ public class FrontController
                 case GetCompetizioneTipi:
                     return user.getCompetizioneTipi();
                 case AddCompetizione:
-                    Competizione c=new Competizione (0,(float)param[0],(int)param[1],
+                    c=new Competizione (0,(float)param[0],(int)param[1],
                     (int)param[2],0,(TipoCompetizione)param[3],
                     new Manager ("","",user.getMail()),(Date)param[4],(Optional[])param[5]);
                     user.creaCompetizione(c);
@@ -564,11 +659,37 @@ public class FrontController
                     user.annullaCompetizione((int)param[0]);
                     break;
                 case isModificaScaduto:
-                    Competizione b=(Competizione)param[0];
-                    if(user.getNGiorniMancanti(b.getDataComp())<2)
+                    c=(Competizione)param[0];
+                    if(user.getNGiorniMancanti(c.getDataComp())<2)
                         return new Object[]{true};
                     else
                         return new Object[]{false};
+                case setNPartMax:
+                    user.setNPartMax((int)param[0],(int)param[1] );
+                    break;
+                case setNPartMin:
+                    user.setNPartMin((int)param[0],(int)param[1] );
+                    break;
+                case getNPartMax:
+                    c=user.getCompetizione((int)param[0]);
+                    return new Object []{c.getNMax()};
+                case getNPartMin:
+                    c=user.getCompetizione((int)param[0]);
+                    return new Object []{c.getNMin()};
+                case getPrezzoComp:
+                    c=user.getCompetizione((int)param[0]);
+                    return new Object []{c.getPrezzo()};
+                case setPrezzoComp:
+                    user.setPrezzoComp((int)param[0],(float)param[1]);
+                    break;
+                case setOptionalCompetizione:
+                    user.setOptionalCompetizione((Competizione)param[0],(Optional)param[1]);
+                    break;
+                case dropOptionalCompetizione:
+                    user.dropOptionalCompetizione((Competizione)param[0],(Optional)param[1]);
+                    break;
+                case getOptional:
+                    return new Object [] {user.getOptional((String)param[0])};
                 case FrameLogin:
                     if (currentFrame != null)
                     {
