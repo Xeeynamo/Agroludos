@@ -202,7 +202,8 @@ public class AgroController
     
     public Competizione [] getCompetizioniDisponibili () throws SQLException
     {
-       Competizione [] c= _getCompetizioni();
+       //Competizione [] c= _getCompetizioni();
+       Competizione [] c=getCompetizioniMinimal(1);
        int NComp=0;
        for (int i=0;i<c.length;i++)
        {
@@ -216,7 +217,8 @@ public class AgroController
        {
            if(c[i]!=null)
            {
-               c1[j]=c[i];
+               c1[j]=getCompetizione(c[i].getId());
+               //c1[j]=c[i];
                j++;
            }
        }
@@ -301,6 +303,11 @@ public class AgroController
             );
             sendUpdate(insert.toString());
         }
+    }
+    
+    public int getIdFromCompetizione(Competizione c)
+    {
+        return c.getId();
     }
     /**
      * Ottiene una lista minimale delle competizioni a parte da un filtro
@@ -958,6 +965,10 @@ public class AgroController
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parte dedicata ai partecipanti"> 
+    public String getMailFromPartecipante (Partecipante p)
+    {
+        return p.getMail();
+    }
     public void addPartecipante(String password, Partecipante p) throws SQLException,DefEmailException,DefCodFiscException, CampiVuotiException
     {
         

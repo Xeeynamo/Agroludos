@@ -6,6 +6,10 @@
 
 package agroludos.gui;
 
+import agroludos.DeniedRequestException;
+import agroludos.FrontController;
+import agroludos.InternalErrorException;
+import agroludos.RequestNotSupportedException;
 import agroludos.db.components.*;
 import agroludos.db.user.ManagerCompetizione;
 import java.sql.SQLException;
@@ -15,31 +19,28 @@ import javax.swing.JOptionPane;
 
 public class JFrameCreaComp extends javax.swing.JFrame
 {
-    private final ManagerCompetizione agro;
+    //private final ManagerCompetizione agro;
+    FrontController fc;
     TipoCompetizione[] listTipoCompetizione;
     Optional[] listOptional;
     boolean[] listOptionalDisponibili;
     
-    public JFrameCreaComp(ManagerCompetizione agro)
+    public JFrameCreaComp(FrontController fc)
     {
-        this.agro = agro;
+        try 
+        {
+        this.fc=fc;
         Shared.setDefaultLookAndFeel();
         initComponents();
-        
-        try {
-            Shared.CreateList(jListTipoCompetizioni, listTipoCompetizione = agro.getCompetizioneTipi());
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Impossibile caricare i tipi di competizioni\n" +
-                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-            return;
+        listOptional=(Optional[])fc.processRequest(FrontController.Request.GetOptional,null);
+        Shared.CreateList(jListaOptional, listOptional);
+        listOptionalDisponibili = new boolean[listOptional.length];
+        listTipoCompetizione=(TipoCompetizione[])fc.processRequest(FrontController.Request.GetCompetizioneTipi,null);
+        Shared.CreateList(jListTipoCompetizioni, listTipoCompetizione);
         }
-        try {
-            Shared.CreateList(jListaOptional, listOptional = agro.getOptional());
-            listOptionalDisponibili = new boolean[listOptional.length];
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Impossibile caricare la lista degli optional\n" +
-                    ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-            return;
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+            Shared.showError(this, e.toString());
         }
     }
     
@@ -256,9 +257,10 @@ public class JFrameCreaComp extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void jConfermaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfermaActionPerformed
-        
+        try
+        {
         int indexTipo = jListTipoCompetizioni.getSelectedIndex();
-        Manager manager = new Manager("", "", agro.getMail());
+        //Manager manager = new Manager("", "", agro.getMail());
         float prezzo = Float.parseFloat(jPrezzo.getValue().toString());
         int minPart = (int)jPartecipantiMin.getValue();
         int maxPart = (int)jPartecipantiMax.getValue();
@@ -289,8 +291,11 @@ public class JFrameCreaComp extends javax.swing.JFrame
                 JOptionPane.YES_OPTION)
         {
             TipoCompetizione cTipo = listTipoCompetizione[indexTipo];
-            Competizione competizione = new Competizione(0, prezzo, minPart, maxPart,
-                    0, cTipo, manager, data, creaListaOptional());
+            //Competizione competizione = new Competizione(0, prezzo, minPart, maxPart,
+            //        0, cTipo, manager, data, creaListaOptional());
+            fc.processRequest(FrontController.Request.AddCompetizione,new Object []
+            {prezzo,minPart,maxPart,cTipo,data,creaListaOptional()});
+            /*
             try
             {
                 agro.creaCompetizione(competizione);
@@ -299,19 +304,27 @@ public class JFrameCreaComp extends javax.swing.JFrame
                 frame.setVisible(true);
                 dispose();
             }
-            catch (Exception ex)
-            {
-                JOptionPane.showConfirmDialog(this, ex.toString(),
-                    "Errore", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
-            }
+                    */
+            fc.processRequest(FrontController.Request.FrameManagerCompetizione,null);
         }
+        }
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+            Shared.showError(this, e.toString());
+        }
+        
     }//GEN-LAST:event_jConfermaActionPerformed
 
     private void jAnnullaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAnnullaActionPerformed
-        JFrame frame = new JFrameManComp(agro);
-        setVisible(false);
-        frame.setVisible(true);
-        dispose();
+        try
+        {
+            fc.processRequest(FrontController.Request.FrameManagerCompetizione,null);
+            //dispose();
+        }
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+            Shared.showError(this, e.toString());
+        }
     }//GEN-LAST:event_jAnnullaActionPerformed
 
     private void jListaOptionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jListaOptionalActionPerformed
