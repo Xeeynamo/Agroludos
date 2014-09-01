@@ -80,6 +80,7 @@ public class FrontController
         GetCompetizioniPrenotate,
         GetCompetizione,
         GetCompetizioni,
+        GetCompetizioniMinimal,
         GetCompetizioneOptionals,
         AnnullaPrenotazione,
         AddIscrizioneCompetizione,
@@ -89,6 +90,7 @@ public class FrontController
         GetOptional,
         SetOptional,
         GetPartecipante,
+        GetPartecipanti,
         GetPartecipantiMinimal,
         GetPartecipanteCompetizioni,
         
@@ -112,6 +114,7 @@ public class FrontController
         new Pair(Request.GetCompetizioniPrenotate, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetCompetizione, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.GetCompetizioni, new UserType[]{UserType.ManagerSistema}),
+        new Pair(Request.GetCompetizioniMinimal, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.GetCompetizioneOptionals, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.AnnullaPrenotazione, new UserType[]{UserType.Partecipante}),
         new Pair(Request.AddIscrizioneCompetizione, new UserType[]{UserType.Partecipante}),
@@ -121,6 +124,7 @@ public class FrontController
         new Pair(Request.GetOptional, new UserType[]{UserType.ManagerCompetizione, UserType.ManagerSistema}),
         new Pair(Request.SetOptional, new UserType[]{UserType.ManagerSistema}),        new Pair(Request.SetOptionalPrenotazione, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetPartecipante, new UserType[]{UserType.Partecipante, UserType.ManagerCompetizione, UserType.ManagerSistema}),
+        new Pair(Request.GetPartecipanti, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.GetPartecipantiMinimal, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.GetPartecipanteCompetizioni, new UserType[]{UserType.ManagerSistema}),
         
@@ -206,6 +210,8 @@ public class FrontController
                     };
                 case GetCompetizioni:
                     return user.getCompetizioni((String)param[0]);
+                case GetCompetizioniMinimal:
+                    return user.getCompetizioniMinimal((Integer)param[0]);
                 case GetCompetizioneOptionals:
                     return user.getCompetizioneOptional((Integer)param[0]);
                 case AnnullaPrenotazione:
@@ -220,6 +226,8 @@ public class FrontController
                     {
                         user.getPartecipante((String)param[0])
                     };
+                case GetPartecipanti:
+                    return user.getPartecipanti((Integer)param[0]);
                 case AddIscrizioneCompetizione:
                     user.addIscrizioneCompetizione(
                             (Partecipante)processRequest(Request.GetPartecipante,

@@ -50,10 +50,6 @@ public class ManagerSistema extends AgroController
     {
         return super.getCompetizione(idCompetizione);
     }
-    @Override public int[] getPartecipanteCompetizioni(String mail) throws SQLException
-    {
-        return super.getPartecipanteCompetizioni(mail);
-    }
     @Override public Optional[] getCompetizioneOptional(int idCompetizione) throws SQLException
     {
         return super.getCompetizioneOptional(idCompetizione);

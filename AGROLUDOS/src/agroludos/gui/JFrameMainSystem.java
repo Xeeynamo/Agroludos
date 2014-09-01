@@ -731,17 +731,33 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         int filter = (jCheckInCorso.isSelected() ? 1 : 0) |
                 (jCheckConcluse.isSelected() ? 2 : 0) |
                 (jCheckAnnullate.isSelected() ? 4 : 0);
-        listCompetizioni = agro.getCompetizioniMinimal(filter);
+        try {
+            Object[] result = fc.processRequest(FrontController.Request.GetCompetizioniMinimal,
+                    new Object[]{filter});
+            listCompetizioni = (Competizione[])result;
+        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
+            Shared.showError(this, e.toString());
+        }
         Shared.CreateList(jListCompetizioni, listCompetizioni);
     }
     private void CompetizioniSelected(int index) throws SQLException
     {
         if (index < 0) return;
-        Competizione c = agro.getCompetizione(listCompetizioni[index].getId());
-        jLabelCompetizionePrezzo.setText(String.valueOf(c.getPrezzo()));
-        jLabelCompetizioneManagerNome.setText(c.getManager().toString());
-        jLabelCompetizioneManagerMail.setText(c.getManager().getMail());
-        Shared.CreateList(jCompetizioneUtentiIscritti, agro.getPartecipanti(c.getId()));
+        try {
+            int idCompetizione = listCompetizioni[index].getId();
+            Object[] result = fc.processRequest(FrontController.Request.GetCompetizione,
+                    new Object[]{idCompetizione});
+            Competizione c = (Competizione)result[0];
+            jLabelCompetizionePrezzo.setText(String.valueOf(c.getPrezzo()));
+            jLabelCompetizioneManagerNome.setText(c.getManager().toString());
+            jLabelCompetizioneManagerMail.setText(c.getManager().getMail());
+            
+            result = fc.processRequest(FrontController.Request.GetPartecipanti,
+                    new Object[]{c.getId()});
+            Shared.CreateList(jCompetizioneUtentiIscritti, result);
+        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
+            Shared.showError(this, e.toString());
+        }
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda gli optional">
