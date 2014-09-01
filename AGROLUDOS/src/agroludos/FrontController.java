@@ -161,8 +161,7 @@ public class FrontController
      * Le competizioni annullate non saranno incluse nella lista.
      * 
      * @param 
-     * String mail del manager di competizione (se usata da <strong>Manager Sistema</strong>);
-     * @param null (se usata da <strong>Manager Competizione</strong>)
+     * String mail del manager di competizione (SOLO se usata da <strong>Manager Sistema</strong>);
      * 
      * @return lista delle competizioni gestite dal manager specificato
      */
@@ -180,10 +179,12 @@ public class FrontController
          * Annulla la prenotazione effettuata da un dato partecipante per
          * una data competizione
          * 
+         * 
          * @param
-         * usata da Partecipante -> Competizione da cui annullare la prenotazione;
-         * usata da Manager Competizione -> partecipante,Competizione per 
-         * annullare la prenotazione.
+         * Partecipante partecipante cui si desidera annullare la prenotazione
+         * (SOLO se usata da <strong>Manager Competizione</strong>);
+         * @param
+         * Competizione Competizione da cui annullare la prenotazione;
          * 
          * @return
          */
@@ -194,8 +195,8 @@ public class FrontController
          * non sia valida per la data di quella competizione
          * 
          * @param
-         * Competizione su cui effettuare la prenotazione;
-         * Lista di Optional richiesti dal partecipante
+         * Competizione Competizione su cui effettuare la prenotazione;
+         * Optional [] Lista di Optional richiesti dal partecipante
          * 
          * @return
          * Successo: la prenotazione è registrata nel sistema;
@@ -207,7 +208,7 @@ public class FrontController
      /**
      * Restituisce una data competizione tramite il suo ID
      * 
-     * @param idCompetizione da analizzare
+     * @param int ID della competizione da analizzare
      * 
      * @return Competizione associata all'ID
      */
@@ -221,9 +222,10 @@ public class FrontController
          * 
          * @param 
          * 
-         * usata da Partecipante->l'Optional da controllare se è stato 
-         * selezionato o meno,
-         * la Competizione su cui è stata effettuata la prenotazione da controllare
+         * Optional l'Optional da controllare se è stato 
+         * selezionato o meno;
+         * @param
+         * Competizione la Competizione su cui è stata effettuata la prenotazione da controllare
          * 
          * @return true,false
          */
@@ -233,13 +235,15 @@ public class FrontController
          * richiesto o meno dal partecipante
          * 
          * @param
-         * usata da Partecipante->l'Optional quale si desidera far risultare
-         * richiesto/non richiesto dal partecipante,
-         * la Competizione su cui è stata effetuata la prenotazione,
-         * true/false per indicare se tale Optional deve risultare;
-         * richiesto/non richiesto
+         * Optionall'Optional quale si desidera far risultare
+         * richiesto/non richiesto dal partecipante;
+         * @param
+         * Competizione la Competizione su cui è stata effetuata la prenotazione;
+         * @param
+         * boolean per indicare se tale Optional deve risultare
+         * richiesto(true)/non richiesto(false)
          * 
-         * @return
+         * 
          */
         SetOptionalPrenotazione,
             /**
@@ -251,7 +255,7 @@ public class FrontController
          * Modifica del prezzo e/o delle descrizioni di un'optional da
          * effetuare nel sistema
          * 
-         *  @param Optional modificato
+         *  @param Optional l'Optional modificato
          * 
          * @return
          */
@@ -259,7 +263,7 @@ public class FrontController
     /**
      * Restituisce un  partecipante tramite la sua email
      * 
-     * @param email da analizzare
+     * @param String email da analizzare
      * 
      * @return Partecipante associato all'email
      */
@@ -269,7 +273,7 @@ public class FrontController
          * Restituisce la lista dei partecipanti che si sono prenotati ad
          * una data competizione
          * 
-         * @param id della competizione da analizzare
+         * @param int id della competizione da analizzare
          * 
          * @return lista di partecipanti
          */
@@ -290,7 +294,7 @@ public class FrontController
     /**
      * Ottiene una lista di id delle competizioni a cui un partecipante si è iscritto
      * 
-     * @param mail email del partecipante 
+     * @param String mail email del partecipante 
      * 
      * @return lista di id di competizioni
      *  
@@ -299,7 +303,7 @@ public class FrontController
         /**
          * Restituisce l'ID associata ad una data Competizione
          * 
-         *  @param Competizione da analizzare
+         *  @param Competizione la Competizione da analizzare
          * 
          * @return ID associata alla competizione
          */
@@ -307,7 +311,7 @@ public class FrontController
         /**
          * Restituisce l'email associata ad un dato partecipante
          * 
-         *  @param Partecipante da analizzare
+         *  @param Partecipante il Partecipante da analizzare
          * 
          * @return Mail associata al partecipante
          */
@@ -322,9 +326,14 @@ public class FrontController
          * Crea e registra una nuova competizione gestita dal manager
          * di competizione che l'ha creato
          * 
-         * @param prezzo, numero minimo di partecipanti, numero massimo di
-         * partecipanti, tipologia di competizione, data svolgimento, lista
-         * degli optional messi a disposizione per la competizione
+         * @param float prezzo;
+         * @param int numero minimo di partecipanti;
+         * @param int numero massimo di
+         * partecipanti;
+         * @param TipoCompetizione tipologia di competizione;
+         * @param date data svolgimento;
+         * @param Optional []lista
+         * degli optional messi a disposizione per la competizione;
          */
         AddCompetizione,
         /**
