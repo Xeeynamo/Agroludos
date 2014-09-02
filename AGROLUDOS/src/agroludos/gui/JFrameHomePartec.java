@@ -588,8 +588,8 @@ public class JFrameHomePartec extends javax.swing.JFrame
             jLabelMyOptionalCosto1.setText("-");
             jLabelMyOptionalCosto1.setText("-");
             jLabelMyOptionalCosto1.setText("-");
-            //listOpt=c.getOptional();
-            listOpt=(Optional[])fc.processRequest(FrontController.Request.GetCompetizioneOptionals,new Object []{c.getId()});
+            listOpt=c.getOptional();
+            //listOpt=(Optional[])fc.processRequest(FrontController.Request.GetCompetizioneOptionals,new Object []{c.getId()});
             if(listOpt!=null)
             {
                 for (int i=0;i<listOpt.length;i++)

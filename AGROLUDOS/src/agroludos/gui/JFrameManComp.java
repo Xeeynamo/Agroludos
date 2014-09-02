@@ -527,11 +527,8 @@ public final class JFrameManComp extends javax.swing.JFrame {
         if (index < 0) return;
         try
         {
-        //Competizione c = agro.getCompetizione(listCompetizioni[index].getId());
-        //Optional [] opt=agro.getOptional();
         Competizione c=(Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object[] {listCompetizioni[index].getId()})[0];
-        int IdC=(int)fc.processRequest(FrontController.Request.GetIdFromCompetizione,new Object []{c})[0];
-        //Optional [] opt=(Optional[])fc.processRequest(FrontController.Request.GetCompetizioneOptionals,new Object []{c.getId()});
+        int IdC=c.getId();
         Optional [] opt=(Optional[])fc.processRequest(FrontController.Request.GetOptional,null);
         jLabelPartecCur.setText(String.valueOf(c.getNPart()));
         jPartecMax.setValue(c.getNMax());
@@ -543,7 +540,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
         jLabelOptional1Prezzo.setText(String.valueOf(opt[0].getPrezzo())+"€");
         jLabelOptional2Prezzo.setText(String.valueOf(opt[1].getPrezzo())+"€");
         jLabelOptional3Prezzo.setText(String.valueOf(opt[2].getPrezzo())+"€");
-        for (Optional o : (Optional[])fc.processRequest(FrontController.Request.GetCompetizioneOptionals,new Object []{IdC}))
+        for (Optional o : c.getOptional())
         {
             if (jOptional1nome.getText().compareTo(o.getNome()) == 0)
                 jOptional1nome.setSelected(true);
@@ -555,9 +552,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
                  jOptional3nome.setSelected(true);
                 
         }
-        
-        //listPartecipanti = agro.getPartecipanti(c.getId());
-        int idC=(int)fc.processRequest(FrontController.Request.GetIdFromCompetizione,new Object[]{c})[0];
+        int idC=c.getId();
         listPartecipanti=(Partecipante [])fc.processRequest(FrontController.Request.GetPartecipantiCompetizione,new Object []{idC});
         Shared.CreateList(jListPartecipanti,(Object []) listPartecipanti);
         }
@@ -571,8 +566,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
         if (index < 0) return;
         try
         {
-        //Partecipante p = agro.getPartecipante(listPartecipanti[index].getMail());
-        String PMail=(String)fc.processRequest(FrontController.Request.GetMailFromPartecipante,new Object[]{listPartecipanti[index]})[0];
+        String PMail=listPartecipanti[index].getMail();
         Partecipante p=(Partecipante) fc.processRequest(FrontController.Request.GetPartecipante,new Object []{PMail})[0];
         jUtenteNome.setText(p.getNome());
         jUtenteCognome.setText(p.getCognome());
@@ -591,12 +585,6 @@ public final class JFrameManComp extends javax.swing.JFrame {
     }
     
     private void jButtonCreaCompetizioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreaCompetizioneActionPerformed
-        /*
-        JFrame jFrame = new JFrameCreaComp(agro);
-        jFrame.setVisible(true);
-        this.setVisible(false);
-        this.dispose();
-        */
         try
         {
             fc.processRequest(FrontController.Request.FrameCreaCompetizione,null);
@@ -620,7 +608,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
         {
             try 
             {
-                IdC= (int)fc.processRequest(FrontController.Request.GetIdFromCompetizione,new Object [] {listCompetizioni[jListCompetizioni.getSelectedIndex()]})[0];
+                IdC=listCompetizioni[jListCompetizioni.getSelectedIndex()].getId();
                 fc.processRequest(FrontController.Request.AnnullaCompetizione,new Object []{IdC});
             }
             catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
@@ -644,18 +632,18 @@ public final class JFrameManComp extends javax.swing.JFrame {
         try 
         {
             
-            int IdC=(int)fc.processRequest(FrontController.Request.GetIdFromCompetizione,new Object []{listCompetizioni[jListCompetizioni.getSelectedIndex()]})[0];
+            int IdC=listCompetizioni[jListCompetizioni.getSelectedIndex()].getId();
             Competizione c=(Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object[] {IdC})[0];
             if ((boolean)fc.processRequest(FrontController.Request.isModificaScaduto,new Object[]{c})[0])
                 throw new ModificaCompScadutaException();
             float prezzo_mod = Float.parseFloat(jCompPrezzo.getValue().toString());
-            if ((int)jPartecMax.getValue()!=(int)fc.processRequest(FrontController.Request.getNPartMax, new Object []{IdC})[0])
+            if ((int)jPartecMax.getValue()!=c.getNMax())
                 fc.processRequest(FrontController.Request.setNPartMax,new Object []{IdC,(int)jPartecMax.getValue()});
-            if ((int)jPartecMin.getValue()!=(int)fc.processRequest(FrontController.Request.getNPartMin, new Object []{IdC})[0])
+            if ((int)jPartecMin.getValue()!=c.getNMin())
                 fc.processRequest(FrontController.Request.setNPartMin,new Object []{IdC,(int)jPartecMin.getValue()});
-            if (prezzo_mod!=(float)fc.processRequest(FrontController.Request.getPrezzoComp, new Object []{IdC})[0])
+            if (prezzo_mod!=c.getPrezzo())
                 fc.processRequest(FrontController.Request.setPrezzoComp,new Object[]{IdC,prezzo_mod});
-            Optional [] opt_c=(Optional [])fc.processRequest(FrontController.Request.GetCompetizioneOptionals,new Object []{IdC});
+            Optional[]opt_c=c.getOptional();
             boolean opt [] =new boolean [3];
             int nOpt=0;
             if (jOptional1nome.isSelected())
@@ -750,10 +738,9 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) ==
                 JOptionPane.YES_OPTION)
                 {
-                //agro.dropPrenotazione(agro.getCompetizione(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId()), agro.getPartecipante(listPartecipanti[jListPartecipanti.getSelectedIndex()].getMail()));
-                IdC= (int)fc.processRequest(FrontController.Request.GetIdFromCompetizione,new Object [] {listCompetizioni[jListCompetizioni.getSelectedIndex()]})[0];
+                IdC=listCompetizioni[jListCompetizioni.getSelectedIndex()].getId();
                 C=(Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object []{IdC})[0];
-                MailP=(String)fc.processRequest(FrontController.Request.GetMailFromPartecipante, new Object []{listPartecipanti[jListPartecipanti.getSelectedIndex()]})[0];
+                MailP=listPartecipanti[jListPartecipanti.getSelectedIndex()].getMail();
                 P=(Partecipante)fc.processRequest(FrontController.Request.GetPartecipante, new Object[]{MailP})[0];
                 fc.processRequest(FrontController.Request.AnnullaPrenotazione, new Object []{P,C});
                 JOptionPane.showMessageDialog(null, "Annullamento effettuato\ncon successo!\n"

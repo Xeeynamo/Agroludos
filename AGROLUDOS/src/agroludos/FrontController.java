@@ -167,14 +167,6 @@ public class FrontController
      */
         GetCompetizioni,
         GetCompetizioniMinimal,
-      /**
-     * Ottiene una lista di optional usata dalla competizione specificata
-     * 
-     * @param idCompetizione da analizzare
-     * 
-     * @return lista degli optional
-     */
-        GetCompetizioneOptionals,
         /**
          * Annulla la prenotazione effettuata da un dato partecipante per
          * una data competizione
@@ -300,22 +292,6 @@ public class FrontController
      *  
      */
         GetPartecipanteCompetizioni,
-        /**
-         * Restituisce l'ID associata ad una data Competizione
-         * 
-         *  @param Competizione la Competizione da analizzare
-         * 
-         * @return ID associata alla competizione
-         */
-        GetIdFromCompetizione,
-        /**
-         * Restituisce l'email associata ad un dato partecipante
-         * 
-         *  @param Partecipante il Partecipante da analizzare
-         * 
-         * @return Mail associata al partecipante
-         */
-        GetMailFromPartecipante,
     /**
      * Ottiene una lista dei vari tipi di competizione presenti
      *
@@ -374,32 +350,6 @@ public class FrontController
          * 
          */
         setNPartMin,
-        /**
-         * Restituisce il numero massimo di partecipanti iscrivibili
-         * ad una data competizione
-         * 
-         * @param int ID della competizione desiderata
-         * 
-         * @result numero massimo dei partecipanti iscrivibili
-         */
-        getNPartMax,
-        /**
-         * Restituisce il numero minimo di partecipanti richiesti/garantiti
-         * affinchè la competizione possa avere luogo
-         * 
-         * @param int ID della competizione desiderata
-         * 
-         * @result numero minimo dei partecipanti
-         */
-        getNPartMin,
-        /**
-         * Restituisce il costo per l'iscrizione ad una data competizione
-         * 
-         * @param int ID della competizione desiderata
-         * 
-         * @result prezzo dell'iscrizione
-         */
-        getPrezzoComp,
         /**
          * Imposta ad una determinata competizione il prezzo per l'iscrizione
          * 
@@ -473,7 +423,6 @@ public class FrontController
         new Pair(Request.GetCompetizione, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.GetCompetizioni, new UserType[]{UserType.ManagerCompetizione, UserType.ManagerSistema}),
         new Pair(Request.GetCompetizioniMinimal, new UserType[]{UserType.ManagerSistema}),
-        new Pair(Request.GetCompetizioneOptionals, new UserType[]{UserType.Partecipante,UserType.ManagerCompetizione,UserType.ManagerSistema}),
         new Pair(Request.AnnullaPrenotazione, new UserType[]{UserType.Partecipante,UserType.ManagerCompetizione}),
         new Pair(Request.AddIscrizioneCompetizione, new UserType[]{UserType.Partecipante}),
         new Pair(Request.GetCompetizioneFromId, new UserType[]{UserType.Partecipante,UserType.ManagerCompetizione}),
@@ -486,17 +435,12 @@ public class FrontController
         new Pair(Request.GetPartecipantiCompetizione, new UserType[]{UserType.ManagerCompetizione, UserType.ManagerSistema}),
         new Pair(Request.GetPartecipantiMinimal, new UserType[]{UserType.ManagerSistema}),
         new Pair(Request.GetPartecipanteCompetizioni, new UserType[]{UserType.ManagerSistema}),
-        new Pair(Request.GetIdFromCompetizione, new UserType[]{UserType.ManagerCompetizione}),
-        new Pair(Request.GetMailFromPartecipante, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.GetCompetizioneTipi, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.AnnullaCompetizione, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.AddCompetizione, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.isModificaScaduto, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.setNPartMax, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.setNPartMin, new UserType[]{UserType.ManagerCompetizione}),
-        new Pair(Request.getNPartMin, new UserType[]{UserType.ManagerCompetizione}),
-        new Pair(Request.getNPartMax, new UserType[]{UserType.ManagerCompetizione}),
-        new Pair(Request.getPrezzoComp, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.setPrezzoComp, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.setOptionalCompetizione, new UserType[]{UserType.ManagerCompetizione}),
         new Pair(Request.dropOptionalCompetizione, new UserType[]{UserType.ManagerCompetizione}),
@@ -590,8 +534,6 @@ public class FrontController
                     break;
                 case GetCompetizioniMinimal:
                     return user.getCompetizioniMinimal((Integer)param[0]);
-                case GetCompetizioneOptionals:
-                    return user.getCompetizioneOptional((Integer)param[0]);
                 case AnnullaPrenotazione:
                     if (user instanceof agroludos.db.user.Utente)
                         user.annullaPrenotazione
@@ -652,10 +594,6 @@ public class FrontController
                     return user.getPartecipantiMinimal();
                 case GetPartecipanteCompetizioni:
                     return user.getPartecipanteCompetizioni((String)param[0]);
-                case GetIdFromCompetizione:
-                    return new Object[]{ user.getIdFromCompetizione((Competizione)param[0])};
-                case GetMailFromPartecipante:
-                    return new Object []{user.getMailFromPartecipante((Partecipante) param[0])};
                 case GetCompetizioneTipi:
                     return user.getCompetizioneTipi();
                 case AddCompetizione:
@@ -679,15 +617,6 @@ public class FrontController
                 case setNPartMin:
                     user.setNPartMin((int)param[0],(int)param[1] );
                     break;
-                case getNPartMax:
-                    c=user.getCompetizione((int)param[0]);
-                    return new Object []{c.getNMax()};
-                case getNPartMin:
-                    c=user.getCompetizione((int)param[0]);
-                    return new Object []{c.getNMin()};
-                case getPrezzoComp:
-                    c=user.getCompetizione((int)param[0]);
-                    return new Object []{c.getPrezzo()};
                 case setPrezzoComp:
                     user.setPrezzoComp((int)param[0],(float)param[1]);
                     break;
