@@ -716,8 +716,10 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     {
         try {
             if (index < 0) return;
-            Object[] result = fc.processRequest(FrontController.Request.GetCompetizioneOptionals,
-                    new Integer[]{listManagerCompetizioni[index].getId()});
+            Competizione c=(Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object []{listManagerCompetizioni[index].getId()})[0];
+            Object[] result=c.getOptional();
+            //Object[] result = fc.processRequest(FrontController.Request.GetCompetizioneOptionals,
+            //        new Integer[]{listManagerCompetizioni[index].getId()});
             listManagerCompetizioniOptional = (Optional[])result;
             Shared.CreateList(jManagerOptionalList, listManagerCompetizioniOptional);
         } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
