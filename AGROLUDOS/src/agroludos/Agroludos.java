@@ -1,9 +1,5 @@
 package agroludos;
 
-import agroludos.db.user.Anonimo;
-import agroludos.gui.JFrameLogin;
-import agroludos.gui.Shared;
-
 public class Agroludos
 {
     private static final String DEFAULT_SERVER = "localhost";

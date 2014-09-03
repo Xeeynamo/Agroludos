@@ -6,17 +6,13 @@
 
 package agroludos.gui;
 
-import agroludos.Agroludos;
 import agroludos.DeniedRequestException;
 import agroludos.FrontController;
 import agroludos.InternalErrorException;
 import agroludos.RequestNotSupportedException;
 import agroludos.db.components.*;
-import agroludos.db.user.ManagerSistema;
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 /**

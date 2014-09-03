@@ -12,13 +12,9 @@ import agroludos.InternalErrorException;
 import agroludos.RequestNotSupportedException;
 import agroludos.db.components.Partecipante;
 import agroludos.db.exception.*;
-import agroludos.db.user.Anonimo;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 /**
  *

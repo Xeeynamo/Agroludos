@@ -1,15 +1,6 @@
 package agroludos.gui;
 
 import agroludos.*;
-import agroludos.db.*;
-import agroludos.db.exception.WrongLoginException;
-import agroludos.db.user.Anonimo;
-import agroludos.db.user.ManagerCompetizione;
-import agroludos.db.user.ManagerSistema;
-import agroludos.db.user.Utente;
-import java.sql.SQLException;
-import javax.swing.*;
-
 /**
  *
  * @author Luciano

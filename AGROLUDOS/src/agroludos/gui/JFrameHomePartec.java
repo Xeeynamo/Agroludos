@@ -10,17 +10,12 @@ import agroludos.DeniedRequestException;
 import agroludos.FrontController;
 import agroludos.InternalErrorException;
 import agroludos.RequestNotSupportedException;
-import agroludos.db.user.Utente;
-import agroludos.db.*;
-import agroludos.db.exception.*;
 import agroludos.db.components.Competizione;
 import agroludos.db.components.Optional;
 import java.awt.Component;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.mail.MessagingException;
 import javax.swing.*;
 
 /**

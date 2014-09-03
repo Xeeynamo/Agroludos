@@ -6,17 +6,13 @@
 
 package agroludos.gui;
 
-import agroludos.Agroludos;
 import agroludos.DeniedRequestException;
 import agroludos.FrontController;
 import agroludos.InternalErrorException;
 import agroludos.RequestNotSupportedException;
 import agroludos.db.components.*;
 import agroludos.db.exception.*;
-import agroludos.db.user.ManagerCompetizione;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -629,6 +625,8 @@ public final class JFrameManComp extends javax.swing.JFrame {
     }//GEN-LAST:event_jListCompetizioniValueChanged
 
     private void jButtonApplicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonApplicaActionPerformed
+        if (jListCompetizioni.getSelectedIndex() < 0)
+            return;
         try 
         {
             
@@ -701,7 +699,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
-        finally
+        /*finally
         {
             try
             {
@@ -711,7 +709,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
             {
                 Shared.showError(this, e.toString());
             }
-        }
+        }*/
     }//GEN-LAST:event_jButtonApplicaActionPerformed
 
     private void jListPartecipantiValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListPartecipantiValueChanged
@@ -764,43 +762,6 @@ public final class JFrameManComp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonCancellaPartecipanteActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFrameManComp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFrameManComp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFrameManComp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFrameManComp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-
-        java.awt.EventQueue.invokeLater(() -> {
-            try {
-                new JFrameManComp((ManagerCompetizione)Agroludos.Connect(null).Login("luciano.ciccariello@agroludos.it", "Xeey")).setVisible(true);
-            } catch (Exception ex) {
-                Shared.showError(null, ex.toString());
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAnnulla;

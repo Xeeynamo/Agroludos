@@ -11,10 +11,7 @@ import agroludos.FrontController;
 import agroludos.InternalErrorException;
 import agroludos.RequestNotSupportedException;
 import agroludos.db.components.*;
-import agroludos.db.user.ManagerCompetizione;
-import java.sql.SQLException;
 import java.util.Date;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class JFrameCreaComp extends javax.swing.JFrame

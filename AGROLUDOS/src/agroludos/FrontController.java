@@ -3,13 +3,11 @@ package agroludos;
 import agroludos.db.AgroController;
 import agroludos.db.components.*;
 import agroludos.db.exception.*;
-import agroludos.db.user.*;
 import agroludos.gui.*;
 import java.util.Date;
 import java.sql.SQLException;
 import javax.mail.MessagingException;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 public class FrontController
 {
@@ -485,24 +483,24 @@ public class FrontController
             switch (request)
             {
                 case Initialize:
-                    user = new Anonimo((String)param[0], (String)param[1], (String)param[2]);
+                    user = new AgroController((String)param[0], (String)param[1], (String)param[2]);
                     break;
                 case Login:
                     user = user.Login((String)param[0], (String)param[1]);
-                    if (user instanceof agroludos.db.user.Utente)
+                    switch (user.getType())
                     {
-                        type = UserType.Partecipante;
-                        processRequest(Request.FrameHome, (Object[])null);
-                    }
-                    else if (user instanceof ManagerCompetizione)
-                    {
-                        type = UserType.ManagerCompetizione;
-                        processRequest(Request.FrameManagerCompetizione, (Object[])null);
-                    }
-                    else if (user instanceof ManagerSistema)
-                    {
-                        type = UserType.ManagerSistema;
-                        processRequest(Request.FrameManagerSistema, (Object[])null);
+                        case Partecipante:
+                            type = UserType.Partecipante;
+                            processRequest(Request.FrameHome, (Object[])null);
+                            break;
+                        case ManagerCompetizione:
+                            type = UserType.ManagerCompetizione;
+                            processRequest(Request.FrameManagerCompetizione, (Object[])null);
+                            break;
+                        case ManagerSistema:
+                            type = UserType.ManagerSistema;
+                            processRequest(Request.FrameManagerSistema, (Object[])null);
+                            break;
                     }
                     break;
                 case AddPartecipante:
@@ -527,20 +525,20 @@ public class FrontController
                         user.getCompetizione((Integer)param[0])
                     };
                 case GetCompetizioni:
-                    if (user instanceof ManagerCompetizione)
+                    if (type == UserType.ManagerCompetizione)
                         return user.getCompetizioni(user.getMail());
-                    else if (user instanceof ManagerSistema)
+                    else if (type == UserType.ManagerSistema)
                         return user.getCompetizioni((String)param[0]);
                     break;
                 case GetCompetizioniMinimal:
                     return user.getCompetizioniMinimal((Integer)param[0]);
                 case AnnullaPrenotazione:
-                    if (user instanceof agroludos.db.user.Utente)
+                    if (type == UserType.Partecipante)
                         user.annullaPrenotazione
                             ((Partecipante)processRequest(Request.GetPartecipante,
                                 new Object[] { user.getMail() })[0],
                                 (Competizione)param[0]);
-                    else if (user instanceof ManagerCompetizione)
+                    else if (type == UserType.ManagerCompetizione)
                         user.annullaPrenotazione
                             ((Partecipante)param[0],
                                 (Competizione)param[1]);
@@ -565,23 +563,21 @@ public class FrontController
                         user.getCompetizione((int)param[0])
                     };
                 case IsOptionalSelezionato:
-                    if (user instanceof agroludos.db.user.Utente)
-                        return new Object[]
-                        {
-                            user.isOptionalPrenotato(
-                                (Partecipante)processRequest(Request.GetPartecipante,
-                                        new Object[] { user.getMail() })[0],
-                                (Optional)param[0],
-                                (Competizione)param[1])
-                        };
+                    return new Object[]
+                    {
+                        user.isOptionalPrenotato(
+                            (Partecipante)processRequest(Request.GetPartecipante,
+                                    new Object[] { user.getMail() })[0],
+                            (Optional)param[0],
+                            (Competizione)param[1])
+                    };
                 case SetOptionalPrenotazione:
-                    if (user instanceof agroludos.db.user.Utente)
-                        user.setOptionalPrenotazione(
-                                (Optional)param[0],
-                                (Partecipante)processRequest(Request.GetPartecipante,
-                                        new Object[] { user.getMail() })[0],
-                                (Competizione)param[1],
-                                (boolean)param[2]);
+                    user.setOptionalPrenotazione(
+                            (Optional)param[0],
+                            (Partecipante)processRequest(Request.GetPartecipante,
+                                    new Object[] { user.getMail() })[0],
+                            (Competizione)param[1],
+                            (boolean)param[2]);
                     break;
                 case GetOptional:
                     return user.getOptional();
@@ -691,7 +687,7 @@ public class FrontController
         }
         catch (WrongLoginException | CampiVuotiException | TipoCompetizioneInvalidException |
                 DefCodFiscException | DefEmailException | SrcScadutaException 
-                |MinMaxException |DatePriorException ex)
+                |MinMaxException | DatePriorException | CompetizioneEsistenteException ex)
         {
             throw new InternalErrorException(ex.toString());
         }

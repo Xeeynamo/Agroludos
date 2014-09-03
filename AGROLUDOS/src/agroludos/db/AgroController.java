@@ -3,7 +3,6 @@ package agroludos.db;
 import agroludos.db.components.*;
 import agroludos.db.exception.*;
 import agroludos.db.query.*;
-import agroludos.db.user.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,8 +27,14 @@ public class AgroController
     public static final String TABLE_MAN_COMP = "manager";
     private static final String TABLE_COMP_TYPE = "tipocompetizione";
     
+    public enum UserType
+    {
+        Anonimo, Partecipante, ManagerCompetizione, ManagerSistema
+    }
+    
     private Statement statement;
     private String mail;
+    private UserType type;
         
     /**
      * Stabilisce una connessione col database.
@@ -51,6 +56,8 @@ public class AgroController
         
         // creo lo statement per l'invio della query
         statement = (Statement)db.createStatement();
+        mail = "";
+        type = UserType.Anonimo;
     }
     
     /**
@@ -58,10 +65,11 @@ public class AgroController
      * @param statement parte che gestisce lo scambio di info tra la classe ed il DB MySQL
      * @param mail chi ha effettuato l'accesso
      */
-    public AgroController(Statement statement, String mail)
+    public AgroController(Statement statement, String mail, UserType type)
     {
         this.statement = statement;
         this.mail = mail;
+        this.type = type;
     }
     
     /**
@@ -73,24 +81,34 @@ public class AgroController
      * @throws WrongLoginException quando mail o password specificati sono errati
      * @throws SQLException 
      */
-    public AgroController Login(String mail, String password) throws SQLException, WrongLoginException
+    public AgroController Login(String mail, String password)
+            throws SQLException, WrongLoginException
     {
-        int type = getUserType(mail, password);
-        switch (type) 
+        int idType = getUserType(mail, password);
+        UserType usertype;
+        switch (idType) 
         {
              case 0:
-                 return new agroludos.db.user.Utente(getStatement(), mail);
+                 usertype = UserType.Partecipante;
+                 break;
              case 1:
-                 return new ManagerCompetizione(getStatement(), mail);
+                 usertype = UserType.ManagerCompetizione;
+                 break;
              case 2:
-                 return new ManagerSistema(getStatement(), mail);
+                 usertype = UserType.ManagerSistema;
+                 break;
              default:
                  throw new WrongLoginException();
          }
+        return new AgroController(getStatement(), mail, usertype);
     }
     public String getMail()
     {
         return mail;
+    }
+    public UserType getType()
+    {
+        return type;
     }
     
     /**
@@ -144,6 +162,7 @@ public class AgroController
      */
     private ResultSet sendQuery(String query) throws SQLException
     {
+        System.out.println(query);
         getStatement().executeQuery(query);
         return getStatement().getResultSet();
     }
@@ -155,6 +174,7 @@ public class AgroController
      */
     private void sendUpdate(String query) throws SQLException
     {
+        System.out.println(query);
         getStatement().executeUpdate(query);
     }
     
@@ -258,11 +278,15 @@ public class AgroController
      * lanciato quando il minimo numero di partecipanti è maggiore al numero massimo
      * @throws agroludos.db.exception.DatePriorException 
      * lanciato quando la data della competizione è precedente alla data impostata nel DB
+     * @throws agroludos.db.exception.CompetizioneEsistenteException
+     * lanciato quando esiste già una competizione per quel manager di competizione nel
+     * giorno specificato
      */
     public void creaCompetizione(Competizione c) throws SQLException,
             TipoCompetizioneInvalidException,
             MinMaxException,
-            DatePriorException
+            DatePriorException,
+            CompetizioneEsistenteException
     {
         if (checkTipoCompetizione(c.getTipoCompetizione()) == false)
             throw new TipoCompetizioneInvalidException();
@@ -270,6 +294,9 @@ public class AgroController
             throw new MinMaxException();
         if (c.getDataComp().before(getDbDate()))
             throw new DatePriorException();
+        if (getCompetizione(c.getManager().getMail(), c.getDataCompString()) != null)
+            throw new CompetizioneEsistenteException();
+        
         Insert insert = new Insert(TABLE_COMPETIZIONE,
                 new String[]
                 {
@@ -521,8 +548,12 @@ public class AgroController
                 new String[] { "idCompetizione", },
                 TABLE_COMPETIZIONE,
                 new Condition(
-                    new Condition("manager", "\"" + manager + "\"", Request.Operator.Equal).toString(),
-                    new Condition("data", "'" + date + "'", Request.Operator.Equal).toString(),
+                    new Condition(
+                        new Condition("manager", "\"" + manager + "\"", Request.Operator.Equal).toString(),
+                        new Condition("data", "'" + date + "'", Request.Operator.Equal).toString(),
+                        Request.Operator.And
+                    ).toString(),
+                    new Condition("annullata","0",Request.Operator.Equal).toString(),
                     Request.Operator.And
                 )
         );
