@@ -13,6 +13,8 @@ import agroludos.RequestNotSupportedException;
 import agroludos.db.components.*;
 import agroludos.db.exception.*;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -646,17 +648,22 @@ public final class JFrameManComp extends javax.swing.JFrame {
         {
             int IdC=listCompetizioni[jListCompetizioni.getSelectedIndex()].getId();
             Competizione c=(Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object[] {IdC})[0];
-            Partecipante[]p;
-            String mail=ModComp+c.getDataCompString()+" :\n";
+            //Partecipante[]p=(Partecipante[])fc.processRequest(FrontController.Request.GetPartecipantiCompetizione, new Object []{IdC});
+            Partecipante [] p=listPartecipanti;
+            String mail=ModComp+c.getDataCompString()+":\n";
+            String mailOut=removedPren+c.getDataCompString()+BecauseNewNMax+".";
             String MoreOpt=newOpt;
             String LessOpt=removedOpt;
+            int NPartOut=0;
             if ((boolean)fc.processRequest(FrontController.Request.isModificaScaduto,new Object[]{c})[0])
                 throw new ModificaCompScadutaException();
             float prezzo_mod = Float.parseFloat(jCompPrezzo.getValue().toString());
             if ((int)jPartecMax.getValue()!=c.getNMax())
             {
+                NPartOut=c.getNPart()-(int)jPartecMax.getValue();
                 fc.processRequest(FrontController.Request.setNPartMax,new Object []{IdC,(int)jPartecMax.getValue()});
                 mail+=newNMax+(int)jPartecMax.getValue()+"\n";
+                
             }
             if ((int)jPartecMin.getValue()!=c.getNMin())
             {
@@ -666,7 +673,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
             if (prezzo_mod!=c.getPrezzo())
             {
                 fc.processRequest(FrontController.Request.setPrezzoComp,new Object[]{IdC,prezzo_mod});
-                mail+=newPrezzoC+prezzo_mod+"\n";
+                mail+=newPrezzoC+prezzo_mod+"€\n";
             }
             Optional[]opt_c=c.getOptional();
             boolean opt [] =new boolean [3];
@@ -723,6 +730,15 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 mail+=MoreOpt;
             if(LessOpt.length()!=removedOpt.length())
                 mail+=LessOpt;
+            if(NPartOut>0)
+            {
+                System.out.println("\n\n\nUtenti cancellati:\n");
+                for(int i=1;i<=NPartOut;i++)
+                {
+                    System.out.println("->"+p[p.length-i].getMail()+";\n");
+                    fc.processRequest(FrontController.Request.AnnullaPrenotazione,new Object[]{p[p.length-1],c});
+                }
+            }
             System.out.println(mail);
                         JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
                         , "Successo", JOptionPane.INFORMATION_MESSAGE);
@@ -737,17 +753,28 @@ public final class JFrameManComp extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,
                     ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
-        /*finally
+        finally
         {
+        try {
+            /*finally
+            {
             try
             {
-                fc.processRequest(FrontController.Request.FrameManagerCompetizione,null);
+            fc.processRequest(FrontController.Request.FrameManagerCompetizione,null);
             }
             catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
             {
-                Shared.showError(this, e.toString());
+            Shared.showError(this, e.toString());
             }
-        }*/
+            }*/
+            Shared.CreateList(jListPartecipanti,fc.processRequest(FrontController.Request.GetPartecipantiCompetizione, new Object[]{listCompetizioni[jListCompetizioni.getSelectedIndex()].getId()}));
+        }
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
+        {
+            Shared.showError(this, e.toString());
+        }
+        LoadListCompetizioni();
+        }
     }//GEN-LAST:event_jButtonApplicaActionPerformed
 
     private void jListPartecipantiValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListPartecipantiValueChanged
