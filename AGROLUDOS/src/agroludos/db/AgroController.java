@@ -1223,8 +1223,10 @@ public class AgroController
             throw new SQLException();
     }
     
-    public void addIscrizioneCompetizione(Partecipante p, Competizione c,Optional [] opt) throws SQLException, SrcScadutaException
+    public void addIscrizioneCompetizione(Partecipante p, Competizione c,Optional [] opt) throws SQLException, SrcScadutaException, CompPienaException
     {
+        if(c.getNPart()==c.getNMax())
+            throw new CompPienaException();
         if(getNGiorniMancanti(c.getDataComp(),p.getDataSrc())>=365)
             throw new SrcScadutaException();
         //System.out.println("insert into prenotazione values (\""+p.getCodiceFiscale()+"\","+c.getId()+");");

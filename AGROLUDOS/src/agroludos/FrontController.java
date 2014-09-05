@@ -686,7 +686,7 @@ public class FrontController
             Shared.showError(currentFrame, "Impossibile invire la mail.\n" + ex.toString());
         }
         catch (WrongLoginException | CampiVuotiException | TipoCompetizioneInvalidException |
-                DefCodFiscException | DefEmailException | SrcScadutaException 
+                DefCodFiscException | DefEmailException | SrcScadutaException | CompPienaException
                 |MinMaxException | DatePriorException | CompetizioneEsistenteException ex)
         {
             throw new InternalErrorException(ex.toString());

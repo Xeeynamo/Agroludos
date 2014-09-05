@@ -759,14 +759,11 @@ public class JFrameHomePartec extends javax.swing.JFrame
 
         finally
         {
-            try
-            {
-                fc.processRequest(FrontController.Request.FrameHome, null);
+            try {
+                CompetizioniDisponibiliLoadList();
+            } catch (SQLException ex) {
+                Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
             }
-            catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-            {
-                Shared.showError(this, e.toString());
-            }        
         }
     }//GEN-LAST:event_jIscrizioneCompetizioneActionPerformed
 
