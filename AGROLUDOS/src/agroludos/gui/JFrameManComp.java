@@ -24,6 +24,21 @@ public final class JFrameManComp extends javax.swing.JFrame {
     FrontController fc;
     Competizione[] listCompetizioni;
     Partecipante[] listPartecipanti;
+    private static final String obj="AGROLUDOS";
+    static String ModComp="Sono state effettuate le seguenti modifiche"
+            + " per la competizione da lei prenotata del giorno ";
+    static String newNMax="->Il numero massimo di partecipanti consentiti sono ora ";
+    static String newNMin="->Il numero minimo di partecipanti richiesti sono ora ";
+    static String newPrezzoC="->Il costo della competizione ora è di ";
+    static String newOpt="->Il/i seguenti optional sono da adesso disponibili (pertanto possono "
+            + "essere richiesti):\n";
+    static String removedOpt="->Il/i seguenti optional non sono più dispnibili:\n";
+    static String PrezzoTot="\n\nIl costo della prenotazione è di: ";
+    static String removedPren="Lei non risulta più prenotato per la competizione"
+            + " del giorno ";
+    static String BecauseCompAnnullata=" poichè tale competizione è stata annullata.";
+    static String BecauseNewNMax=" poichè il numero massimo di partecipanti consentiti"
+            + " è stato diminuito a n°partecipanti ";
     
     public JFrameManComp(FrontController fc) 
     {
@@ -629,18 +644,30 @@ public final class JFrameManComp extends javax.swing.JFrame {
             return;
         try 
         {
-            
             int IdC=listCompetizioni[jListCompetizioni.getSelectedIndex()].getId();
             Competizione c=(Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object[] {IdC})[0];
+            Partecipante[]p;
+            String mail=ModComp+c.getDataCompString()+" :\n";
+            String MoreOpt=newOpt;
+            String LessOpt=removedOpt;
             if ((boolean)fc.processRequest(FrontController.Request.isModificaScaduto,new Object[]{c})[0])
                 throw new ModificaCompScadutaException();
             float prezzo_mod = Float.parseFloat(jCompPrezzo.getValue().toString());
             if ((int)jPartecMax.getValue()!=c.getNMax())
+            {
                 fc.processRequest(FrontController.Request.setNPartMax,new Object []{IdC,(int)jPartecMax.getValue()});
+                mail+=newNMax+(int)jPartecMax.getValue()+"\n";
+            }
             if ((int)jPartecMin.getValue()!=c.getNMin())
+            {
                 fc.processRequest(FrontController.Request.setNPartMin,new Object []{IdC,(int)jPartecMin.getValue()});
+                mail+=newNMin+(int)jPartecMin.getValue()+"\n";
+            }
             if (prezzo_mod!=c.getPrezzo())
+            {
                 fc.processRequest(FrontController.Request.setPrezzoComp,new Object[]{IdC,prezzo_mod});
+                mail+=newPrezzoC+prezzo_mod+"\n";
+            }
             Optional[]opt_c=c.getOptional();
             boolean opt [] =new boolean [3];
             int nOpt=0;
@@ -682,10 +709,21 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 }
                 Optional o=(Optional)fc.processRequest(FrontController.Request.getOptional,new Object[]{optional_nome})[0];
                 if (opt[i])
-                    fc.processRequest(FrontController.Request.setOptionalCompetizione,new Object[]{c,o});
+                {
+                    if((boolean)fc.processRequest(FrontController.Request.setOptionalCompetizione,new Object[]{c,o})[0])
+                        MoreOpt+="      -"+o.getNome()+";\n";
+                }
                 else
-                    fc.processRequest(FrontController.Request.dropOptionalCompetizione, new Object[]{c,o});
+                {
+                    if ((boolean)fc.processRequest(FrontController.Request.dropOptionalCompetizione, new Object[]{c,o})[0])
+                        LessOpt+="      -"+o.getNome()+";\n";
+                }
             }
+            if(MoreOpt.length()!=newOpt.length())
+                mail+=MoreOpt;
+            if(LessOpt.length()!=removedOpt.length())
+                mail+=LessOpt;
+            System.out.println(mail);
                         JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
                         , "Successo", JOptionPane.INFORMATION_MESSAGE);
             

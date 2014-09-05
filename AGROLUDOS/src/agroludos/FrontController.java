@@ -617,11 +617,11 @@ public class FrontController
                     user.setPrezzoComp((int)param[0],(float)param[1]);
                     break;
                 case setOptionalCompetizione:
-                    user.setOptionalCompetizione((Competizione)param[0],(Optional)param[1]);
-                    break;
+                    return new Object[]{
+                    user.setOptionalCompetizione((Competizione)param[0],(Optional)param[1])};
                 case dropOptionalCompetizione:
-                    user.dropOptionalCompetizione((Competizione)param[0],(Optional)param[1]);
-                    break;
+                    return new Object[]{
+                    user.dropOptionalCompetizione((Competizione)param[0],(Optional)param[1])};
                 case getOptional:
                     return new Object [] {user.getOptional((String)param[0])};
                 case FrameLogin:

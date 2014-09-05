@@ -935,8 +935,9 @@ public class AgroController
         }
     }
     
-    public void setOptionalCompetizione (Competizione c,Optional o) throws SQLException
+    public boolean setOptionalCompetizione (Competizione c,Optional o) throws SQLException
     {
+        Partecipante [] p= null;
         boolean trovato=false;
         Optional [] opt_c=getOptional(c.getId());
         for (int i=0;i<opt_c.length;i++)
@@ -954,14 +955,18 @@ public class AgroController
                     });
             System.out.println(q.toString()+"\n");
             sendUpdate(q.toString());
-            Partecipante [] p=getPartecipanti(c.getId());
+            p=getPartecipanti(c.getId());
             for (int i=0;i<p.length;i++)
                 setOptionalPrenotazione(o,p[i],c,false);
+            return true;
         }
+        else 
+            return false;
     }
     
-    public void dropOptionalCompetizione (Competizione c,Optional o) throws SQLException
+    public boolean dropOptionalCompetizione (Competizione c,Optional o) throws SQLException
     {
+        Partecipante []p=null;
         boolean trovato=false;
         Optional [] opt_c=getOptional(c.getId());
         for (int i=0;i<opt_c.length;i++)
@@ -973,7 +978,7 @@ public class AgroController
         {
             if (getNPartecipanti(c.getId())!=0)
             {
-                Partecipante [] p=getPartecipanti(c.getId());
+                p=getPartecipanti(c.getId());
                 for (int i=0;i<p.length;i++)
                     dropOptionalPrenotazione(o,p[i],c);
             }
@@ -981,7 +986,10 @@ public class AgroController
                     TABLE_OPTIONAL_COMPETIZIONE,
                     new Condition ("idOptionalCompetizione",String.valueOf(getIndexOptionalCompetizione(o,c)),Request.Operator.Equal));
             sendUpdate(q.toString());
+            return true;
         }
+        else
+            return false;
     }
     
     public void dropOptionalPrenotazione (Optional o, Partecipante p, Competizione c) throws SQLException
