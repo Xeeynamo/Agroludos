@@ -735,11 +735,14 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 System.out.println("\n\n\nUtenti cancellati:\n");
                 for(int i=1;i<=NPartOut;i++)
                 {
-                    System.out.println("->"+p[p.length-i].getMail()+";\n");
+                    fc.processRequest(FrontController.Request.SendMail, new Object[] {p[p.length-i].getMail(),obj+"("+c.getManager().getMail()+")",mailOut});
+                    //System.out.println("->"+p[p.length-i].getMail()+";\n");
                     fc.processRequest(FrontController.Request.AnnullaPrenotazione,new Object[]{p[p.length-1],c});
                 }
             }
-            System.out.println(mail);
+            for (int i=0;i<listPartecipanti.length-NPartOut;i++)
+                fc.processRequest(FrontController.Request.SendMail, new Object[] {p[p.length-i].getMail(),obj+"("+c.getManager().getMail()+")",mail});
+            //System.out.println(mail);
                         JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
                         , "Successo", JOptionPane.INFORMATION_MESSAGE);
             
