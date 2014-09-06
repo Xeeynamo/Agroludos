@@ -815,6 +815,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 MailP=listPartecipanti[jListPartecipanti.getSelectedIndex()].getMail();
                 P=(Partecipante)fc.processRequest(FrontController.Request.GetPartecipante, new Object[]{MailP})[0];
                 fc.processRequest(FrontController.Request.AnnullaPrenotazione, new Object []{P,C});
+                fc.processRequest(FrontController.Request.SendMail, new Object[] {P.getMail(),obj+"("+C.getManager().getMail()+")",removedPren+C.getDataCompString()});
                 JOptionPane.showMessageDialog(null, "Annullamento effettuato\ncon successo!\n"
                         , "Successo", JOptionPane.INFORMATION_MESSAGE);
                 }
