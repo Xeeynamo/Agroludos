@@ -622,7 +622,11 @@ public final class JFrameManComp extends javax.swing.JFrame {
             try 
             {
                 IdC=listCompetizioni[jListCompetizioni.getSelectedIndex()].getId();
+                Competizione c=(Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object []{IdC})[0];
                 fc.processRequest(FrontController.Request.AnnullaCompetizione,new Object []{IdC});
+                Partecipante [] p=listPartecipanti;
+                for (int i=0;i<p.length;i++)
+                    fc.processRequest(FrontController.Request.SendMail, new Object[] {p[p.length-i].getMail(),obj+"("+c.getManager().getMail()+")",removedPren+c.getDataCompString()+BecauseCompAnnullata});
             }
             catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
             {
@@ -661,6 +665,8 @@ public final class JFrameManComp extends javax.swing.JFrame {
             if ((int)jPartecMax.getValue()!=c.getNMax())
             {
                 NPartOut=c.getNPart()-(int)jPartecMax.getValue();
+                if (NPartOut<0)
+                    NPartOut=0;
                 fc.processRequest(FrontController.Request.setNPartMax,new Object []{IdC,(int)jPartecMax.getValue()});
                 mail+=newNMax+(int)jPartecMax.getValue()+"\n";
                 
@@ -740,7 +746,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
                     fc.processRequest(FrontController.Request.AnnullaPrenotazione,new Object[]{p[p.length-1],c});
                 }
             }
-            for (int i=0;i<listPartecipanti.length-NPartOut;i++)
+            for (int i=1;i<=listPartecipanti.length-NPartOut;i++)
                 fc.processRequest(FrontController.Request.SendMail, new Object[] {p[p.length-i].getMail(),obj+"("+c.getManager().getMail()+")",mail});
             //System.out.println(mail);
                         JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
