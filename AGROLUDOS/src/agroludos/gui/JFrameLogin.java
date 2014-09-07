@@ -1,5 +1,9 @@
 package agroludos.gui;
 
+import agroludos.server.exception.InternalErrorException;
+import agroludos.server.exception.DeniedRequestException;
+import agroludos.server.exception.RequestNotSupportedException;
+import agroludos.server.FrontController;
 import agroludos.*;
 /**
  *

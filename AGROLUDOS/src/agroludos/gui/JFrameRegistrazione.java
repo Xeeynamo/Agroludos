@@ -6,12 +6,13 @@
 
 package agroludos.gui;
 
-import agroludos.DeniedRequestException;
-import agroludos.FrontController;
-import agroludos.InternalErrorException;
-import agroludos.RequestNotSupportedException;
-import agroludos.db.components.Partecipante;
-import agroludos.db.exception.*;
+import agroludos.exception.TooLongException;
+import agroludos.exception.DefPassException;
+import agroludos.server.exception.DeniedRequestException;
+import agroludos.server.FrontController;
+import agroludos.server.exception.InternalErrorException;
+import agroludos.server.exception.RequestNotSupportedException;
+import agroludos.components.Partecipante;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

@@ -6,12 +6,12 @@
 
 package agroludos.gui;
 
-import agroludos.DeniedRequestException;
-import agroludos.FrontController;
-import agroludos.InternalErrorException;
-import agroludos.RequestNotSupportedException;
-import agroludos.db.components.Competizione;
-import agroludos.db.components.Optional;
+import agroludos.server.exception.DeniedRequestException;
+import agroludos.server.FrontController;
+import agroludos.server.exception.InternalErrorException;
+import agroludos.server.exception.RequestNotSupportedException;
+import agroludos.components.Competizione;
+import agroludos.components.Optional;
 import java.awt.Component;
 import java.sql.SQLException;
 import java.util.logging.Level;
