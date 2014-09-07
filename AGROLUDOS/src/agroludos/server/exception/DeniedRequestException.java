@@ -9,6 +9,6 @@ package agroludos.server.exception;
 public class DeniedRequestException extends Exception {
     @Override public String toString()
     {
-        return "Richiesta non consentita.";
+        return "Richiesta non consentita dall'utente corrente.";
     }
 }
