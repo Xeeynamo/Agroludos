@@ -1,31 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/AgroController.java</file>
-            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/components/Utente.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/gui/JFrameMainSystem.java</file>
-            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/query/Condition.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/Agroludos.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/gui/JFrameHomePartec.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/gui/JFrameCreaComp.java</file>
-            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/components/Competizione.java</file>
-            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/query/Delete.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/gui/Shared.java</file>
-            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/query/Request.java</file>
+            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/gui/JFrameRegistrazione.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/gui/JFrameManComp.java</file>
             <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/gui/JFrameLogin.java</file>
-            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/AgroMail.java</file>
-            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/DeniedRequestException.java</file>
-            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/query/Insert.java</file>
-            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/db/components/Manager.java</file>
-            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/FrontController.java</file>
-            <file>file:/C:/Users/Luigi%20Rosini/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/gui/JFrameRegistrazione.java</file>
-=======
-            <file>file:/D:/Xeeynamo/Documents/GitHub/Agroludos/AGROLUDOS/src/agroludos/server/FrontController.java</file>
->>>>>>> origin/master
         </group>
     </open-files>
 </project-private>

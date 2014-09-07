@@ -628,7 +628,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 fc.processRequest(FrontController.Request.AnnullaCompetizione,new Object []{IdC});
                 Partecipante [] p=listPartecipanti;
                 for (int i=0;i<p.length;i++)
-                    fc.processRequest(FrontController.Request.SendMail, new Object[] {p[p.length-i].getMail(),obj+"("+c.getManager().getMail()+")",removedPren+c.getDataCompString()+BecauseCompAnnullata});
+                    fc.processRequest(FrontController.Request.SendMail, new Object[] {p[p.length-i].getMail(),obj,removedPren+c.getDataCompString()+BecauseCompAnnullata});
             }
             catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
             {
@@ -743,13 +743,13 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 System.out.println("\n\n\nUtenti cancellati:\n");
                 for(int i=1;i<=NPartOut;i++)
                 {
-                    fc.processRequest(FrontController.Request.SendMail, new Object[] {p[p.length-i].getMail(),obj+"("+c.getManager().getMail()+")",mailOut});
+                    fc.processRequest(FrontController.Request.SendMail, new Object[] {p[p.length-i].getMail(),obj,mailOut});
                     //System.out.println("->"+p[p.length-i].getMail()+";\n");
                     fc.processRequest(FrontController.Request.AnnullaPrenotazione,new Object[]{p[p.length-1],c});
                 }
             }
             for (int i=1;i<=listPartecipanti.length-NPartOut;i++)
-                fc.processRequest(FrontController.Request.SendMail, new Object[] {p[p.length-i].getMail(),obj+"("+c.getManager().getMail()+")",mail});
+                fc.processRequest(FrontController.Request.SendMail, new Object[] {p[p.length-i].getMail(),obj,mail});
             //System.out.println(mail);
                         JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
                         , "Successo", JOptionPane.INFORMATION_MESSAGE);
@@ -817,7 +817,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 MailP=listPartecipanti[jListPartecipanti.getSelectedIndex()].getMail();
                 P=(Partecipante)fc.processRequest(FrontController.Request.GetPartecipante, new Object[]{MailP})[0];
                 fc.processRequest(FrontController.Request.AnnullaPrenotazione, new Object []{P,C});
-                fc.processRequest(FrontController.Request.SendMail, new Object[] {P.getMail(),obj+"("+C.getManager().getMail()+")",removedPren+C.getDataCompString()});
+                fc.processRequest(FrontController.Request.SendMail, new Object[] {P.getMail(),obj,removedPren+C.getDataCompString()});
                 JOptionPane.showMessageDialog(null, "Annullamento effettuato\ncon successo!\n"
                         , "Successo", JOptionPane.INFORMATION_MESSAGE);
                 }
