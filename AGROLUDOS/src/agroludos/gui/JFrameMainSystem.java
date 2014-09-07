@@ -255,11 +255,6 @@ public class JFrameMainSystem extends javax.swing.JFrame {
 
         jScrollPane1.setBackground(new java.awt.Color(255, 153, 153));
 
-        jListCompetizioni.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Tiro con l'arco (01/05/2014)", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jListCompetizioni.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 jListCompetizioniValueChanged(evt);
@@ -323,13 +318,13 @@ public class JFrameMainSystem extends javax.swing.JFrame {
 
         jLabel9.setText("Prezzo impostato");
 
-        jLabelCompetizionePrezzo.setText("10€");
+        jLabelCompetizionePrezzo.setText("-€");
 
         jLabel23.setText("Manager");
 
-        jLabelCompetizioneManagerNome.setText("Marco Rossi");
+        jLabelCompetizioneManagerNome.setText("-");
 
-        jLabelCompetizioneManagerMail.setText("marco.rossi@agroludos.it");
+        jLabelCompetizioneManagerMail.setText("-");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -344,7 +339,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                     .addComponent(jLabelCompetizioneManagerMail)
                     .addComponent(jLabelCompetizioneManagerNome)
                     .addComponent(jLabelCompetizionePrezzo))
-                .addGap(0, 44, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,7 +369,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jCompetizioneUtentiIscritti, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         jPanelCompetizioniLayout.setVerticalGroup(
             jPanelCompetizioniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

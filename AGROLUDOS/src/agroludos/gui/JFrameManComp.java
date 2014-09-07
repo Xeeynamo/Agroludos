@@ -627,7 +627,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 Competizione c=(Competizione)fc.processRequest(FrontController.Request.GetCompetizioneFromId,new Object []{IdC})[0];
                 fc.processRequest(FrontController.Request.AnnullaCompetizione,new Object []{IdC});
                 Partecipante [] p=listPartecipanti;
-                for (int i=0;i<p.length;i++)
+                for (int i=1;i<p.length;i++)
                     fc.processRequest(FrontController.Request.SendMail, new Object[] {p[p.length-i].getMail(),obj,removedPren+c.getDataCompString()+BecauseCompAnnullata});
             }
             catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)

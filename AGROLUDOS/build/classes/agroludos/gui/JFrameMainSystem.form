@@ -285,7 +285,7 @@
                           <Component id="jCompetizioneUtentiIscritti" max="32767" attributes="0"/>
                           <Component id="jPanel1" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="12" max="32767" attributes="0"/>
+                      <EmptySpace pref="24" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -333,13 +333,7 @@
                 <Component class="javax.swing.JList" name="jListCompetizioni">
                   <Properties>
                     <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                      <StringArray count="5">
-                        <StringItem index="0" value="Tiro con l&apos;arco (01/05/2014)"/>
-                        <StringItem index="1" value="Item 2"/>
-                        <StringItem index="2" value="Item 3"/>
-                        <StringItem index="3" value="Item 4"/>
-                        <StringItem index="4" value="Item 5"/>
-                      </StringArray>
+                      <StringArray count="0"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -454,7 +448,7 @@
                               <Component id="jLabelCompetizioneManagerNome" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelCompetizionePrezzo" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="44" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -485,7 +479,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabelCompetizionePrezzo">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="10&#x20ac;"/>
+                    <Property name="text" type="java.lang.String" value="-&#x20ac;"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel23">
@@ -495,12 +489,12 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabelCompetizioneManagerNome">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Marco Rossi"/>
+                    <Property name="text" type="java.lang.String" value="-"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabelCompetizioneManagerMail">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="marco.rossi@agroludos.it"/>
+                    <Property name="text" type="java.lang.String" value="-"/>
                   </Properties>
                 </Component>
               </SubComponents>
