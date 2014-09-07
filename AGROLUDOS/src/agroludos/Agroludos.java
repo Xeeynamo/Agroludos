@@ -1,5 +1,10 @@
 package agroludos;
 
+import agroludos.server.exception.InternalErrorException;
+import agroludos.server.exception.DeniedRequestException;
+import agroludos.server.exception.RequestNotSupportedException;
+import agroludos.server.FrontController;
+
 public class Agroludos
 {
     private static final String DEFAULT_SERVER = "localhost";

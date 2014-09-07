@@ -6,11 +6,12 @@
 
 package agroludos.gui;
 
-import agroludos.DeniedRequestException;
-import agroludos.FrontController;
-import agroludos.InternalErrorException;
-import agroludos.RequestNotSupportedException;
-import agroludos.db.components.*;
+import agroludos.components.Optional;
+import agroludos.components.TipoCompetizione;
+import agroludos.server.exception.DeniedRequestException;
+import agroludos.server.FrontController;
+import agroludos.server.exception.InternalErrorException;
+import agroludos.server.exception.RequestNotSupportedException;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
