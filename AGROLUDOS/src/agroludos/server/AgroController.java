@@ -180,7 +180,6 @@ public class AgroController
      */
     private ResultSet sendQuery(String query) throws SQLException
     {
-        System.out.println(query);
         getStatement().executeQuery(query);
         return getStatement().getResultSet();
     }
@@ -192,7 +191,6 @@ public class AgroController
      */
     private void sendUpdate(String query) throws SQLException
     {
-        System.out.println(query);
         getStatement().executeUpdate(query);
     }
     
