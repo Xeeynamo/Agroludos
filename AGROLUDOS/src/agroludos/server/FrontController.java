@@ -166,6 +166,21 @@ public class FrontController
      * @return lista delle competizioni gestite dal manager specificato
      */
         GetCompetizioni,
+    /**
+     * Ottiene una lista minimale delle competizioni a parte da un filtro
+     * @param int è un numero che, con un OR tra bit, crea un filtro:
+     * 1 = competizioni in corso
+     * 2 = competizioni già passate
+     * 4 = competizioni annullate
+     * 
+     * ESEMPIO: se desiderò cercare tutte le competizioni "in corso" e 
+     * anche quelle "annullate" allora passerò come paramentro 1("in corso")+
+     * 4("annullate"). se desidero vedere tutte le competizioni presenti nel sistema
+     * passerò 7.
+     * 
+     * @return lista minimale di competizioni quali corrispondono alla richiesta fatta
+     * @throws SQLException 
+     */
         GetCompetizioniMinimal,
         /**
          * Annulla la prenotazione effettuata da un dato partecipante per
