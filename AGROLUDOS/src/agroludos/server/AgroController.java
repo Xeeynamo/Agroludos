@@ -365,42 +365,45 @@ public class AgroController
     {
         Condition condition;
         
-        if (filter < 4)
+        switch (filter % 8)
         {
-            if (filter == 0)
+            case 0:
                 return new Competizione[0];
-            if ((filter & 3) == 1)
+            case 1:
                 condition = new Condition(
                         new Condition("data", "'" + getDbDate().toString() + "'", Request.Operator.GreaterEqual).toString(),
                         new Condition("annullata", "false", Request.Operator.Equal).toString(),
                         Request.Operator.And);
-            else if ((filter & 3) == 2)
+                break;
+            case 2:
                 condition = new Condition(
                         new Condition("data", "'" + getDbDate().toString() + "'", Request.Operator.LessEqual).toString(),
                         new Condition("annullata", "false", Request.Operator.Equal).toString(),
                         Request.Operator.And);
-            else
+                break;
+            case 3:
                 condition = new Condition("annullata", "false", Request.Operator.Equal);
-        }
-        else
-        {
-            filter -= 4;
-            if (filter == 0)
-                return new Competizione[0];
-            if ((filter & 3) == 1)
+                break;
+            case 4:
+                condition = new Condition("annullata", "true", Request.Operator.Equal);
+                break;
+            case 5:
                 condition = new Condition(
                         new Condition("data", "'" + getDbDate().toString() + "'", Request.Operator.GreaterEqual).toString(),
                         new Condition("annullata", "true", Request.Operator.Equal).toString(),
-                        Request.Operator.And);
-            else if ((filter & 3) == 2)
+                        Request.Operator.Or);
+                break;
+            case 6:
                 condition = new Condition(
                         new Condition("data", "'" + getDbDate().toString() + "'", Request.Operator.LessEqual).toString(),
                         new Condition("annullata", "true", Request.Operator.Equal).toString(),
-                        Request.Operator.And);
-            else
-                condition = new Condition("annullata", "true", Request.Operator.Equal);
+                        Request.Operator.Or);
+                break;
+            case 7:
+                condition = new Condition("1", "1", Request.Operator.Equal);
+            default:
+                return new Competizione[0];
         }
-            
         Request q = new Request(
                 new String[]
                 {
