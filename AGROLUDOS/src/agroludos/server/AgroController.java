@@ -400,7 +400,8 @@ public class AgroController
                         Request.Operator.Or);
                 break;
             case 7:
-                condition = new Condition("1", "1", Request.Operator.Equal);
+                condition = new Condition("true", "true", Request.Operator.Equal);
+                break;
             default:
                 return new Competizione[0];
         }
