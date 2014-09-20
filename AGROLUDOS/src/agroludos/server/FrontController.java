@@ -551,14 +551,15 @@ public class FrontController
                     return user.getCompetizioniMinimal(o.getIndex(0).toValue());
                 case AnnullaPrenotazione:
                     if (type == UserType.Partecipante)
-                        user.annullaPrenotazione
-                            ((Partecipante)processRequest(Request.GetPartecipante,
-                                new Object[] { user.getMail() })[0],
-                                (Competizione)param[0]);
+                    {
+                        TransferObject to = new TransferObject(new StringTO(user.getMail()));
+                        Partecipante p = (Partecipante)processRequest(Request.GetPartecipante, to)[0];
+                        user.annullaPrenotazione(p, (Competizione)o.getIndex(0));
+                    }
                     else if (type == UserType.ManagerCompetizione)
-                        user.annullaPrenotazione
-                            ((Partecipante)param[0],
-                                (Competizione)param[1]);
+                    {
+                        user.annullaPrenotazione((Partecipante)o.getIndex(0), (Competizione)o.getIndex(1));
+                    }
                     break;
                 case GetPartecipante:
                     return new Object[]
@@ -568,11 +569,12 @@ public class FrontController
                 case GetPartecipanti:
                     return user.getPartecipanti(o.getIndex(0).toValue());
                 case AddIscrizioneCompetizione:
-                    user.addIscrizioneCompetizione(
-                            (Partecipante)processRequest(Request.GetPartecipante,
-                                    new Object[] { user.getMail() })[0],
-                            (Competizione)param[0],
-                            (Optional[])param[1]);
+                {
+                    TransferObject to = new TransferObject(new StringTO(user.getMail()));
+                    Partecipante p = (Partecipante)processRequest(Request.GetPartecipante, to)[0];
+                    Optional[] optList = (Optional[])o.getIndex(1);
+                    user.addIscrizioneCompetizione(p, (Competizione)o.getIndex(0), optList);
+                }
                     break;
                 case GetCompetizioneFromId:
                     return new Object[]
@@ -580,21 +582,26 @@ public class FrontController
                         user.getCompetizione(o.getIndex(0).toValue())
                     };
                 case IsOptionalSelezionato:
+                {
+                    TransferObject to = new TransferObject(new StringTO(user.getMail()));
+                    Partecipante p = (Partecipante)processRequest(Request.GetPartecipante, to)[0];
+                    
                     return new Object[]
                     {
-                        user.isOptionalPrenotato(
-                            (Partecipante)processRequest(Request.GetPartecipante,
-                                    new Object[] { user.getMail() })[0],
-                            (Optional)param[0],
-                            (Competizione)param[1])
+                        user.isOptionalPrenotato(p, (Optional)o.getIndex(0), (Competizione)o.getIndex(1))
                     };
+                }
                 case SetOptionalPrenotazione:
+                {
+                    TransferObject to = new TransferObject(new StringTO(user.getMail()));
+                    Partecipante p = (Partecipante)processRequest(Request.GetPartecipante, to)[0];
+                    
                     user.setOptionalPrenotazione(
-                            (Optional)param[0],
-                            (Partecipante)processRequest(Request.GetPartecipante,
-                                    new Object[] { user.getMail() })[0],
-                            (Competizione)param[1],
-                            (boolean)param[2]);
+                            (Optional)o.getIndex(0),
+                            p,
+                            (Competizione)o.getIndex(1),
+                            o.getIndex(2).toValue() == 1);
+                }
                     break;
                 case GetOptional:
                     return user.getOptional();
