@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Partecipante
+public class Partecipante extends ITransferableObject
 {
     //MODIFICA by ROS (12/07/2014) 
     private String mail;
