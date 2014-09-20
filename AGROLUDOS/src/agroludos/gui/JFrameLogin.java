@@ -1,6 +1,6 @@
 package agroludos.gui;
 
-import agroludos.server.FrontController;
+import agroludos.server.ApplicationController;
 import agroludos.components.TransferObject;
 import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
@@ -11,9 +11,9 @@ import agroludos.server.exception.RequestNotSupportedException;
  */
 public class JFrameLogin extends javax.swing.JFrame {
 
-    FrontController fc;
+    ApplicationController fc;
     
-    public JFrameLogin(FrontController fc)
+    public JFrameLogin(ApplicationController fc)
     {
         this.fc = fc;
         Shared.setDefaultLookAndFeel();
@@ -108,7 +108,7 @@ public class JFrameLogin extends javax.swing.JFrame {
     private void jLoginEntraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginEntraActionPerformed
         try
         {
-            fc.processRequest(FrontController.Request.Login,
+            fc.processRequest(ApplicationController.Request.Login,
                     new TransferObject(jTextMail.getText(), jTextPassword.getText()));
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
@@ -120,7 +120,7 @@ public class JFrameLogin extends javax.swing.JFrame {
     private void jLoginRegistratiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginRegistratiActionPerformed
         try
         {
-            fc.processRequest(FrontController.Request.FrameRegistrazione, null);
+            fc.processRequest(ApplicationController.Request.FrameRegistrazione, null);
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
         {

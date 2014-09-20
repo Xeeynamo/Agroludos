@@ -1,7 +1,7 @@
 package agroludos;
 
 import agroludos.components.StringTO;
-import agroludos.server.FrontController;
+import agroludos.server.ApplicationController;
 import agroludos.components.TransferObject;
 import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
@@ -13,11 +13,11 @@ public class Agroludos
     private static final String DEFAULT_USERNAME = "root";
     private static final String DEFAULT_PASSWORD = "agroludos";
     
-    public static FrontController fc;
+    public static ApplicationController fc;
  
     public static void main(String[] args)
     {
-        fc = new FrontController();
+        fc = new ApplicationController();
  
         TransferObject to;
         if (args == null || args.length != 3)
@@ -26,8 +26,8 @@ public class Agroludos
             to = new TransferObject(new StringTO(args[0]), new StringTO(args[1]), new StringTO(args[2]));
         try
         {
-            fc.processRequest(FrontController.Request.Initialize, to);
-            fc.processRequest(FrontController.Request.FrameLogin, null);
+            fc.processRequest(ApplicationController.Request.Initialize, to);
+            fc.processRequest(ApplicationController.Request.FrameLogin, null);
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
         {

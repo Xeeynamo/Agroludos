@@ -7,7 +7,7 @@
 package agroludos.gui;
 
 import agroludos.components.*;
-import agroludos.server.FrontController;
+import agroludos.server.ApplicationController;
 import agroludos.components.TransferObject;
 import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
@@ -18,22 +18,22 @@ import javax.swing.JOptionPane;
 public class JFrameCreaComp extends javax.swing.JFrame
 {
     //private final ManagerCompetizione agro;
-    FrontController fc;
+    ApplicationController fc;
     TipoCompetizione[] listTipoCompetizione;
     Optional[] listOptional;
     boolean[] listOptionalDisponibili;
     
-    public JFrameCreaComp(FrontController fc)
+    public JFrameCreaComp(ApplicationController fc)
     {
         try 
         {
             this.fc=fc;
             Shared.setDefaultLookAndFeel();
             initComponents();
-            listOptional = fc.processRequest(FrontController.Request.GetOptional,null).toOptionalArray();
+            listOptional = fc.processRequest(ApplicationController.Request.GetOptional,null).toOptionalArray();
             Shared.CreateList(jListaOptional, listOptional);
             listOptionalDisponibili = new boolean[listOptional.length];
-            listTipoCompetizione = fc.processRequest(FrontController.Request.GetCompetizioneTipi,null).toTipoCompetizioneArray();
+            listTipoCompetizione = fc.processRequest(ApplicationController.Request.GetCompetizioneTipi,null).toTipoCompetizioneArray();
             Shared.CreateList(jListTipoCompetizioni, listTipoCompetizione);
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
@@ -293,9 +293,9 @@ public class JFrameCreaComp extends javax.swing.JFrame
             //        0, cTipo, manager, data, creaListaOptional());
             Competizione competizione = new Competizione(0, prezzo, minPart,
                     maxPart, 0, cTipo, null, data, creaListaOptional());
-            fc.processRequest(FrontController.Request.AddCompetizione,
+            fc.processRequest(ApplicationController.Request.AddCompetizione,
                     new TransferObject(competizione));
-            fc.processRequest(FrontController.Request.FrameManagerCompetizione,null);
+            fc.processRequest(ApplicationController.Request.FrameManagerCompetizione,null);
         }
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
@@ -308,7 +308,7 @@ public class JFrameCreaComp extends javax.swing.JFrame
     private void jAnnullaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAnnullaActionPerformed
         try
         {
-            fc.processRequest(FrontController.Request.FrameManagerCompetizione,null);
+            fc.processRequest(ApplicationController.Request.FrameManagerCompetizione,null);
             //dispose();
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)

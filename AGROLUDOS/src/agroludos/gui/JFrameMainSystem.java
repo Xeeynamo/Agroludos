@@ -10,7 +10,7 @@ import agroludos.components.Competizione;
 import agroludos.components.Manager;
 import agroludos.components.Optional;
 import agroludos.components.Partecipante;
-import agroludos.server.FrontController;
+import agroludos.server.ApplicationController;
 import agroludos.components.TransferObject;
 import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
@@ -25,7 +25,7 @@ import javax.swing.*;
  */
 public class JFrameMainSystem extends javax.swing.JFrame {
 
-    private final FrontController fc;
+    private final ApplicationController fc;
     // Scheda MANAGER
     private Manager[] listManager;
     private Competizione[] listManagerCompetizioni;
@@ -38,7 +38,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     private Partecipante[] listPartecipanti;
     private Competizione[] listPartecipanteCompetizioni;
     
-    public JFrameMainSystem(FrontController fc) {
+    public JFrameMainSystem(ApplicationController fc) {
         this.fc = fc;
         Shared.setDefaultLookAndFeel();
         initComponents();
@@ -686,7 +686,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     {
         try
         {
-            listManager = fc.processRequest(FrontController.Request.GetManagers, null).toManagerArray();
+            listManager = fc.processRequest(ApplicationController.Request.GetManagers, null).toManagerArray();
             Shared.CreateList(jListaManager, listManager);
         } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
             Shared.showError(this, e.toString());
@@ -698,7 +698,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         String mail = listManager[index].getMail();
         try
         {
-            listManagerCompetizioni = fc.processRequest(FrontController.Request.GetCompetizioni,
+            listManagerCompetizioni = fc.processRequest(ApplicationController.Request.GetCompetizioni,
                     new TransferObject(mail)).toCompetizioneArray();
             Shared.CreateList(jListManagerCompetizioni, listManagerCompetizioni);
             jLabelManagerMail.setText(mail);
@@ -710,10 +710,10 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     {
         try {
             if (index < 0) return;
-            Competizione c = fc.processRequest(FrontController.Request.GetCompetizioneFromId,
+            Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId,
                     new TransferObject(listManagerCompetizioni[index].getId())).toCompetizione();
             Object[] result=c.getOptional();
-            //Object[] result = fc.processRequest(FrontController.Request.GetCompetizioneOptionals,
+            //Object[] result = fc.processRequest(ApplicationController.Request.GetCompetizioneOptionals,
             //        new Integer[]{listManagerCompetizioni[index].getId()});
             listManagerCompetizioniOptional = (Optional[])result;
             Shared.CreateList(jManagerOptionalList, listManagerCompetizioniOptional);
@@ -729,7 +729,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
                 (jCheckConcluse.isSelected() ? 2 : 0) |
                 (jCheckAnnullate.isSelected() ? 4 : 0);
         try {
-            listCompetizioni = fc.processRequest(FrontController.Request.GetCompetizioniMinimal,
+            listCompetizioni = fc.processRequest(ApplicationController.Request.GetCompetizioniMinimal,
                     new TransferObject(filter)).toCompetizioneArray();
         } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
             Shared.showError(this, e.toString());
@@ -741,13 +741,13 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         if (index < 0) return;
         try {
             int idCompetizione = listCompetizioni[index].getId();
-            Competizione c = fc.processRequest(FrontController.Request.GetCompetizione,
+            Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizione,
                     new TransferObject(idCompetizione)).toCompetizione();
             jLabelCompetizionePrezzo.setText(String.valueOf(c.getPrezzo()));
             jLabelCompetizioneManagerNome.setText(c.getManager().toString());
             jLabelCompetizioneManagerMail.setText(c.getManager().getMail());
             
-            Partecipante[] p = fc.processRequest(FrontController.Request.GetPartecipanti,
+            Partecipante[] p = fc.processRequest(ApplicationController.Request.GetPartecipanti,
                     new TransferObject(c.getId())).toPartecipanteArray();
             Shared.CreateList(jCompetizioneUtentiIscritti, p);
         } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
@@ -763,7 +763,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     void ReloadOpitonalTab() throws SQLException
     {
         try {
-            listOptional = fc.processRequest(FrontController.Request.GetOptional, null).toOptionalArray();
+            listOptional = fc.processRequest(ApplicationController.Request.GetOptional, null).toOptionalArray();
             Shared.CreateList(jListOptional, listOptional);
         } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
             Shared.showError(this, e.toString());
@@ -793,7 +793,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
             (float)jOptionalPrice.getValue());
         
         try {
-            fc.processRequest(FrontController.Request.SetOptional,
+            fc.processRequest(ApplicationController.Request.SetOptional,
                     new TransferObject(opt));
             listOptional[index] = opt;
             ReloadOptional(index);
@@ -809,7 +809,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     void PartecipantiLoadList() throws SQLException
     {
         try {
-            listPartecipanti = fc.processRequest(FrontController.Request.GetPartecipantiMinimal, null).toPartecipanteArray();
+            listPartecipanti = fc.processRequest(ApplicationController.Request.GetPartecipantiMinimal, null).toPartecipanteArray();
             Shared.CreateList(jListaUtenti, listPartecipanti);
         } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
             Shared.showError(this, e.toString());
@@ -819,7 +819,7 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     {
         try {
             if (index < 0) return;
-            Partecipante p = fc.processRequest(FrontController.Request.GetPartecipante,
+            Partecipante p = fc.processRequest(ApplicationController.Request.GetPartecipante,
                     new TransferObject(listPartecipanti[index].getMail())).toPartecipante();
             jUtenteNome.setText(p.getNome());
             jUtenteCognome.setText(p.getCognome());
@@ -831,12 +831,12 @@ public class JFrameMainSystem extends javax.swing.JFrame {
             jUtenteDataSrc.setText(p.getDataSrcString());
             jUtenteCertificatoSrc.setText(p.getSrc());
             
-            Integer[] idCompetizioni = (Integer[])fc.processRequest(FrontController.Request.GetPartecipanteCompetizioni,
+            Integer[] idCompetizioni = (Integer[])fc.processRequest(ApplicationController.Request.GetPartecipanteCompetizioni,
                     new TransferObject(p.getMail())).toIntegerArray();
             listPartecipanteCompetizioni = new Competizione[idCompetizioni.length];
             for (int i = 0; i < idCompetizioni.length; i++)
             {
-                listPartecipanteCompetizioni[i] = fc.processRequest(FrontController.Request.GetCompetizione,
+                listPartecipanteCompetizioni[i] = fc.processRequest(ApplicationController.Request.GetCompetizione,
                         new TransferObject(idCompetizioni[i])).toCompetizione();
             }
             Shared.CreateList(jListaUtentiIscrizioni, listPartecipanteCompetizioni);

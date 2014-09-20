@@ -9,7 +9,7 @@ package agroludos.gui;
 import agroludos.components.*;
 import agroludos.exception.DefPassException;
 import agroludos.exception.TooLongException;
-import agroludos.server.FrontController;
+import agroludos.server.ApplicationController;
 import agroludos.components.TransferObject;
 import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
@@ -24,8 +24,8 @@ import java.util.Arrays;
  */
 public class JFrameRegistrazione extends javax.swing.JFrame {
     
-    FrontController fc;
-    public JFrameRegistrazione(FrontController fc) {
+    ApplicationController fc;
+    public JFrameRegistrazione(ApplicationController fc) {
         this.fc = fc;
         Shared.setDefaultLookAndFeel();
         initComponents();
@@ -302,9 +302,9 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
             
             try
             {
-                fc.processRequest(FrontController.Request.AddPartecipante, new TransferObject(new StringTO(Password), p));
+                fc.processRequest(ApplicationController.Request.AddPartecipante, new TransferObject(new StringTO(Password), p));
                 Shared.showDialog(this, "Registrazione", "Registrazione avvenuta con successo!");
-                fc.processRequest(FrontController.Request.FrameLogin, null);
+                fc.processRequest(ApplicationController.Request.FrameLogin, null);
             }
             catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
             {
@@ -323,7 +323,7 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
     private void jRegistraAnnullaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegistraAnnullaActionPerformed
         try
         {
-            fc.processRequest(FrontController.Request.FrameLogin, null);
+            fc.processRequest(ApplicationController.Request.FrameLogin, null);
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
         {

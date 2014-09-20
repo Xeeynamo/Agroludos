@@ -8,7 +8,7 @@ package agroludos.gui;
 
 import agroludos.components.*;
 import agroludos.exception.ModificaCompScadutaException;
-import agroludos.server.FrontController;
+import agroludos.server.ApplicationController;
 import agroludos.components.TransferObject;
 import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
@@ -22,7 +22,7 @@ import javax.swing.*;
  */
 public final class JFrameManComp extends javax.swing.JFrame {
 
-    FrontController fc;
+    ApplicationController fc;
     Competizione[] listCompetizioni;
     Partecipante[] listPartecipanti;
     private static final String obj="AGROLUDOS";
@@ -41,7 +41,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
     static String BecauseNewNMax=" poichè il numero massimo di partecipanti consentiti"
             + " è stato diminuito a n°partecipanti ";
     
-    public JFrameManComp(FrontController fc) 
+    public JFrameManComp(ApplicationController fc) 
     {
         this.fc=fc;
         Shared.setDefaultLookAndFeel();
@@ -525,7 +525,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
     {
         try 
         {
-            listCompetizioni = fc.processRequest(FrontController.Request.GetCompetizioni, null).toCompetizioneArray();
+            listCompetizioni = fc.processRequest(ApplicationController.Request.GetCompetizioni, null).toCompetizioneArray();
             Shared.CreateList(jListCompetizioni,(Object []) listCompetizioni);
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
@@ -539,10 +539,10 @@ public final class JFrameManComp extends javax.swing.JFrame {
         if (index < 0) return;
         try
         {
-            Competizione c = fc.processRequest(FrontController.Request.GetCompetizioneFromId,
+            Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId,
                     new TransferObject(listCompetizioni[index].getId())).toCompetizione();
             int IdC = c.getId();
-            Optional[] opt= fc.processRequest(FrontController.Request.GetOptional,null).toOptionalArray();
+            Optional[] opt= fc.processRequest(ApplicationController.Request.GetOptional,null).toOptionalArray();
             jLabelPartecCur.setText(String.valueOf(c.getNPart()));
             jPartecMax.setValue(c.getNMax());
             jPartecMin.setValue(c.getNMin());
@@ -566,7 +566,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
 
             }
             int idC=c.getId();
-            listPartecipanti = fc.processRequest(FrontController.Request.GetPartecipantiCompetizione,
+            listPartecipanti = fc.processRequest(ApplicationController.Request.GetPartecipantiCompetizione,
                     new TransferObject(idC)).toPartecipanteArray();
             Shared.CreateList(jListPartecipanti,(Object []) listPartecipanti);
         }
@@ -581,7 +581,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
         try
         {
             String PMail=listPartecipanti[index].getMail();
-            Partecipante p = fc.processRequest(FrontController.Request.GetPartecipante,
+            Partecipante p = fc.processRequest(ApplicationController.Request.GetPartecipante,
                     new TransferObject(PMail)).toPartecipante();
             jUtenteNome.setText(p.getNome());
             jUtenteCognome.setText(p.getCognome());
@@ -602,7 +602,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
     private void jButtonCreaCompetizioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreaCompetizioneActionPerformed
         try
         {
-            fc.processRequest(FrontController.Request.FrameCreaCompetizione,null);
+            fc.processRequest(ApplicationController.Request.FrameCreaCompetizione,null);
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
         {
@@ -624,8 +624,8 @@ public final class JFrameManComp extends javax.swing.JFrame {
             try 
             {
                 IdC=listCompetizioni[jListCompetizioni.getSelectedIndex()].getId();
-                Competizione c = fc.processRequest(FrontController.Request.GetCompetizioneFromId, new TransferObject(IdC)).toCompetizione();
-                fc.processRequest(FrontController.Request.AnnullaCompetizione, new TransferObject(IdC));
+                Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId, new TransferObject(IdC)).toCompetizione();
+                fc.processRequest(ApplicationController.Request.AnnullaCompetizione, new TransferObject(IdC));
                 Partecipante [] p=listPartecipanti;
                 for (int i = 1; i < p.length;i++)
                 {
@@ -656,14 +656,14 @@ public final class JFrameManComp extends javax.swing.JFrame {
         try 
         {
             int IdC=listCompetizioni[jListCompetizioni.getSelectedIndex()].getId();
-            Competizione c = fc.processRequest(FrontController.Request.GetCompetizioneFromId, new TransferObject(IdC)).toCompetizione();
+            Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId, new TransferObject(IdC)).toCompetizione();
             Partecipante[] p = listPartecipanti;
             String mail=ModComp+c.getDataCompString()+":\n";
             String mailOut=removedPren+c.getDataCompString()+BecauseNewNMax+".";
             String MoreOpt=newOpt;
             String LessOpt=removedOpt;
             int NPartOut=0;
-            if (fc.processRequest(FrontController.Request.isModificaScaduto, new TransferObject(c)).toBoolean())
+            if (fc.processRequest(ApplicationController.Request.isModificaScaduto, new TransferObject(c)).toBoolean())
                 throw new ModificaCompScadutaException();
             float prezzo_mod = Float.parseFloat(jCompPrezzo.getValue().toString());
             if ((int)jPartecMax.getValue()!=c.getNMax())
@@ -671,20 +671,20 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 NPartOut=c.getNPart()-(int)jPartecMax.getValue();
                 if (NPartOut<0)
                     NPartOut=0;
-                fc.processRequest(FrontController.Request.setNPartMax,
+                fc.processRequest(ApplicationController.Request.setNPartMax,
                         new TransferObject(IdC, (int)jPartecMax.getValue()));
                 mail+=newNMax+(int)jPartecMax.getValue()+"\n";
                 
             }
             if ((int)jPartecMin.getValue()!=c.getNMin())
             {
-                fc.processRequest(FrontController.Request.setNPartMin,
+                fc.processRequest(ApplicationController.Request.setNPartMin,
                         new TransferObject(IdC, (int)jPartecMin.getValue()));
                 mail+=newNMin+(int)jPartecMin.getValue()+"\n";
             }
             if (prezzo_mod!=c.getPrezzo())
             {
-                fc.processRequest(FrontController.Request.setPrezzoComp,
+                fc.processRequest(ApplicationController.Request.setPrezzoComp,
                         new TransferObject(new IntegerTO(IdC), new FloatTO(prezzo_mod)));
                 mail+=newPrezzoC+prezzo_mod+"€\n";
             }
@@ -727,17 +727,17 @@ public final class JFrameManComp extends javax.swing.JFrame {
                         optional_nome="";
                         break;
                 }
-                Optional o = fc.processRequest(FrontController.Request.getOptional,
+                Optional o = fc.processRequest(ApplicationController.Request.getOptional,
                         new TransferObject(optional_nome)).toOptional();
                 if (opt[i])
                 {
-                    if(fc.processRequest(FrontController.Request.setOptionalCompetizione,
+                    if(fc.processRequest(ApplicationController.Request.setOptionalCompetizione,
                             new TransferObject(c, o)).toBoolean())
                         MoreOpt+="      -"+o.getNome()+";\n";
                 }
                 else
                 {
-                    if (fc.processRequest(FrontController.Request.dropOptionalCompetizione, 
+                    if (fc.processRequest(ApplicationController.Request.dropOptionalCompetizione, 
                             new TransferObject(c, o)).toBoolean())
                         LessOpt+="      -"+o.getNome()+";\n";
                 }
@@ -751,15 +751,15 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 System.out.println("\n\n\nUtenti cancellati:\n");
                 for(int i=1;i<=NPartOut;i++)
                 {
-                    fc.processRequest(FrontController.Request.SendMail,
+                    fc.processRequest(ApplicationController.Request.SendMail,
                             new TransferObject(p[p.length-i].getMail(), obj, mailOut));
                     //System.out.println("->"+p[p.length-i].getMail()+";\n");
-                    fc.processRequest(FrontController.Request.AnnullaPrenotazione,
+                    fc.processRequest(ApplicationController.Request.AnnullaPrenotazione,
                             new TransferObject(p[p.length-1], c));
                 }
             }
             for (int i=1;i<=listPartecipanti.length-NPartOut;i++)
-                fc.processRequest(FrontController.Request.SendMail, new TransferObject(p[p.length-i].getMail(), obj, mail));
+                fc.processRequest(ApplicationController.Request.SendMail, new TransferObject(p[p.length-i].getMail(), obj, mail));
             //System.out.println(mail);
                         JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
                         , "Successo", JOptionPane.INFORMATION_MESSAGE);
@@ -781,14 +781,14 @@ public final class JFrameManComp extends javax.swing.JFrame {
             {
             try
             {
-            fc.processRequest(FrontController.Request.FrameManagerCompetizione,null);
+            fc.processRequest(ApplicationController.Request.FrameManagerCompetizione,null);
             }
             catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
             {
             Shared.showError(this, e.toString());
             }
             }*/
-            Shared.CreateList(jListPartecipanti,fc.processRequest(FrontController.Request.GetPartecipantiCompetizione,
+            Shared.CreateList(jListPartecipanti,fc.processRequest(ApplicationController.Request.GetPartecipantiCompetizione,
                     new TransferObject(listCompetizioni[jListCompetizioni.getSelectedIndex()].getId())).toPartecipanteArray());
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
@@ -824,14 +824,14 @@ public final class JFrameManComp extends javax.swing.JFrame {
                 JOptionPane.YES_OPTION)
                 {
                     IdC = listCompetizioni[jListCompetizioni.getSelectedIndex()].getId();
-                    c = fc.processRequest(FrontController.Request.GetCompetizioneFromId,
+                    c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId,
                             new TransferObject(IdC)).toCompetizione();
                     MailP=listPartecipanti[jListPartecipanti.getSelectedIndex()].getMail();
-                    p = fc.processRequest(FrontController.Request.GetPartecipante,
+                    p = fc.processRequest(ApplicationController.Request.GetPartecipante,
                             new TransferObject(MailP)).toPartecipante();
-                    fc.processRequest(FrontController.Request.AnnullaPrenotazione,
+                    fc.processRequest(ApplicationController.Request.AnnullaPrenotazione,
                             new TransferObject(p ,c));
-                    fc.processRequest(FrontController.Request.SendMail,
+                    fc.processRequest(ApplicationController.Request.SendMail,
                             new TransferObject(p .getMail(),obj,removedPren+c.getDataCompString()));
                     JOptionPane.showMessageDialog(null, "Annullamento effettuato\ncon successo!\n"
                             , "Successo", JOptionPane.INFORMATION_MESSAGE);
@@ -845,7 +845,7 @@ public final class JFrameManComp extends javax.swing.JFrame {
         {
             try
             {
-                fc.processRequest(FrontController.Request.FrameManagerCompetizione,null);
+                fc.processRequest(ApplicationController.Request.FrameManagerCompetizione,null);
             }
             catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
             {
