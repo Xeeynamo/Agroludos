@@ -12,7 +12,7 @@ import agroludos.components.*;
  *
  * @author Luciano
  */
-public class TransferObject {
+public class TransferObject extends ITransferableObject {
     
     ITransferableObject[] to;
     
@@ -35,6 +35,10 @@ public class TransferObject {
     int getLength()
     {
         return to.length;
+    }
+    ITransferableObject[] getArray()
+    {
+        return to;
     }
     ITransferableObject getIndex(int index)
     {

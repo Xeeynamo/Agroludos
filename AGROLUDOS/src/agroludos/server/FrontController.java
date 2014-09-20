@@ -571,8 +571,8 @@ public class FrontController
                 {
                     TransferObject to = new TransferObject(user.getMail());
                     Partecipante p = (Partecipante)processRequest(Request.GetPartecipante, to)[0];
-                    Optional[] optList = (Optional[])o.getIndex(1);
-                    user.addIscrizioneCompetizione(p, (Competizione)o.getIndex(0), optList);
+                    TransferObject optList = (TransferObject)o.getIndex(1);
+                    user.addIscrizioneCompetizione(p, (Competizione)o.getIndex(0), (Optional[])optList.getArray());
                 }
                     break;
                 case GetCompetizioneFromId:

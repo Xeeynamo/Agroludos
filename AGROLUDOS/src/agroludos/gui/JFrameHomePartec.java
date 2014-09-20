@@ -750,7 +750,8 @@ public class JFrameHomePartec extends javax.swing.JFrame
         try 
         {
             fc.processRequest(FrontController.Request.AddIscrizioneCompetizione,
-                    new TransferObject(listComp[jListDisponibili.getSelectedIndex()], opt_scelti));
+                    new TransferObject(listComp[jListDisponibili.getSelectedIndex()],
+                            new TransferObject(opt_scelti)));
             //agro.addIscrizioneCompetizione(listComp[jListDisponibili.getSelectedIndex()],opt_scelti);
                     JOptionPane.showMessageDialog(null, "Prenotazione effettuata\ncon successo!\n"
                     , "Successo", JOptionPane.INFORMATION_MESSAGE);
