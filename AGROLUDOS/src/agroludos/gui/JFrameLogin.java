@@ -1,11 +1,10 @@
 package agroludos.gui;
 
 import agroludos.server.FrontController;
+import agroludos.server.TransferObject;
 import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
 import agroludos.server.exception.RequestNotSupportedException;
-import agroludos.server.lang.LangManager;
-import java.awt.Component;
 /**
  *
  * @author Luciano
@@ -110,7 +109,7 @@ public class JFrameLogin extends javax.swing.JFrame {
         try
         {
             fc.processRequest(FrontController.Request.Login,
-                    new String[]{jTextMail.getText(), jTextPassword.getText()});
+                    new TransferObject(jTextMail.getText(), jTextPassword.getText()));
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
         {
