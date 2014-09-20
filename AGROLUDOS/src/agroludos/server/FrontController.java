@@ -538,7 +538,7 @@ public class FrontController
                 case GetCompetizione:
                     return new Object[]
                     {
-                        user.getCompetizione(o.getIndex(1).toValue())
+                        user.getCompetizione(o.getIndex(0).toValue())
                     };
                 case GetCompetizioni:
                     if (type == UserType.ManagerCompetizione)
