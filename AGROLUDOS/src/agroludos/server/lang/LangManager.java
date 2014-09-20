@@ -62,15 +62,11 @@ public class LangManager extends PropertyEditorSupport {
         Component[] component = frame.getComponents();
         for(Component c : component)
         {
-            try
-            {
-                String str = getString(c.getName());
-                SubApplyLanguage(c, str);
-            }
-            catch(Exception e)
-            {
-                
-            }
+            String name = c.getName();
+            if (name == null || name.compareTo("") == 0)
+                SubApplyLanguage(c, "NONE");
+            else
+                SubApplyLanguage(c, getString(name));
         }
     }
     

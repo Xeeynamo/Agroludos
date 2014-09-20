@@ -6,13 +6,14 @@
 
 package agroludos.gui;
 
-import agroludos.exception.TooLongException;
+import agroludos.components.*;
 import agroludos.exception.DefPassException;
-import agroludos.server.exception.DeniedRequestException;
+import agroludos.exception.TooLongException;
 import agroludos.server.FrontController;
+import agroludos.server.TransferObject;
+import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
 import agroludos.server.exception.RequestNotSupportedException;
-import agroludos.components.Partecipante;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -301,7 +302,7 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
             
             try
             {
-                fc.processRequest(FrontController.Request.AddPartecipante, new Object[]{Password, p});
+                fc.processRequest(FrontController.Request.AddPartecipante, new TransferObject(new StringTO(Password), p));
                 Shared.showDialog(this, "Registrazione", "Registrazione avvenuta con successo!");
                 fc.processRequest(FrontController.Request.FrameLogin, null);
             }
