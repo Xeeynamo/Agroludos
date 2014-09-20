@@ -7,19 +7,26 @@
 package agroludos.server;
 
 import agroludos.components.TransferObject;
+import agroludos.server.ApplicationController.Request;
 import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
 import agroludos.server.exception.RequestNotSupportedException;
 
-public class FrontController
+/**
+ *
+ * @author Luciano
+ */
+public class Dispatcher
 {
-    private final Dispatcher dispatcher;
-    public FrontController() {
-        dispatcher = new Dispatcher();
+    private final ApplicationController appCtrl;
+    public Dispatcher()
+    {
+        appCtrl = new ApplicationController();
     }
-    TransferObject processRequest(String request, TransferObject parameters)
+    public TransferObject dispatch(String request, TransferObject parameter)
             throws DeniedRequestException, RequestNotSupportedException, InternalErrorException
     {
-        return dispatcher.dispatch(request, parameters);
+        Request r = null;
+        return appCtrl.processRequest(r, parameter);
     }
 }
