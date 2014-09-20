@@ -15,6 +15,12 @@ public class IntegerTO extends ITransferableObject {
     public IntegerTO(int i) {
         value = i;
     }
+    public IntegerTO(boolean b) {
+        value = b == true ? 1 : 0;
+    }
+    public IntegerTO(Boolean b) {
+        value = b == true ? 1 : 0;
+    }
     public IntegerTO(Integer i) {
         value = i;
     }
