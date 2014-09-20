@@ -6,7 +6,7 @@
 
 package agroludos.server;
 
-import agroludos.components.ITransferableObject;
+import agroludos.components.*;
 
 /**
  *
@@ -19,6 +19,12 @@ public class TransferObject {
     public TransferObject(ITransferableObject ... to)
     {
         this.to = to;
+    }
+    public TransferObject(String ... str)
+    {
+        to = new StringTO[str.length];
+        for (int i = 0; i < str.length; i++)
+            to[i] = new StringTO(str[i]);
     }
     int getLength()
     {

@@ -552,7 +552,7 @@ public class FrontController
                 case AnnullaPrenotazione:
                     if (type == UserType.Partecipante)
                     {
-                        TransferObject to = new TransferObject(new StringTO(user.getMail()));
+                        TransferObject to = new TransferObject(user.getMail());
                         Partecipante p = (Partecipante)processRequest(Request.GetPartecipante, to)[0];
                         user.annullaPrenotazione(p, (Competizione)o.getIndex(0));
                     }
@@ -570,7 +570,7 @@ public class FrontController
                     return user.getPartecipanti(o.getIndex(0).toValue());
                 case AddIscrizioneCompetizione:
                 {
-                    TransferObject to = new TransferObject(new StringTO(user.getMail()));
+                    TransferObject to = new TransferObject(user.getMail());
                     Partecipante p = (Partecipante)processRequest(Request.GetPartecipante, to)[0];
                     Optional[] optList = (Optional[])o.getIndex(1);
                     user.addIscrizioneCompetizione(p, (Competizione)o.getIndex(0), optList);
@@ -583,7 +583,7 @@ public class FrontController
                     };
                 case IsOptionalSelezionato:
                 {
-                    TransferObject to = new TransferObject(new StringTO(user.getMail()));
+                    TransferObject to = new TransferObject(user.getMail());
                     Partecipante p = (Partecipante)processRequest(Request.GetPartecipante, to)[0];
                     
                     return new Object[]
@@ -593,7 +593,7 @@ public class FrontController
                 }
                 case SetOptionalPrenotazione:
                 {
-                    TransferObject to = new TransferObject(new StringTO(user.getMail()));
+                    TransferObject to = new TransferObject(user.getMail());
                     Partecipante p = (Partecipante)processRequest(Request.GetPartecipante, to)[0];
                     
                     user.setOptionalPrenotazione(
