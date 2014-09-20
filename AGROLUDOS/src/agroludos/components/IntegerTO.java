@@ -10,7 +10,7 @@ package agroludos.components;
  *
  * @author Luciano
  */
-public class IntegerTO extends ITransferableObject {
+public class IntegerTO extends TransferableObject {
     Integer value;
     public IntegerTO(int i) {
         value = i;

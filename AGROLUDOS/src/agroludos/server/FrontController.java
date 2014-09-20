@@ -6,9 +6,7 @@ import agroludos.gui.*;
 import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
 import agroludos.server.exception.RequestNotSupportedException;
-import agroludos.server.lang.LangManager;
 import java.sql.SQLException;
-import java.util.Date;
 import javax.mail.MessagingException;
 import javax.swing.JFrame;
 

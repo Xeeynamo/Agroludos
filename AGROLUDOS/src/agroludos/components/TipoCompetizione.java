@@ -1,7 +1,7 @@
 
 package agroludos.components;
 
-public class TipoCompetizione extends ITransferableObject
+public class TipoCompetizione extends TransferableObject
 {
     private String nome;
     private String descrizione;

@@ -10,7 +10,7 @@ package agroludos.components;
  *
  * @author Luciano
  */
-public class StringTO extends ITransferableObject {
+public class StringTO extends TransferableObject {
     private final String str;
     public StringTO(String str) {
         this.str = str;

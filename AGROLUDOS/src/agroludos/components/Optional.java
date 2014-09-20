@@ -1,6 +1,6 @@
 package agroludos.components;
 
-public class Optional extends ITransferableObject
+public class Optional extends TransferableObject
 {
     String name;
     String description;

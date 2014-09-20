@@ -6,7 +6,7 @@
 
 package agroludos.components;
 
-public class FloatTO extends ITransferableObject {
+public class FloatTO extends TransferableObject {
     float f;
     public FloatTO(float f)
     {

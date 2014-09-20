@@ -1,6 +1,6 @@
 package agroludos.components;
 
-public class Manager extends ITransferableObject
+public class Manager extends TransferableObject
 {
     private String nome;
     private String cognome;

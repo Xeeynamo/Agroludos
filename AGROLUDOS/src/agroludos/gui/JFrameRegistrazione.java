@@ -10,7 +10,7 @@ import agroludos.components.*;
 import agroludos.exception.DefPassException;
 import agroludos.exception.TooLongException;
 import agroludos.server.FrontController;
-import agroludos.server.TransferObject;
+import agroludos.components.TransferObject;
 import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
 import agroludos.server.exception.RequestNotSupportedException;

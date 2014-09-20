@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * Questa classe rappresenta una competizione di sola lettura
  */
-public class Competizione extends ITransferableObject
+public class Competizione extends TransferableObject
 {
     private int id;
     private float prezzo;
