@@ -1,38 +1,40 @@
 package agroludos.server;
 
-import agroludos.server.db.Delete;
-import agroludos.server.db.Request;
-import agroludos.server.db.Join;
-import agroludos.server.db.Condition;
-import agroludos.server.db.Insert;
-import agroludos.server.db.Update;
-import agroludos.exception.CampiVuotiException;
-import agroludos.exception.MinMaxException;
-import agroludos.exception.TipoCompetizioneInvalidException;
-import agroludos.exception.CompPienaException;
-import agroludos.exception.SrcScadutaException;
-import agroludos.exception.DatePriorException;
-import agroludos.exception.DefEmailException;
-import agroludos.exception.CompetizioneEsistenteException;
-import agroludos.exception.DefCodFiscException;
-import agroludos.exception.WrongLoginException;
+import agroludos.components.Competizione;
+import agroludos.components.Manager;
 import agroludos.components.Optional;
 import agroludos.components.Partecipante;
 import agroludos.components.TipoCompetizione;
-import agroludos.components.Manager;
-import agroludos.components.Competizione;
+import agroludos.exception.CampiVuotiException;
+import agroludos.exception.CompPienaException;
+import agroludos.exception.CompetizioneEsistenteException;
+import agroludos.exception.DatePriorException;
+import agroludos.exception.DefCodFiscException;
+import agroludos.exception.DefEmailException;
+import agroludos.exception.MinMaxException;
+import agroludos.exception.SrcScadutaException;
+import agroludos.exception.TipoCompetizioneInvalidException;
+import agroludos.exception.WrongLoginException;
+import agroludos.server.db.Condition;
+import agroludos.server.db.Delete;
+import agroludos.server.db.Insert;
+import agroludos.server.db.Join;
+import agroludos.server.db.Request;
+import agroludos.server.db.Update;
+import agroludos.server.lang.LangManager;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import javax.mail.MessagingException;
+import javax.swing.JFrame;
 
 /**
  * Front controller del progetto.
  * Separa l'interfaccia con il database, gestendo i dialoghi tra le due parti.
  * @author Luciano
  */
-public class AgroController
+public final class AgroController
 {
     public static final String DB_AGRO = "agroludos";
     public static final String TABLE_PARTECIPANTE = "partecipante";
@@ -53,7 +55,9 @@ public class AgroController
     private Statement statement;
     private String mail;
     private UserType type;
-        
+    static private JFrame currentFrame;
+    LangManager lang;
+    
     /**
      * Stabilisce una connessione col database.
      * @param database host che ospita il database MySQL
@@ -76,6 +80,7 @@ public class AgroController
         statement = (Statement)db.createStatement();
         mail = "";
         type = UserType.Anonimo;
+        LoadLanguage();
     }
     
     /**
@@ -88,6 +93,24 @@ public class AgroController
         this.statement = statement;
         this.mail = mail;
         this.type = type;
+        LoadLanguage();
+    }
+    
+    void LoadLanguage()
+    {
+        lang = new LangManager();
+    }
+    
+    void setCurrentFrame(JFrame frame)
+    {
+        if (currentFrame != null)
+        {
+            currentFrame.setVisible(false);
+            currentFrame.dispose();
+        }
+        currentFrame = frame;
+        currentFrame.setVisible(true);
+        lang.ApplyLanguage(currentFrame);
     }
     
     /**

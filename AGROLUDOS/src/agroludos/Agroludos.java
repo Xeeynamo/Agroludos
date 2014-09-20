@@ -1,9 +1,11 @@
 package agroludos;
 
-import agroludos.server.exception.InternalErrorException;
-import agroludos.server.exception.DeniedRequestException;
-import agroludos.server.exception.RequestNotSupportedException;
+import agroludos.components.StringTO;
 import agroludos.server.FrontController;
+import agroludos.server.TransferObject;
+import agroludos.server.exception.DeniedRequestException;
+import agroludos.server.exception.InternalErrorException;
+import agroludos.server.exception.RequestNotSupportedException;
 
 public class Agroludos
 {
@@ -17,14 +19,14 @@ public class Agroludos
     {
         fc = new FrontController();
  
-        String[] param;
+        TransferObject to;
         if (args == null || args.length != 3)
-            param = new String[]{DEFAULT_SERVER, DEFAULT_USERNAME, DEFAULT_PASSWORD};
+            to = new TransferObject(new StringTO(DEFAULT_SERVER), new StringTO(DEFAULT_USERNAME), new StringTO(DEFAULT_PASSWORD));
         else
-            param = new String[]{args[0], args[1], args[2]};
+            to = new TransferObject(new StringTO(args[0]), new StringTO(args[1]), new StringTO(args[2]));
         try
         {
-            fc.processRequest(FrontController.Request.Initialize, param);
+            fc.processRequest(FrontController.Request.Initialize, to);
             fc.processRequest(FrontController.Request.FrameLogin, null);
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)

@@ -1,10 +1,11 @@
 package agroludos.gui;
 
-import agroludos.server.exception.InternalErrorException;
-import agroludos.server.exception.DeniedRequestException;
-import agroludos.server.exception.RequestNotSupportedException;
 import agroludos.server.FrontController;
-import agroludos.*;
+import agroludos.server.exception.DeniedRequestException;
+import agroludos.server.exception.InternalErrorException;
+import agroludos.server.exception.RequestNotSupportedException;
+import agroludos.server.lang.LangManager;
+import java.awt.Component;
 /**
  *
  * @author Luciano
@@ -39,18 +40,22 @@ public class JFrameLogin extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Agroludos");
 
-        jLoginMail.setText("Nome utente");
+        jLoginMail.setText("LOGIN_MAIL");
+        jLoginMail.setName("LOGIN_MAIL"); // NOI18N
 
-        jLoginPassword.setText("Password");
+        jLoginPassword.setText("LOGIN_PASSWORD");
+        jLoginPassword.setName("LOGIN_PASSWORD"); // NOI18N
 
-        jLoginEntra.setText("Entra");
+        jLoginEntra.setText("LOGIN_LOGIN");
+        jLoginEntra.setName("LOGIN_LOGIN"); // NOI18N
         jLoginEntra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jLoginEntraActionPerformed(evt);
             }
         });
 
-        jLoginRegistrati.setText("Registrati");
+        jLoginRegistrati.setText("LOGIN_SIGNUP");
+        jLoginRegistrati.setName("LOGIN_SIGNUP"); // NOI18N
         jLoginRegistrati.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jLoginRegistratiActionPerformed(evt);

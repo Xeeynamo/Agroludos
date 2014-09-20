@@ -1,13 +1,14 @@
 package agroludos.server;
 
+import agroludos.components.*;
+import agroludos.exception.*;
+import agroludos.gui.*;
 import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
 import agroludos.server.exception.RequestNotSupportedException;
-import agroludos.exception.*;
-import agroludos.components.*;
-import agroludos.gui.*;
-import java.util.Date;
+import agroludos.server.lang.LangManager;
 import java.sql.SQLException;
+import java.util.Date;
 import javax.mail.MessagingException;
 import javax.swing.JFrame;
 
@@ -473,7 +474,6 @@ public class FrontController
     UserType type;
     JFrame currentFrame;
     
-    
     public FrontController()
     {
         currentFrame = null;
@@ -490,7 +490,7 @@ public class FrontController
         throw new RequestNotSupportedException();
     }
     
-    public Object[] processRequest(Request request, Object ... param) throws DeniedRequestException, RequestNotSupportedException, InternalErrorException
+    public Object[] processRequest(Request request, TransferObject o) throws DeniedRequestException, RequestNotSupportedException, InternalErrorException
     {
         if (!validateRequest(request))
             throw new DeniedRequestException();
@@ -500,34 +500,34 @@ public class FrontController
             switch (request)
             {
                 case Initialize:
-                    user = new AgroController((String)param[0], (String)param[1], (String)param[2]);
+                    user = new AgroController(o.getIndex(0).toString(), o.getIndex(1).toString(), o.getIndex(2).toString());
                     break;
                 case Login:
-                    user = user.Login((String)param[0], (String)param[1]);
+                    user = user.Login(o.getIndex(0).toString(), o.getIndex(1).toString());
                     switch (user.getType())
                     {
                         case Partecipante:
                             type = UserType.Partecipante;
-                            processRequest(Request.FrameHome, (Object[])null);
+                            processRequest(Request.FrameHome, null);
                             break;
                         case ManagerCompetizione:
                             type = UserType.ManagerCompetizione;
-                            processRequest(Request.FrameManagerCompetizione, (Object[])null);
+                            processRequest(Request.FrameManagerCompetizione, null);
                             break;
                         case ManagerSistema:
                             type = UserType.ManagerSistema;
-                            processRequest(Request.FrameManagerSistema, (Object[])null);
+                            processRequest(Request.FrameManagerSistema, null);
                             break;
                     }
                     break;
                 case AddPartecipante:
-                    user.addPartecipante((String)param[0], (Partecipante)param[1]);
+                    user.addPartecipante(o.getIndex(0).toString(), (Partecipante)o.getIndex(1));
                     break;
                 case SendMail:
-                    user.sendMail((String)param[0], (String)param[1], (String)param[2]);
+                    user.sendMail(o.getIndex(0).toString(), o.getIndex(1).toString(), o.getIndex(2).toString());
                     break;
                 case SendMailToSys:
-                    user.sendMail(user.getSysMail(), (String)param[0], (String)param[1]);
+                    user.sendMail(user.getSysMail(), o.getIndex(0).toString(), o.getIndex(1).toString());
                     break;
                     
                 case GetManagers:
@@ -539,16 +539,16 @@ public class FrontController
                 case GetCompetizione:
                     return new Object[]
                     {
-                        user.getCompetizione((Integer)param[0])
+                        user.getCompetizione(o.getIndex(1).toValue())
                     };
                 case GetCompetizioni:
                     if (type == UserType.ManagerCompetizione)
                         return user.getCompetizioni(user.getMail());
                     else if (type == UserType.ManagerSistema)
-                        return user.getCompetizioni((String)param[0]);
+                        return user.getCompetizioni(o.getIndex(0).toString());
                     break;
                 case GetCompetizioniMinimal:
-                    return user.getCompetizioniMinimal((Integer)param[0]);
+                    return user.getCompetizioniMinimal(o.getIndex(0).toValue());
                 case AnnullaPrenotazione:
                     if (type == UserType.Partecipante)
                         user.annullaPrenotazione
@@ -563,10 +563,10 @@ public class FrontController
                 case GetPartecipante:
                     return new Object[]
                     {
-                        user.getPartecipante((String)param[0])
+                        user.getPartecipante(o.getIndex(0).toString())
                     };
                 case GetPartecipanti:
-                    return user.getPartecipanti((Integer)param[0]);
+                    return user.getPartecipanti(o.getIndex(0).toValue());
                 case AddIscrizioneCompetizione:
                     user.addIscrizioneCompetizione(
                             (Partecipante)processRequest(Request.GetPartecipante,
@@ -577,7 +577,7 @@ public class FrontController
                 case GetCompetizioneFromId:
                     return new Object[]
                     {
-                        user.getCompetizione((int)param[0])
+                        user.getCompetizione(o.getIndex(0).toValue())
                     };
                 case IsOptionalSelezionato:
                     return new Object[]
@@ -599,104 +599,72 @@ public class FrontController
                 case GetOptional:
                     return user.getOptional();
                 case SetOptional:
-                    user.setOptional((Optional)param[0]);
+                    user.setOptional((Optional)o.getIndex(0));
                     break;
                 case GetPartecipantiCompetizione:
-                    return user.getPartecipanti((int)param[0]);
+                    return user.getPartecipanti(o.getIndex(0).toValue());
                 case GetPartecipantiMinimal:
                     return user.getPartecipantiMinimal();
                 case GetPartecipanteCompetizioni:
-                    return user.getPartecipanteCompetizioni((String)param[0]);
+                    return user.getPartecipanteCompetizioni(o.getIndex(0).toString());
                 case GetCompetizioneTipi:
                     return user.getCompetizioneTipi();
                 case AddCompetizione:
-                    c=new Competizione (0,(float)param[0],(int)param[1],
-                    (int)param[2],0,(TipoCompetizione)param[3],
-                    new Manager ("","",user.getMail()),(Date)param[4],(Optional[])param[5]);
-                    user.creaCompetizione(c);
+                    /*c=new Competizione (0,(float)param[0], o.getIndex(1).toValue(),
+                    o.getIndex(2).toValue(), 0, (TipoCompetizione)param[3],
+                    new Manager ("","",user.getMail()), (Date)param[4], (Optional[])param[5]);*/
+                    user.creaCompetizione((Competizione)o.getIndex(0));
                     break;
                 case AnnullaCompetizione:
-                    user.annullaCompetizione((int)param[0]);
+                    user.annullaCompetizione(o.getIndex(0).toValue());
                     break;
                 case isModificaScaduto:
-                    c=(Competizione)param[0];
+                    c = (Competizione)o.getIndex(0);
                     if(user.getNGiorniMancanti(c.getDataComp())<2)
                         return new Object[]{true};
                     else
                         return new Object[]{false};
                 case setNPartMax:
-                    user.setNPartMax((int)param[0],(int)param[1] );
+                    user.setNPartMax(o.getIndex(0).toValue(), o.getIndex(1).toValue());
                     break;
                 case setNPartMin:
-                    user.setNPartMin((int)param[0],(int)param[1] );
+                    user.setNPartMin(o.getIndex(0).toValue(), o.getIndex(1).toValue());
                     break;
                 case setPrezzoComp:
-                    user.setPrezzoComp((int)param[0],(float)param[1]);
+                    user.setPrezzoComp(o.getIndex(0).toValue(), o.getIndex(1).toValueF());
                     break;
                 case setOptionalCompetizione:
                     return new Object[]{
-                    user.setOptionalCompetizione((Competizione)param[0],(Optional)param[1])};
+                    user.setOptionalCompetizione((Competizione)o.getIndex(0), (Optional)o.getIndex(1))};
                 case dropOptionalCompetizione:
                     return new Object[]{
-                    user.dropOptionalCompetizione((Competizione)param[0],(Optional)param[1])};
+                    user.dropOptionalCompetizione((Competizione)o.getIndex(0), (Optional)o.getIndex(0))};
                 case getOptional:
-                    return new Object [] {user.getOptional((String)param[0])};
+                    return new Object [] {user.getOptional(o.getIndex(0).toString())};
                 case FrameLogin:
-                    if (currentFrame != null)
-                    {
-                        currentFrame.setVisible(false);
-                        currentFrame.dispose();
-                    }
-                    currentFrame = new JFrameLogin(this);
-                    currentFrame.setVisible(true);
+                    user.setCurrentFrame(new JFrameLogin(this));
                     break;
                 case FrameRegistrazione:
-                    if (currentFrame != null)
-                    {
-                        currentFrame.setVisible(false);
-                        currentFrame.dispose();
-                    }
-                    currentFrame = new JFrameRegistrazione(this);
-                    currentFrame.setVisible(true);
+                    user.setCurrentFrame(new JFrameRegistrazione(this));
                     break;
                 case FrameHome:
-                    if (currentFrame != null)
-                    {
-                        currentFrame.setVisible(false);
-                        currentFrame.dispose();
-                    }
-                    currentFrame = new JFrameHomePartec(this);
-                    currentFrame.setVisible(true);
+                    user.setCurrentFrame(new JFrameHomePartec(this));
                     break;
                 case FrameManagerCompetizione:
-                    if (currentFrame != null)
-                    {
-                        currentFrame.setVisible(false);
-                        currentFrame.dispose();
-                    }
-                    currentFrame = new JFrameManComp(this);
-                    currentFrame.setVisible(true);
+                    user.setCurrentFrame(new JFrameManComp(this));
                     break;
                 case FrameCreaCompetizione:
-                    if (currentFrame != null)
-                    {
-                        currentFrame.setVisible(false);
-                        currentFrame.dispose();
-                    }
-                    currentFrame = new JFrameCreaComp(this);
-                    currentFrame.setVisible(true);
+                    user.setCurrentFrame(new JFrameCreaComp(this));
                     break;
                 case FrameManagerSistema:
-                    if (currentFrame != null)
-                    {
-                        currentFrame.setVisible(false);
-                        currentFrame.dispose();
-                    }
-                    currentFrame = new JFrameMainSystem(this);
-                    currentFrame.setVisible(true);
+                    user.setCurrentFrame(new JFrameMainSystem(this));
                     break;
                    
             }
+        }
+        catch (ClassNotFoundException ex)
+        {
+            
         }
         catch (MessagingException ex)
         {
@@ -707,10 +675,6 @@ public class FrontController
                 |MinMaxException | DatePriorException | CompetizioneEsistenteException ex)
         {
             throw new InternalErrorException(ex.toString());
-        }
-        catch (ClassNotFoundException ex)
-        {
-            
         }
         catch (IllegalAccessException ex)
         {
