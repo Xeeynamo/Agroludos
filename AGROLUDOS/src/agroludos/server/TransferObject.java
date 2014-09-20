@@ -26,6 +26,12 @@ public class TransferObject {
         for (int i = 0; i < str.length; i++)
             to[i] = new StringTO(str[i]);
     }
+    public TransferObject(Integer ... integer)
+    {
+        to = new StringTO[integer.length];
+        for (int i = 0; i < integer.length; i++)
+            to[i] = new IntegerTO(integer[i]);
+    }
     int getLength()
     {
         return to.length;
