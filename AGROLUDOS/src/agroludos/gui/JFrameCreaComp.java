@@ -6,10 +6,10 @@
 
 package agroludos.gui;
 
-import agroludos.components.Optional;
-import agroludos.components.TipoCompetizione;
-import agroludos.server.exception.DeniedRequestException;
+import agroludos.components.*;
 import agroludos.server.FrontController;
+import agroludos.server.TransferObject;
+import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
 import agroludos.server.exception.RequestNotSupportedException;
 import java.util.Date;
@@ -291,18 +291,10 @@ public class JFrameCreaComp extends javax.swing.JFrame
             TipoCompetizione cTipo = listTipoCompetizione[indexTipo];
             //Competizione competizione = new Competizione(0, prezzo, minPart, maxPart,
             //        0, cTipo, manager, data, creaListaOptional());
-            fc.processRequest(FrontController.Request.AddCompetizione,new Object []
-            {prezzo,minPart,maxPart,cTipo,data,creaListaOptional()});
-            /*
-            try
-            {
-                agro.creaCompetizione(competizione);
-                JFrame frame = new JFrameManComp(agro);
-                setVisible(false);
-                frame.setVisible(true);
-                dispose();
-            }
-                    */
+            Competizione competizione = new Competizione(0, prezzo, minPart,
+                    maxPart, 0, cTipo, null, data, creaListaOptional());
+            fc.processRequest(FrontController.Request.AddCompetizione,
+                    new TransferObject(competizione));
             fc.processRequest(FrontController.Request.FrameManagerCompetizione,null);
         }
         }

@@ -494,7 +494,6 @@ public class FrontController
     {
         if (!validateRequest(request))
             throw new DeniedRequestException();
-        Competizione c;
         try
         {
             switch (request)
@@ -617,17 +616,19 @@ public class FrontController
                 case GetCompetizioneTipi:
                     return user.getCompetizioneTipi();
                 case AddCompetizione:
-                    /*c=new Competizione (0,(float)param[0], o.getIndex(1).toValue(),
-                    o.getIndex(2).toValue(), 0, (TipoCompetizione)param[3],
-                    new Manager ("","",user.getMail()), (Date)param[4], (Optional[])param[5]);*/
-                    user.creaCompetizione((Competizione)o.getIndex(0));
+                {
+                    Manager manager = new Manager("", "", user.getMail());
+                    Competizione c = (Competizione)o.getIndex(0);
+                    Competizione cc = new Competizione(0, c.getPrezzo(), c.getNMin(), c.getNMax(),
+                            0, c.getTipoCompetizione(), manager, c.getDataComp(), c.getOptional());
+                    user.creaCompetizione(cc);
+                }
                     break;
                 case AnnullaCompetizione:
                     user.annullaCompetizione(o.getIndex(0).toValue());
                     break;
                 case isModificaScaduto:
-                    c = (Competizione)o.getIndex(0);
-                    if(user.getNGiorniMancanti(c.getDataComp())<2)
+                    if(user.getNGiorniMancanti(((Competizione)o.getIndex(0)).getDataComp()) < 2)
                         return new Object[]{true};
                     else
                         return new Object[]{false};
