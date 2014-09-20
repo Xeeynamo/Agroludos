@@ -1,13 +1,14 @@
 package agroludos.server;
 
+import agroludos.components.*;
+import agroludos.exception.*;
+import agroludos.gui.*;
 import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
 import agroludos.server.exception.RequestNotSupportedException;
-import agroludos.exception.*;
-import agroludos.components.*;
-import agroludos.gui.*;
-import java.util.Date;
+import agroludos.server.lang.LangManager;
 import java.sql.SQLException;
+import java.util.Date;
 import javax.mail.MessagingException;
 import javax.swing.JFrame;
 
@@ -473,7 +474,6 @@ public class FrontController
     UserType type;
     JFrame currentFrame;
     
-    
     public FrontController()
     {
         currentFrame = null;
@@ -642,58 +642,22 @@ public class FrontController
                 case getOptional:
                     return new Object [] {user.getOptional((String)param[0])};
                 case FrameLogin:
-                    if (currentFrame != null)
-                    {
-                        currentFrame.setVisible(false);
-                        currentFrame.dispose();
-                    }
-                    currentFrame = new JFrameLogin(this);
-                    currentFrame.setVisible(true);
+                    user.setCurrentFrame(new JFrameLogin(this));
                     break;
                 case FrameRegistrazione:
-                    if (currentFrame != null)
-                    {
-                        currentFrame.setVisible(false);
-                        currentFrame.dispose();
-                    }
-                    currentFrame = new JFrameRegistrazione(this);
-                    currentFrame.setVisible(true);
+                    user.setCurrentFrame(new JFrameRegistrazione(this));
                     break;
                 case FrameHome:
-                    if (currentFrame != null)
-                    {
-                        currentFrame.setVisible(false);
-                        currentFrame.dispose();
-                    }
-                    currentFrame = new JFrameHomePartec(this);
-                    currentFrame.setVisible(true);
+                    user.setCurrentFrame(new JFrameHomePartec(this));
                     break;
                 case FrameManagerCompetizione:
-                    if (currentFrame != null)
-                    {
-                        currentFrame.setVisible(false);
-                        currentFrame.dispose();
-                    }
-                    currentFrame = new JFrameManComp(this);
-                    currentFrame.setVisible(true);
+                    user.setCurrentFrame(new JFrameManComp(this));
                     break;
                 case FrameCreaCompetizione:
-                    if (currentFrame != null)
-                    {
-                        currentFrame.setVisible(false);
-                        currentFrame.dispose();
-                    }
-                    currentFrame = new JFrameCreaComp(this);
-                    currentFrame.setVisible(true);
+                    user.setCurrentFrame(new JFrameCreaComp(this));
                     break;
                 case FrameManagerSistema:
-                    if (currentFrame != null)
-                    {
-                        currentFrame.setVisible(false);
-                        currentFrame.dispose();
-                    }
-                    currentFrame = new JFrameMainSystem(this);
-                    currentFrame.setVisible(true);
+                    user.setCurrentFrame(new JFrameMainSystem(this));
                     break;
                    
             }

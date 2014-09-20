@@ -79,17 +79,20 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLoginMail">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Nome utente"/>
+        <Property name="text" type="java.lang.String" value="LOGIN_MAIL"/>
+        <Property name="name" type="java.lang.String" value="LOGIN_MAIL" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLoginPassword">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Password"/>
+        <Property name="text" type="java.lang.String" value="LOGIN_PASSWORD"/>
+        <Property name="name" type="java.lang.String" value="LOGIN_PASSWORD" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jLoginEntra">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Entra"/>
+        <Property name="text" type="java.lang.String" value="LOGIN_LOGIN"/>
+        <Property name="name" type="java.lang.String" value="LOGIN_LOGIN" noResource="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jLoginEntraActionPerformed"/>
@@ -97,7 +100,8 @@
     </Component>
     <Component class="javax.swing.JButton" name="jLoginRegistrati">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Registrati"/>
+        <Property name="text" type="java.lang.String" value="LOGIN_SIGNUP"/>
+        <Property name="name" type="java.lang.String" value="LOGIN_SIGNUP" noResource="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jLoginRegistratiActionPerformed"/>
