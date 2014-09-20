@@ -28,7 +28,7 @@ public class TransferObject extends ITransferableObject {
     }
     public TransferObject(Integer ... integer)
     {
-        to = new StringTO[integer.length];
+        to = new IntegerTO[integer.length];
         for (int i = 0; i < integer.length; i++)
             to[i] = new IntegerTO(integer[i]);
     }
