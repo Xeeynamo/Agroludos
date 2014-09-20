@@ -488,7 +488,8 @@ public class FrontController
         throw new RequestNotSupportedException();
     }
     
-    public Object[] processRequest(Request request, TransferObject o) throws DeniedRequestException, RequestNotSupportedException, InternalErrorException
+    public TransferObject processRequest(Request request, TransferObject o)
+            throws DeniedRequestException, RequestNotSupportedException, InternalErrorException
     {
         if (!validateRequest(request))
             throw new DeniedRequestException();
@@ -528,29 +529,26 @@ public class FrontController
                     break;
                     
                 case GetManagers:
-                    return user.getManagers();
+                    return new TransferObject(user.getManagers());
                 case GetCompetizioniDisponibili:
-                    return user.getCompetizioniDisponibili();
+                    return new TransferObject(user.getCompetizioniDisponibili());
                 case GetCompetizioniPrenotate:
-                    return user.getCompetizioniPrenotate();
+                    return new TransferObject(user.getCompetizioniPrenotate());
                 case GetCompetizione:
-                    return new Object[]
-                    {
-                        user.getCompetizione(o.getIndex(0).toValue())
-                    };
+                    return new TransferObject(user.getCompetizione(o.getIndex(0).toValue()));
                 case GetCompetizioni:
                     if (type == UserType.ManagerCompetizione)
-                        return user.getCompetizioni(user.getMail());
+                        return new TransferObject(user.getCompetizioni(user.getMail()));
                     else if (type == UserType.ManagerSistema)
-                        return user.getCompetizioni(o.getIndex(0).toString());
+                        return new TransferObject(user.getCompetizioni(o.getIndex(0).toString()));
                     break;
                 case GetCompetizioniMinimal:
-                    return user.getCompetizioniMinimal(o.getIndex(0).toValue());
+                    return new TransferObject(user.getCompetizioniMinimal(o.getIndex(0).toValue()));
                 case AnnullaPrenotazione:
                     if (type == UserType.Partecipante)
                     {
                         TransferObject to = new TransferObject(user.getMail());
-                        Partecipante p = (Partecipante)processRequest(Request.GetPartecipante, to)[0];
+                        Partecipante p = processRequest(Request.GetPartecipante, to).toPartecipante();
                         user.annullaPrenotazione(p, (Competizione)o.getIndex(0));
                     }
                     else if (type == UserType.ManagerCompetizione)
@@ -559,39 +557,31 @@ public class FrontController
                     }
                     break;
                 case GetPartecipante:
-                    return new Object[]
-                    {
-                        user.getPartecipante(o.getIndex(0).toString())
-                    };
+                    return new TransferObject(user.getPartecipante(o.getIndex(0).toString()));
                 case GetPartecipanti:
-                    return user.getPartecipanti(o.getIndex(0).toValue());
+                    return new TransferObject(user.getPartecipanti(o.getIndex(0).toValue()));
                 case AddIscrizioneCompetizione:
                 {
                     TransferObject to = new TransferObject(user.getMail());
-                    Partecipante p = (Partecipante)processRequest(Request.GetPartecipante, to)[0];
+                    Partecipante p = processRequest(Request.GetPartecipante, to).toPartecipante();
                     TransferObject optList = (TransferObject)o.getIndex(1);
                     user.addIscrizioneCompetizione(p, (Competizione)o.getIndex(0), (Optional[])optList.getArray());
                 }
                     break;
                 case GetCompetizioneFromId:
-                    return new Object[]
-                    {
-                        user.getCompetizione(o.getIndex(0).toValue())
-                    };
+                    return new TransferObject(user.getCompetizione(o.getIndex(0).toValue()));
                 case IsOptionalSelezionato:
                 {
                     TransferObject to = new TransferObject(user.getMail());
-                    Partecipante p = (Partecipante)processRequest(Request.GetPartecipante, to)[0];
+                    Partecipante p = processRequest(Request.GetPartecipante, to).toPartecipante();
                     
-                    return new Object[]
-                    {
-                        user.isOptionalPrenotato(p, (Optional)o.getIndex(0), (Competizione)o.getIndex(1))
-                    };
+                    boolean result = user.isOptionalPrenotato(p, (Optional)o.getIndex(0), (Competizione)o.getIndex(1));
+                    return new TransferObject(result);
                 }
                 case SetOptionalPrenotazione:
                 {
                     TransferObject to = new TransferObject(user.getMail());
-                    Partecipante p = (Partecipante)processRequest(Request.GetPartecipante, to)[0];
+                    Partecipante p = processRequest(Request.GetPartecipante, to).toPartecipante();
                     
                     user.setOptionalPrenotazione(
                             (Optional)o.getIndex(0),
@@ -601,18 +591,18 @@ public class FrontController
                 }
                     break;
                 case GetOptional:
-                    return user.getOptional();
+                    return new TransferObject(user.getOptional());
                 case SetOptional:
                     user.setOptional((Optional)o.getIndex(0));
                     break;
                 case GetPartecipantiCompetizione:
-                    return user.getPartecipanti(o.getIndex(0).toValue());
+                    return new TransferObject(user.getPartecipanti(o.getIndex(0).toValue()));
                 case GetPartecipantiMinimal:
-                    return user.getPartecipantiMinimal();
+                    return new TransferObject(user.getPartecipantiMinimal());
                 case GetPartecipanteCompetizioni:
-                    return user.getPartecipanteCompetizioni(o.getIndex(0).toString());
+                    return new TransferObject(user.getPartecipanteCompetizioni(o.getIndex(0).toString()));
                 case GetCompetizioneTipi:
-                    return user.getCompetizioneTipi();
+                    return new TransferObject(user.getCompetizioneTipi());
                 case AddCompetizione:
                 {
                     Manager manager = new Manager("", "", user.getMail());
@@ -627,9 +617,9 @@ public class FrontController
                     break;
                 case isModificaScaduto:
                     if(user.getNGiorniMancanti(((Competizione)o.getIndex(0)).getDataComp()) < 2)
-                        return new Object[]{true};
+                        return new TransferObject(true);
                     else
-                        return new Object[]{false};
+                        return new TransferObject(false);
                 case setNPartMax:
                     user.setNPartMax(o.getIndex(0).toValue(), o.getIndex(1).toValue());
                     break;
@@ -640,13 +630,11 @@ public class FrontController
                     user.setPrezzoComp(o.getIndex(0).toValue(), o.getIndex(1).toValueF());
                     break;
                 case setOptionalCompetizione:
-                    return new Object[]{
-                    user.setOptionalCompetizione((Competizione)o.getIndex(0), (Optional)o.getIndex(1))};
+                    return new TransferObject(user.setOptionalCompetizione((Competizione)o.getIndex(0), (Optional)o.getIndex(1)));
                 case dropOptionalCompetizione:
-                    return new Object[]{
-                    user.dropOptionalCompetizione((Competizione)o.getIndex(0), (Optional)o.getIndex(0))};
+                    return new TransferObject(user.dropOptionalCompetizione((Competizione)o.getIndex(0), (Optional)o.getIndex(0)));
                 case getOptional:
-                    return new Object [] {user.getOptional(o.getIndex(0).toString())};
+                    return new TransferObject(user.getOptional(o.getIndex(0).toString()));
                 case FrameLogin:
                     user.setCurrentFrame(new JFrameLogin(this));
                     break;

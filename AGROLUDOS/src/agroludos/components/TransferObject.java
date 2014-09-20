@@ -32,6 +32,12 @@ public class TransferObject extends TransferableObject {
         for (int i = 0; i < integer.length; i++)
             to[i] = new IntegerTO(integer[i]);
     }
+    public TransferObject(Boolean ... integer)
+    {
+        to = new IntegerTO[integer.length];
+        for (int i = 0; i < integer.length; i++)
+            to[i] = new IntegerTO(integer[i]);
+    }
     public int getLength()
     {
         return to.length;
@@ -43,5 +49,53 @@ public class TransferObject extends TransferableObject {
     public TransferableObject getIndex(int index)
     {
         return to[index];
+    }
+    
+    public Integer[] toIntegerArray()
+    {
+        Integer[] integer = new Integer[to.length];
+        for (int i = 0; i < integer.length; i++)
+            integer[i] = to[i].toValue();
+        return integer;
+    }
+    @Override public Competizione toCompetizione()
+    {
+        return getIndex(0).toCompetizione();
+    }
+    public Competizione[] toCompetizioneArray()
+    {
+        return (Competizione[])to;
+    }
+    @Override public Manager toManager()
+    {
+        return getIndex(0).toManager();
+    }
+    public Manager[] toManagerArray()
+    {
+        return (Manager[])to;
+    }
+    @Override public Optional toOptional()
+    {
+        return getIndex(0).toOptional();
+    }
+    public Optional[] toOptionalArray()
+    {
+        return (Optional[])to;
+    }
+    @Override public Partecipante toPartecipante()
+    {
+        return getIndex(0).toPartecipante();
+    }
+    public Partecipante[] toPartecipanteArray()
+    {
+        return (Partecipante[])to;
+    }
+    @Override public TipoCompetizione toTipoCompetizione()
+    {
+        return getIndex(0).toTipoCompetizione();
+    }
+    public TipoCompetizione[] toTipoCompetizioneArray()
+    {
+        return (TipoCompetizione[])to;
     }
 }

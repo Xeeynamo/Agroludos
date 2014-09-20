@@ -6,6 +6,10 @@ package agroludos.components;
  */
 public class TransferableObject
 {
+    public boolean toBoolean()
+    {
+        return toValue() != 0;
+    }
     public int toValue()
     {
         return 0;

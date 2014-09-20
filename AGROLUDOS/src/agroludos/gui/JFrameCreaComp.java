@@ -27,14 +27,14 @@ public class JFrameCreaComp extends javax.swing.JFrame
     {
         try 
         {
-        this.fc=fc;
-        Shared.setDefaultLookAndFeel();
-        initComponents();
-        listOptional=(Optional[])fc.processRequest(FrontController.Request.GetOptional,null);
-        Shared.CreateList(jListaOptional, listOptional);
-        listOptionalDisponibili = new boolean[listOptional.length];
-        listTipoCompetizione=(TipoCompetizione[])fc.processRequest(FrontController.Request.GetCompetizioneTipi,null);
-        Shared.CreateList(jListTipoCompetizioni, listTipoCompetizione);
+            this.fc=fc;
+            Shared.setDefaultLookAndFeel();
+            initComponents();
+            listOptional = fc.processRequest(FrontController.Request.GetOptional,null).toOptionalArray();
+            Shared.CreateList(jListaOptional, listOptional);
+            listOptionalDisponibili = new boolean[listOptional.length];
+            listTipoCompetizione = fc.processRequest(FrontController.Request.GetCompetizioneTipi,null).toTipoCompetizioneArray();
+            Shared.CreateList(jListTipoCompetizioni, listTipoCompetizione);
         }
         catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
         {
