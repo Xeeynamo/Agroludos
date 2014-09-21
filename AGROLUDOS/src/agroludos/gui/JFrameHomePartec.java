@@ -35,35 +35,20 @@ public class JFrameHomePartec extends javax.swing.JFrame
     public JFrameHomePartec(ApplicationController fc) throws DeniedRequestException, RequestNotSupportedException, InternalErrorException, SQLException
     { 
         this.fc=fc;
-        Shared.setDefaultLookAndFeel();
         initComponents();
         CompetizioniDisponibiliLoadList();
     }
     
-    void CompetizioniDisponibiliLoadList() throws SQLException
+    void CompetizioniDisponibiliLoadList()
     {
-        try
-        {
-            listComp = fc.processRequest(ApplicationController.Request.GetCompetizioniDisponibili,null).toCompetizioneArray();
-            Shared.CreateList(jListDisponibili,(Object []) listComp);
-        }
-        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-        {
-            Shared.showError(this, e.toString());
-        }
+        listComp = fc.processRequest(ApplicationController.Request.GetCompetizioniDisponibili,null).toCompetizioneArray();
+        Shared.CreateList(jListDisponibili,(Object []) listComp);
     }
     
     void CompetizioniPrenotateLoadList() throws SQLException
     {
-        try
-        {
-            listComp = fc.processRequest(ApplicationController.Request.GetCompetizioniPrenotate,null).toCompetizioneArray();
-            Shared.CreateList(jListMyIscrizioni,listComp);
-        }
-        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-        {
-            Shared.showError(this, e.toString());
-        }
+        listComp = fc.processRequest(ApplicationController.Request.GetCompetizioniPrenotate,null).toCompetizioneArray();
+        Shared.CreateList(jListMyIscrizioni,listComp);
     }
 
     /**
@@ -563,102 +548,93 @@ public class JFrameHomePartec extends javax.swing.JFrame
     void CompetizionePrenotataLoad (int index) throws SQLException
     {
         if (index < 0) return;
-        try
+        float prezzo_tot=0;
+        Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId,
+                new TransferObject(listComp[index].getId())).toCompetizione();
+        jLabelMyCosto.setText(String.valueOf(c.getPrezzo())+"€");
+        if(jCheckBoxMyOptional1.isSelected())
+            jCheckBoxMyOptional1.setSelected(false);
+        if(jCheckBoxMyOptional2.isSelected())
+            jCheckBoxMyOptional2.setSelected(false);
+        if(jCheckBoxMyOptional3.isSelected())
+            jCheckBoxMyOptional3.setSelected(false);
+        jCheckBoxMyOptional1.setEnabled(false);
+        jCheckBoxMyOptional2.setEnabled(false);
+        jCheckBoxMyOptional3.setEnabled(false);
+        jCheckBoxMyOptional1.setText("-");
+        jCheckBoxMyOptional1.setText("-");
+        jCheckBoxMyOptional1.setText("-");
+        jLabelMyOptionalCosto1.setText("-");
+        jLabelMyOptionalCosto1.setText("-");
+        jLabelMyOptionalCosto1.setText("-");
+        listOpt=c.getOptional();
+        //listOpt=(Optional[])fc.processRequest(ApplicationController.Request.GetCompetizioneOptionals,new Object []{c.getId()});
+        if(listOpt!=null)
         {
-            float prezzo_tot=0;
-            Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId,
-                    new TransferObject(listComp[index].getId())).toCompetizione();
-            jLabelMyCosto.setText(String.valueOf(c.getPrezzo())+"€");
-            if(jCheckBoxMyOptional1.isSelected())
-                jCheckBoxMyOptional1.setSelected(false);
-            if(jCheckBoxMyOptional2.isSelected())
-                jCheckBoxMyOptional2.setSelected(false);
-            if(jCheckBoxMyOptional3.isSelected())
-                jCheckBoxMyOptional3.setSelected(false);
-            jCheckBoxMyOptional1.setEnabled(false);
-            jCheckBoxMyOptional2.setEnabled(false);
-            jCheckBoxMyOptional3.setEnabled(false);
-            jCheckBoxMyOptional1.setText("-");
-            jCheckBoxMyOptional1.setText("-");
-            jCheckBoxMyOptional1.setText("-");
-            jLabelMyOptionalCosto1.setText("-");
-            jLabelMyOptionalCosto1.setText("-");
-            jLabelMyOptionalCosto1.setText("-");
-            listOpt=c.getOptional();
-            //listOpt=(Optional[])fc.processRequest(ApplicationController.Request.GetCompetizioneOptionals,new Object []{c.getId()});
-            if(listOpt!=null)
+            for (int i=0;i<listOpt.length;i++)
             {
-                for (int i=0;i<listOpt.length;i++)
+                if(listOpt[i].getNome().compareTo("Colazione")==0)
                 {
-                    if(listOpt[i].getNome().compareTo("Colazione")==0)
+                    jCheckBoxMyOptional1.setEnabled(true);
+                    jCheckBoxMyOptional1.setText(listOpt[i].getNome()); 
+                    jLabelMyOptionalCosto1.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
+                    if (fc.processRequest(ApplicationController.Request.IsOptionalSelezionato,
+                            new TransferObject(listOpt[i], c)).toBoolean())
                     {
-                        jCheckBoxMyOptional1.setEnabled(true);
-                        jCheckBoxMyOptional1.setText(listOpt[i].getNome()); 
-                        jLabelMyOptionalCosto1.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
+                        jCheckBoxMyOptional1.setSelected(true);
+                        prezzo_tot+=listOpt[i].getPrezzo();
+                    }
+                }
+                else if (listOpt[i].getNome().compareTo("Pranzo")==0)
+                    {
+                        jCheckBoxMyOptional2.setEnabled(true);
+                        jCheckBoxMyOptional2.setText(listOpt[i].getNome());
+                        jLabelMyOptionalCosto2.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
                         if (fc.processRequest(ApplicationController.Request.IsOptionalSelezionato,
                                 new TransferObject(listOpt[i], c)).toBoolean())
                         {
-                            jCheckBoxMyOptional1.setSelected(true);
+                            jCheckBoxMyOptional2.setSelected(true);
                             prezzo_tot+=listOpt[i].getPrezzo();
                         }
                     }
-                    else if (listOpt[i].getNome().compareTo("Pranzo")==0)
-                        {
-                            jCheckBoxMyOptional2.setEnabled(true);
-                            jCheckBoxMyOptional2.setText(listOpt[i].getNome());
-                            jLabelMyOptionalCosto2.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
-                            if (fc.processRequest(ApplicationController.Request.IsOptionalSelezionato,
-                                    new TransferObject(listOpt[i], c)).toBoolean())
-                            {
-                                jCheckBoxMyOptional2.setSelected(true);
-                                prezzo_tot+=listOpt[i].getPrezzo();
-                            }
+                    else
+                    {
+                        jCheckBoxMyOptional3.setEnabled(true);
+                        jCheckBoxMyOptional3.setText(listOpt[i].getNome());
+                        jLabelMyOptionalCosto3.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
+                        if(fc.processRequest(ApplicationController.Request.IsOptionalSelezionato,
+                                new TransferObject(listOpt[i], c)).toBoolean())
+                        {    
+                            jCheckBoxMyOptional3.setSelected(true);
+                            prezzo_tot+=listOpt[i].getPrezzo();
                         }
-                        else
-                        {
-                            jCheckBoxMyOptional3.setEnabled(true);
-                            jCheckBoxMyOptional3.setText(listOpt[i].getNome());
-                            jLabelMyOptionalCosto3.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
-                            if(fc.processRequest(ApplicationController.Request.IsOptionalSelezionato,
-                                    new TransferObject(listOpt[i], c)).toBoolean())
-                            {    
-                                jCheckBoxMyOptional3.setSelected(true);
-                                prezzo_tot+=listOpt[i].getPrezzo();
-                            }
-                        }
-                }    
-            }
-            jLabelMyPrezzoTotale.setText(String.valueOf(c.getPrezzo()+prezzo_tot));
-            jLabelMyManager.setText(c.getManager().getNome()+" "+c.getManager().getCognome());
-            jLabelMyManagerMail.setText(c.getManager().getMail());
-        } 
-        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-        {
-                Shared.showError(this, e.toString());
+                    }
+            }    
         }
+        jLabelMyPrezzoTotale.setText(String.valueOf(c.getPrezzo()+prezzo_tot));
+        jLabelMyManager.setText(c.getManager().getNome()+" "+c.getManager().getCognome());
+        jLabelMyManagerMail.setText(c.getManager().getMail());
     }
     
     void CompetizioneDisponibileLoad (int index) throws SQLException
     {
         if (index < 0) return;
-        try
-        {
-            Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId,
-                    new TransferObject(listComp[index].getId())).toCompetizione();
-            jLabelNPart.setText(String.valueOf(c.getNMax()-c.getNPart()));
-            jLabelPrezzo_Comp.setText(String.valueOf(c.getPrezzo())+"€");
-            jCheckBoxOpt1.setEnabled(false);
-            jCheckBoxOpt2.setEnabled(false);
-            jCheckBoxOpt3.setEnabled(false);
-            jCheckBoxOpt1.setText("-");
-            jCheckBoxOpt2.setText("-");
-            jCheckBoxOpt3.setText("-");
-            jLabelPrezzoOpt1.setText("-");
-            jLabelPrezzoOpt2.setText("-");
-            jLabelPrezzoOpt3.setText("-");
-            listOpt=c.getOptional();
-            if(listOpt!=null)
-            {    
+        Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId,
+                new TransferObject(listComp[index].getId())).toCompetizione();
+        jLabelNPart.setText(String.valueOf(c.getNMax()-c.getNPart()));
+        jLabelPrezzo_Comp.setText(String.valueOf(c.getPrezzo())+"€");
+        jCheckBoxOpt1.setEnabled(false);
+        jCheckBoxOpt2.setEnabled(false);
+        jCheckBoxOpt3.setEnabled(false);
+        jCheckBoxOpt1.setText("-");
+        jCheckBoxOpt2.setText("-");
+        jCheckBoxOpt3.setText("-");
+        jLabelPrezzoOpt1.setText("-");
+        jLabelPrezzoOpt2.setText("-");
+        jLabelPrezzoOpt3.setText("-");
+        listOpt=c.getOptional();
+        if(listOpt!=null)
+        {    
             for (int i=0;i<listOpt.length;i++)
             {
                 if(listOpt[i].getNome().compareTo("Colazione")==0)
@@ -680,15 +656,10 @@ public class JFrameHomePartec extends javax.swing.JFrame
                         jLabelPrezzoOpt3.setText(String.valueOf(listOpt[i].getPrezzo())+"€");
                     }               
             }
-            }
-            jLabelPrezzoTot.setText(String.valueOf(c.getPrezzo()));
-            jLabelMC.setText(c.getManager().getNome()+" "+c.getManager().getCognome());
-            jLabelMailMC.setText(c.getManager().getMail());
         }
-        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-        {
-                Shared.showError(this, e.toString());
-        }
+        jLabelPrezzoTot.setText(String.valueOf(c.getPrezzo()));
+        jLabelMC.setText(c.getManager().getNome()+" "+c.getManager().getCognome());
+        jLabelMailMC.setText(c.getManager().getMail());
     }        
     private void jListDisponibiliValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListDisponibiliValueChanged
         try {
@@ -747,32 +718,17 @@ public class JFrameHomePartec extends javax.swing.JFrame
                 }
             }
         }
-        try 
-        {
-            fc.processRequest(ApplicationController.Request.AddIscrizioneCompetizione,
-                    new TransferObject(listComp[jListDisponibili.getSelectedIndex()],
-                            new TransferObject(opt_scelti)));
-            //agro.addIscrizioneCompetizione(listComp[jListDisponibili.getSelectedIndex()],opt_scelti);
-                    JOptionPane.showMessageDialog(null, "Prenotazione effettuata\ncon successo!\n"
-                    , "Successo", JOptionPane.INFORMATION_MESSAGE);
-            String mail_mc=listComp[jListDisponibili.getSelectedIndex()].getManager().getMail();
-            listComp[jListDisponibili.getSelectedIndex()].getDataCompString();
-            fc.processRequest(ApplicationController.Request.SendMail,
-                    new TransferObject(mail_mc,obj,iscr+listComp[jListDisponibili.getSelectedIndex()].getDataCompString()));
-        } 
-        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-        {
-           Shared.showError(this, e.toString());
-        }
-
-        finally
-        {
-            try {
-                CompetizioniDisponibiliLoadList();
-            } catch (SQLException ex) {
-                Logger.getLogger(JFrameHomePartec.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        fc.processRequest(ApplicationController.Request.AddIscrizioneCompetizione,
+                new TransferObject(listComp[jListDisponibili.getSelectedIndex()],
+                        new TransferObject(opt_scelti)));
+        //agro.addIscrizioneCompetizione(listComp[jListDisponibili.getSelectedIndex()],opt_scelti);
+                JOptionPane.showMessageDialog(null, "Prenotazione effettuata\ncon successo!\n"
+                , "Successo", JOptionPane.INFORMATION_MESSAGE);
+        String mail_mc=listComp[jListDisponibili.getSelectedIndex()].getManager().getMail();
+        listComp[jListDisponibili.getSelectedIndex()].getDataCompString();
+        fc.processRequest(ApplicationController.Request.SendMail,
+                new TransferObject(mail_mc,obj,iscr+listComp[jListDisponibili.getSelectedIndex()].getDataCompString()));
+        CompetizioniDisponibiliLoadList();
     }//GEN-LAST:event_jIscrizioneCompetizioneActionPerformed
 
     private void jCheckBoxOpt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxOpt2ActionPerformed
@@ -908,81 +864,44 @@ public class JFrameHomePartec extends javax.swing.JFrame
     }//GEN-LAST:event_jButtonMyOptionalAnnullaActionPerformed
 
     private void jButtonMyOptionalConfermaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMyOptionalConfermaActionPerformed
-        // TODO add your handling code here:
-        try 
+        Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId,
+                new TransferObject(listComp[jListMyIscrizioni.getSelectedIndex()].getId())).toCompetizione();
+        for (int i = 0; i < listOpt.length; i++)
         {
-            Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId,
-                    new TransferObject(listComp[jListMyIscrizioni.getSelectedIndex()].getId())).toCompetizione();
-            for (int i = 0; i < listOpt.length; i++)
-            {
-                JCheckBox checkbox = null;
-                if(listOpt[i].getNome().compareTo("Colazione") == 0)
-                    checkbox = jCheckBoxMyOptional1;
-                else if(listOpt[i].getNome().compareTo("Pranzo") == 0)
-                    checkbox = jCheckBoxMyOptional2;
-                else if(listOpt[i].getNome().compareTo("Pernotto")==0)
-                    checkbox = jCheckBoxMyOptional3;
-                else
-                    continue;
-                fc.processRequest(ApplicationController.Request.SetOptionalPrenotazione,
-                        new TransferObject(listOpt[i], c, new IntegerTO(checkbox.isSelected())));
-            }
-            
-            JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
-                    , "Successo", JOptionPane.INFORMATION_MESSAGE); 
-                        
-            String mail_mc = listComp[jListMyIscrizioni.getSelectedIndex()].getManager().getMail();
-            listComp[jListMyIscrizioni.getSelectedIndex()].getDataCompString();
-            fc.processRequest(ApplicationController.Request.SendMail,
-                    new TransferObject(mail_mc,obj,mod+listComp[jListMyIscrizioni.getSelectedIndex()].getDataCompString()));
+            JCheckBox checkbox = null;
+            if(listOpt[i].getNome().compareTo("Colazione") == 0)
+                checkbox = jCheckBoxMyOptional1;
+            else if(listOpt[i].getNome().compareTo("Pranzo") == 0)
+                checkbox = jCheckBoxMyOptional2;
+            else if(listOpt[i].getNome().compareTo("Pernotto")==0)
+                checkbox = jCheckBoxMyOptional3;
+            else
+                continue;
+            fc.processRequest(ApplicationController.Request.SetOptionalPrenotazione,
+                    new TransferObject(listOpt[i], c, new IntegerTO(checkbox.isSelected())));
         }
 
-        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-        {
-           Shared.showError(this, e.toString());
-        }
-                finally
-                {
-                    try
-                    {
-                        fc.processRequest(ApplicationController.Request.FrameHome, null);
-                    }
-                    catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-                    {
-                        Shared.showError(this, e.toString());
-                    }
-                }   
+        JOptionPane.showMessageDialog(null, "Modifica effettuata\ncon successo!\n"
+                , "Successo", JOptionPane.INFORMATION_MESSAGE); 
+
+        String mail_mc = listComp[jListMyIscrizioni.getSelectedIndex()].getManager().getMail();
+        listComp[jListMyIscrizioni.getSelectedIndex()].getDataCompString();
+        fc.processRequest(ApplicationController.Request.SendMail,
+                new TransferObject(mail_mc,obj,mod+listComp[jListMyIscrizioni.getSelectedIndex()].getDataCompString()));
+        fc.processRequest(ApplicationController.Request.FrameHome, null); 
     }//GEN-LAST:event_jButtonMyOptionalConfermaActionPerformed
 
     private void jButtonMyAnnullaIscrizioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMyAnnullaIscrizioneActionPerformed
-        try 
-        {
-            Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId,
+        Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId,
                     new TransferObject(listComp[jListMyIscrizioni.getSelectedIndex()].getId())).toCompetizione();
-            fc.processRequest(ApplicationController.Request.AnnullaPrenotazione, new TransferObject(c));
-            JOptionPane.showMessageDialog(null, "Annullamento prenotazione\n effettuato successo!\n"
-            , "Successo", JOptionPane.INFORMATION_MESSAGE);
-            String mail_mc=listComp[jListMyIscrizioni.getSelectedIndex()].getManager().getMail();
-            listComp[jListMyIscrizioni.getSelectedIndex()].getDataCompString();
-            fc.processRequest(ApplicationController.Request.SendMail,
-                    new TransferObject(mail_mc,obj,canc+listComp[jListMyIscrizioni.getSelectedIndex()].getDataCompString()));
-        } 
-        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-        {
-           Shared.showError(this, e.toString());
-        }
-        
-        finally
-        {
-                    try
-                    {
-                        fc.processRequest(ApplicationController.Request.FrameHome, null);
-                    }
-                    catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-                    {
-                        Shared.showError(this, e.toString());
-                    }
-        }
+        fc.processRequest(ApplicationController.Request.AnnullaPrenotazione, new TransferObject(c));
+        JOptionPane.showMessageDialog(null, "Annullamento prenotazione\n effettuato successo!\n"
+        , "Successo", JOptionPane.INFORMATION_MESSAGE);
+        String mail_mc=listComp[jListMyIscrizioni.getSelectedIndex()].getManager().getMail();
+        listComp[jListMyIscrizioni.getSelectedIndex()].getDataCompString();
+        fc.processRequest(ApplicationController.Request.SendMail,
+                new TransferObject(mail_mc,obj,canc+listComp[jListMyIscrizioni.getSelectedIndex()].getDataCompString()));
+        fc.processRequest(ApplicationController.Request.FrameHome, null);
     }//GEN-LAST:event_jButtonMyAnnullaIscrizioneActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

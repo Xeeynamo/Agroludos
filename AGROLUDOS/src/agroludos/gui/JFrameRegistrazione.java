@@ -300,16 +300,9 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
                 d2.parse(jRegistraDataSrc.getText()),
                 jRegistraCertificatoSrc.getText());
             
-            try
-            {
-                fc.processRequest(ApplicationController.Request.AddPartecipante, new TransferObject(new StringTO(Password), p));
-                Shared.showDialog(this, "Registrazione", "Registrazione avvenuta con successo!");
-                fc.processRequest(ApplicationController.Request.FrameLogin, null);
-            }
-            catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-            {
-                Shared.showError(this, e.toString());
-            }
+            fc.processRequest(ApplicationController.Request.AddPartecipante, new TransferObject(new StringTO(Password), p));
+            Shared.showDialog(this, "Registrazione", "Registrazione avvenuta con successo!");
+            fc.processRequest(ApplicationController.Request.FrameLogin, null);
         } catch (ParseException e) {
             Shared.showError(this, "Data di nascita o data SRC non riconosciuta. Il formato corretto è DD/MM/YYYY.");
         } catch (DefPassException e) {
@@ -321,14 +314,7 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
     }//GEN-LAST:event_jRegistraConfermaActionPerformed
 
     private void jRegistraAnnullaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegistraAnnullaActionPerformed
-        try
-        {
-            fc.processRequest(ApplicationController.Request.FrameLogin, null);
-        }
-        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-        {
-            Shared.showError(this, e.toString());
-        }      
+        fc.processRequest(ApplicationController.Request.FrameLogin, null);    
     }//GEN-LAST:event_jRegistraAnnullaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

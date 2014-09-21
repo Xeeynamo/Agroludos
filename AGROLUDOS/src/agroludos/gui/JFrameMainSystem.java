@@ -684,42 +684,28 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda i manager">
     private void ManagerLoadList() throws SQLException
     {
-        try
-        {
-            listManager = fc.processRequest(ApplicationController.Request.GetManagers, null).toManagerArray();
-            Shared.CreateList(jListaManager, listManager);
-        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
-            Shared.showError(this, e.toString());
-        }
+        listManager = fc.processRequest(ApplicationController.Request.GetManagers, null).toManagerArray();
+        Shared.CreateList(jListaManager, listManager);
     }
     private void ManagerSelected(int index) throws SQLException
     {
         if (index < 0) return;
         String mail = listManager[index].getMail();
-        try
-        {
-            listManagerCompetizioni = fc.processRequest(ApplicationController.Request.GetCompetizioni,
-                    new TransferObject(mail)).toCompetizioneArray();
-            Shared.CreateList(jListManagerCompetizioni, listManagerCompetizioni);
-            jLabelManagerMail.setText(mail);
-        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
-            Shared.showError(this, e.toString());
-        }
+        listManagerCompetizioni = fc.processRequest(ApplicationController.Request.GetCompetizioni,
+                new TransferObject(mail)).toCompetizioneArray();
+        Shared.CreateList(jListManagerCompetizioni, listManagerCompetizioni);
+        jLabelManagerMail.setText(mail);
     }
     private void ManagerSelectedCompetition(int index) throws SQLException
     {
-        try {
-            if (index < 0) return;
-            Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId,
-                    new TransferObject(listManagerCompetizioni[index].getId())).toCompetizione();
-            Object[] result=c.getOptional();
-            //Object[] result = fc.processRequest(ApplicationController.Request.GetCompetizioneOptionals,
-            //        new Integer[]{listManagerCompetizioni[index].getId()});
-            listManagerCompetizioniOptional = (Optional[])result;
-            Shared.CreateList(jManagerOptionalList, listManagerCompetizioniOptional);
-        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
-            Shared.showError(this, e.toString());
-        }
+        if (index < 0) return;
+        Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizioneFromId,
+                new TransferObject(listManagerCompetizioni[index].getId())).toCompetizione();
+        Object[] result=c.getOptional();
+        //Object[] result = fc.processRequest(ApplicationController.Request.GetCompetizioneOptionals,
+        //        new Integer[]{listManagerCompetizioni[index].getId()});
+        listManagerCompetizioniOptional = (Optional[])result;
+        Shared.CreateList(jManagerOptionalList, listManagerCompetizioniOptional);
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda le competizioni">
@@ -728,31 +714,23 @@ public class JFrameMainSystem extends javax.swing.JFrame {
         int filter = (jCheckInCorso.isSelected() ? 1 : 0) |
                 (jCheckConcluse.isSelected() ? 2 : 0) |
                 (jCheckAnnullate.isSelected() ? 4 : 0);
-        try {
-            listCompetizioni = fc.processRequest(ApplicationController.Request.GetCompetizioniMinimal,
-                    new TransferObject(filter)).toCompetizioneArray();
-        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
-            Shared.showError(this, e.toString());
-        }
+        listCompetizioni = fc.processRequest(ApplicationController.Request.GetCompetizioniMinimal,
+                new TransferObject(filter)).toCompetizioneArray();
         Shared.CreateList(jListCompetizioni, listCompetizioni);
     }
     private void CompetizioniSelected(int index) throws SQLException
     {
         if (index < 0) return;
-        try {
-            int idCompetizione = listCompetizioni[index].getId();
-            Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizione,
-                    new TransferObject(idCompetizione)).toCompetizione();
-            jLabelCompetizionePrezzo.setText(String.valueOf(c.getPrezzo()));
-            jLabelCompetizioneManagerNome.setText(c.getManager().toString());
-            jLabelCompetizioneManagerMail.setText(c.getManager().getMail());
-            
-            Partecipante[] p = fc.processRequest(ApplicationController.Request.GetPartecipanti,
-                    new TransferObject(c.getId())).toPartecipanteArray();
-            Shared.CreateList(jCompetizioneUtentiIscritti, p);
-        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
-            Shared.showError(this, e.toString());
-        }
+        int idCompetizione = listCompetizioni[index].getId();
+        Competizione c = fc.processRequest(ApplicationController.Request.GetCompetizione,
+                new TransferObject(idCompetizione)).toCompetizione();
+        jLabelCompetizionePrezzo.setText(String.valueOf(c.getPrezzo()));
+        jLabelCompetizioneManagerNome.setText(c.getManager().toString());
+        jLabelCompetizioneManagerMail.setText(c.getManager().getMail());
+
+        Partecipante[] p = fc.processRequest(ApplicationController.Request.GetPartecipanti,
+                new TransferObject(c.getId())).toPartecipanteArray();
+        Shared.CreateList(jCompetizioneUtentiIscritti, p);
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda gli optional">
@@ -762,12 +740,8 @@ public class JFrameMainSystem extends javax.swing.JFrame {
      */
     void ReloadOpitonalTab() throws SQLException
     {
-        try {
-            listOptional = fc.processRequest(ApplicationController.Request.GetOptional, null).toOptionalArray();
-            Shared.CreateList(jListOptional, listOptional);
-        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
-            Shared.showError(this, e.toString());
-        }
+        listOptional = fc.processRequest(ApplicationController.Request.GetOptional, null).toOptionalArray();
+        Shared.CreateList(jListOptional, listOptional);
     }
     /**
      * Aggiorna tutte le proprietà annesse ad uno specifico optional
@@ -792,14 +766,10 @@ public class JFrameMainSystem extends javax.swing.JFrame {
             jOptionalDescription.getText(),
             (float)jOptionalPrice.getValue());
         
-        try {
-            fc.processRequest(ApplicationController.Request.SetOptional,
-                    new TransferObject(opt));
-            listOptional[index] = opt;
-            ReloadOptional(index);
-        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
-            Shared.showError(this, e.toString());
-        }
+        fc.processRequest(ApplicationController.Request.SetOptional,
+                new TransferObject(opt));
+        listOptional[index] = opt;
+        ReloadOptional(index);
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Tutto ciò che riguarda gli utenti">
@@ -808,41 +778,33 @@ public class JFrameMainSystem extends javax.swing.JFrame {
      */
     void PartecipantiLoadList() throws SQLException
     {
-        try {
-            listPartecipanti = fc.processRequest(ApplicationController.Request.GetPartecipantiMinimal, null).toPartecipanteArray();
-            Shared.CreateList(jListaUtenti, listPartecipanti);
-        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
-            Shared.showError(this, e.toString());
-        }
+        listPartecipanti = fc.processRequest(ApplicationController.Request.GetPartecipantiMinimal, null).toPartecipanteArray();
+        Shared.CreateList(jListaUtenti, listPartecipanti);
     }
     void PartecipanteLoad(int index) throws SQLException
     {
-        try {
-            if (index < 0) return;
-            Partecipante p = fc.processRequest(ApplicationController.Request.GetPartecipante,
-                    new TransferObject(listPartecipanti[index].getMail())).toPartecipante();
-            jUtenteNome.setText(p.getNome());
-            jUtenteCognome.setText(p.getCognome());
-            jUtenteIndirizzo.setText(p.getIndirizzo());
-            jUtenteNascita.setText(p.getDataNascitaString());
-            jUtenteSesso.setText(String.valueOf(p.getSesso()));
-            jUtenteTesseraSan.setText(p.getTesseraSan());
-            jUtenteMail.setText(p.getMail());
-            jUtenteDataSrc.setText(p.getDataSrcString());
-            jUtenteCertificatoSrc.setText(p.getSrc());
-            
-            Integer[] idCompetizioni = (Integer[])fc.processRequest(ApplicationController.Request.GetPartecipanteCompetizioni,
-                    new TransferObject(p.getMail())).toIntegerArray();
-            listPartecipanteCompetizioni = new Competizione[idCompetizioni.length];
-            for (int i = 0; i < idCompetizioni.length; i++)
-            {
-                listPartecipanteCompetizioni[i] = fc.processRequest(ApplicationController.Request.GetCompetizione,
-                        new TransferObject(idCompetizioni[i])).toCompetizione();
-            }
-            Shared.CreateList(jListaUtentiIscrizioni, listPartecipanteCompetizioni);
-        } catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e) {
-            Shared.showError(this, e.toString());
+        if (index < 0) return;
+        Partecipante p = fc.processRequest(ApplicationController.Request.GetPartecipante,
+                new TransferObject(listPartecipanti[index].getMail())).toPartecipante();
+        jUtenteNome.setText(p.getNome());
+        jUtenteCognome.setText(p.getCognome());
+        jUtenteIndirizzo.setText(p.getIndirizzo());
+        jUtenteNascita.setText(p.getDataNascitaString());
+        jUtenteSesso.setText(String.valueOf(p.getSesso()));
+        jUtenteTesseraSan.setText(p.getTesseraSan());
+        jUtenteMail.setText(p.getMail());
+        jUtenteDataSrc.setText(p.getDataSrcString());
+        jUtenteCertificatoSrc.setText(p.getSrc());
+
+        Integer[] idCompetizioni = (Integer[])fc.processRequest(ApplicationController.Request.GetPartecipanteCompetizioni,
+                new TransferObject(p.getMail())).toIntegerArray();
+        listPartecipanteCompetizioni = new Competizione[idCompetizioni.length];
+        for (int i = 0; i < idCompetizioni.length; i++)
+        {
+            listPartecipanteCompetizioni[i] = fc.processRequest(ApplicationController.Request.GetCompetizione,
+                    new TransferObject(idCompetizioni[i])).toCompetizione();
         }
+        Shared.CreateList(jListaUtentiIscrizioni, listPartecipanteCompetizioni);
     }
     // </editor-fold>
     

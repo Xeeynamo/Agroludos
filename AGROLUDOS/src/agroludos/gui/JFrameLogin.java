@@ -16,7 +16,6 @@ public class JFrameLogin extends javax.swing.JFrame {
     public JFrameLogin(ApplicationController fc)
     {
         this.fc = fc;
-        Shared.setDefaultLookAndFeel();
         initComponents();
     }
 
@@ -106,26 +105,12 @@ public class JFrameLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLoginEntraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginEntraActionPerformed
-        try
-        {
-            fc.processRequest(ApplicationController.Request.Login,
+        fc.processRequest(ApplicationController.Request.Login,
                     new TransferObject(jTextMail.getText(), jTextPassword.getText()));
-        }
-        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-        {
-            Shared.showError(this, e.toString());
-        }
     }//GEN-LAST:event_jLoginEntraActionPerformed
 
     private void jLoginRegistratiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginRegistratiActionPerformed
-        try
-        {
-            fc.processRequest(ApplicationController.Request.FrameRegistrazione, null);
-        }
-        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-        {
-            Shared.showError(this, e.toString());
-        }
+        fc.processRequest(ApplicationController.Request.FrameRegistrazione, null);
     }//GEN-LAST:event_jLoginRegistratiActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

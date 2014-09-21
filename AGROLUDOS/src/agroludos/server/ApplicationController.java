@@ -489,6 +489,18 @@ public class ApplicationController
     }
     
     public TransferObject processRequest(Request request, TransferObject o)
+    {
+        try
+        {
+            return subProcessRequest(request, o);
+        }
+        catch (Exception e)
+        {
+            agroludos.gui.Shared.showError(currentFrame, e.toString());
+            return null;
+        }
+    }
+    private TransferObject subProcessRequest(Request request, TransferObject o)
             throws DeniedRequestException, RequestNotSupportedException, InternalErrorException
     {
         if (!validateRequest(request))

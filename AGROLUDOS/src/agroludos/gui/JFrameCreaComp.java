@@ -25,21 +25,13 @@ public class JFrameCreaComp extends javax.swing.JFrame
     
     public JFrameCreaComp(ApplicationController fc)
     {
-        try 
-        {
-            this.fc=fc;
-            Shared.setDefaultLookAndFeel();
-            initComponents();
-            listOptional = fc.processRequest(ApplicationController.Request.GetOptional,null).toOptionalArray();
-            Shared.CreateList(jListaOptional, listOptional);
-            listOptionalDisponibili = new boolean[listOptional.length];
-            listTipoCompetizione = fc.processRequest(ApplicationController.Request.GetCompetizioneTipi,null).toTipoCompetizioneArray();
-            Shared.CreateList(jListTipoCompetizioni, listTipoCompetizione);
-        }
-        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-        {
-            Shared.showError(this, e.toString());
-        }
+        this.fc=fc;
+        initComponents();
+        listOptional = fc.processRequest(ApplicationController.Request.GetOptional,null).toOptionalArray();
+        Shared.CreateList(jListaOptional, listOptional);
+        listOptionalDisponibili = new boolean[listOptional.length];
+        listTipoCompetizione = fc.processRequest(ApplicationController.Request.GetCompetizioneTipi,null).toTipoCompetizioneArray();
+        Shared.CreateList(jListTipoCompetizioni, listTipoCompetizione);
     }
     
     /**
@@ -255,8 +247,6 @@ public class JFrameCreaComp extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void jConfermaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jConfermaActionPerformed
-        try
-        {
         int indexTipo = jListTipoCompetizioni.getSelectedIndex();
         //Manager manager = new Manager("", "", agro.getMail());
         float prezzo = Float.parseFloat(jPrezzo.getValue().toString());
@@ -297,24 +287,11 @@ public class JFrameCreaComp extends javax.swing.JFrame
                     new TransferObject(competizione));
             fc.processRequest(ApplicationController.Request.FrameManagerCompetizione,null);
         }
-        }
-        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-        {
-            Shared.showError(this, e.toString());
-        }
         
     }//GEN-LAST:event_jConfermaActionPerformed
 
     private void jAnnullaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAnnullaActionPerformed
-        try
-        {
-            fc.processRequest(ApplicationController.Request.FrameManagerCompetizione,null);
-            //dispose();
-        }
-        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-        {
-            Shared.showError(this, e.toString());
-        }
+        fc.processRequest(ApplicationController.Request.FrameManagerCompetizione,null);
     }//GEN-LAST:event_jAnnullaActionPerformed
 
     private void jListaOptionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jListaOptionalActionPerformed
