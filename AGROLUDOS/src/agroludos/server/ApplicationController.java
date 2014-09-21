@@ -470,12 +470,18 @@ public class ApplicationController
     AgroController user;
     
     UserType type;
-    JFrame currentFrame;
     
-    public ApplicationController()
+    public ApplicationController(String server, String username, String password)
     {
-        currentFrame = null;
         type = UserType.Anonimo;
+        try
+        {
+            user = new AgroController(server, username, password);
+        }
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e)
+        {
+            Shared.showError(null, e.toString());
+        }
     }
     
     private boolean validateRequest(Request request) throws RequestNotSupportedException
@@ -496,7 +502,7 @@ public class ApplicationController
         }
         catch (Exception e)
         {
-            agroludos.gui.Shared.showError(currentFrame, e.toString());
+            agroludos.gui.Shared.showError(user.getCurrentFrame(), e.toString());
             return null;
         }
     }
@@ -505,6 +511,7 @@ public class ApplicationController
     {
         if (!validateRequest(request))
             throw new DeniedRequestException();
+        JFrame curFrame = user.getCurrentFrame();
         try
         {
             switch (request)
@@ -513,22 +520,28 @@ public class ApplicationController
                     user = new AgroController(o.getIndex(0).toString(), o.getIndex(1).toString(), o.getIndex(2).toString());
                     break;
                 case Login:
-                    user = user.Login(o.getIndex(0).toString(), o.getIndex(1).toString());
-                    switch (user.getType())
+                    if (curFrame instanceof JFrameLogin)
                     {
-                        case Partecipante:
-                            type = UserType.Partecipante;
-                            processRequest(Request.FrameHome, null);
-                            break;
-                        case ManagerCompetizione:
-                            type = UserType.ManagerCompetizione;
-                            processRequest(Request.FrameManagerCompetizione, null);
-                            break;
-                        case ManagerSistema:
-                            type = UserType.ManagerSistema;
-                            processRequest(Request.FrameManagerSistema, null);
-                            break;
+                        o = ((JFrameLogin)curFrame).getLoginData();
+                        user = user.Login(o.getIndex(0).toString(), o.getIndex(1).toString());
+                        switch (user.getType())
+                        {
+                            case Partecipante:
+                                type = UserType.Partecipante;
+                                processRequest(Request.FrameHome, null);
+                                break;
+                            case ManagerCompetizione:
+                                type = UserType.ManagerCompetizione;
+                                processRequest(Request.FrameManagerCompetizione, null);
+                                break;
+                            case ManagerSistema:
+                                type = UserType.ManagerSistema;
+                                processRequest(Request.FrameManagerSistema, null);
+                                break;
+                        }
                     }
+                    else
+                        throw new InternalErrorException(user.getStringLang("AC_LOGIN_ERROR"));
                     break;
                 case AddPartecipante:
                     user.addPartecipante(o.getIndex(0).toString(), (Partecipante)o.getIndex(1));
@@ -674,7 +687,7 @@ public class ApplicationController
         }
         catch (MessagingException ex)
         {
-            Shared.showError(currentFrame, "Impossibile invire la mail.\n" + ex.toString());
+            throw new InternalErrorException(user.getStringLang("AC_MAIL_ERROR") + "\n" + ex.toString());
         }
         catch (WrongLoginException | CampiVuotiException | TipoCompetizioneInvalidException |
                 DefCodFiscException | DefEmailException | SrcScadutaException | CompPienaException

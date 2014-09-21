@@ -97,12 +97,15 @@ public final class AgroController
         LoadLanguage();
     }
     
-    void LoadLanguage()
+    protected String getStringLang(String key)
     {
-        lang = new LangManager();
+        return lang.getString(key);
     }
-    
-    void setCurrentFrame(JFrame frame)
+    protected JFrame getCurrentFrame()
+    {
+        return currentFrame;
+    }
+    public void setCurrentFrame(JFrame frame)
     {
         if (currentFrame != null)
         {
@@ -113,6 +116,10 @@ public final class AgroController
         Shared.setDefaultLookAndFeel();
         lang.ApplyLanguage(currentFrame);
         currentFrame.setVisible(true);
+    }
+    private void LoadLanguage()
+    {
+        lang = new LangManager();
     }
     
     /**

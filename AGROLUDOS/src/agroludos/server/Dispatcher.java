@@ -81,19 +81,16 @@ public class Dispatcher
     };
     
     private final ApplicationController appCtrl;
-    public Dispatcher()
+    public Dispatcher(String server, String username, String password)
     {
-        appCtrl = new ApplicationController();
+        appCtrl = new ApplicationController(server, username, password);
     }
-    public TransferObject dispatch(String request, TransferObject parameter)
-            throws DeniedRequestException, RequestNotSupportedException, InternalErrorException
+    public void dispatch(String request)
     {
-        Request r = null;
         for (int i = 0; i < pair.length; i++)
         {
             if (request.compareTo(pair[i].getName()) == 0)
-                return appCtrl.processRequest(pair[i].getRequest(), parameter);
+                appCtrl.processRequest(pair[i].getRequest(), null);
         }
-        return null;
     }
 }

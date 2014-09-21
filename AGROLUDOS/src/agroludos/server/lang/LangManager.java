@@ -70,7 +70,7 @@ public class LangManager extends PropertyEditorSupport {
         }
     }
     
-    String getString(String key) throws MissingResourceException
+    public String getString(String key) throws MissingResourceException
     {
         try
         {

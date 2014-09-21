@@ -18,6 +18,11 @@ public class JFrameLogin extends javax.swing.JFrame {
         this.fc = fc;
         initComponents();
     }
+    
+    public TransferObject getLoginData()
+    {
+        return new TransferObject(jTextMail.getText(), jTextPassword.getText());
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -105,8 +110,7 @@ public class JFrameLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLoginEntraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginEntraActionPerformed
-        fc.processRequest(ApplicationController.Request.Login,
-                    new TransferObject(jTextMail.getText(), jTextPassword.getText()));
+        fc.processRequest(ApplicationController.Request.Login, null);
     }//GEN-LAST:event_jLoginEntraActionPerformed
 
     private void jLoginRegistratiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginRegistratiActionPerformed
