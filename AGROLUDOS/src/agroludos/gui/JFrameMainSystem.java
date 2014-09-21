@@ -40,7 +40,6 @@ public class JFrameMainSystem extends javax.swing.JFrame {
     
     public JFrameMainSystem(ApplicationController fc) {
         this.fc = fc;
-        Shared.setDefaultLookAndFeel();
         initComponents();
     }
 

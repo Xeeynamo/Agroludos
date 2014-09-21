@@ -15,6 +15,7 @@ import agroludos.exception.MinMaxException;
 import agroludos.exception.SrcScadutaException;
 import agroludos.exception.TipoCompetizioneInvalidException;
 import agroludos.exception.WrongLoginException;
+import agroludos.gui.Shared;
 import agroludos.server.db.Condition;
 import agroludos.server.db.Delete;
 import agroludos.server.db.Insert;
@@ -109,8 +110,9 @@ public final class AgroController
             currentFrame.dispose();
         }
         currentFrame = frame;
-        currentFrame.setVisible(true);
+        Shared.setDefaultLookAndFeel();
         lang.ApplyLanguage(currentFrame);
+        currentFrame.setVisible(true);
     }
     
     /**

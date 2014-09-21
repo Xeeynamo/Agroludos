@@ -44,7 +44,6 @@ public final class JFrameManComp extends javax.swing.JFrame {
     public JFrameManComp(ApplicationController fc) 
     {
         this.fc=fc;
-        Shared.setDefaultLookAndFeel();
         initComponents();
         LoadListCompetizioni();
     }

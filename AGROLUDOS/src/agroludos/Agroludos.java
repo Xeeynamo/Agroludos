@@ -24,14 +24,7 @@ public class Agroludos
             to = new TransferObject(new StringTO(DEFAULT_SERVER), new StringTO(DEFAULT_USERNAME), new StringTO(DEFAULT_PASSWORD));
         else
             to = new TransferObject(new StringTO(args[0]), new StringTO(args[1]), new StringTO(args[2]));
-        try
-        {
-            fc.processRequest(ApplicationController.Request.Initialize, to);
-            fc.processRequest(ApplicationController.Request.FrameLogin, null);
-        }
-        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
-        {
-            agroludos.gui.Shared.showError(null, e.toString());
-        }
+        fc.processRequest(ApplicationController.Request.Initialize, to);
+        fc.processRequest(ApplicationController.Request.FrameLogin, null);
     }
 }

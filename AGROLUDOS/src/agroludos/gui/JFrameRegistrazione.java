@@ -27,7 +27,6 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
     ApplicationController fc;
     public JFrameRegistrazione(ApplicationController fc) {
         this.fc = fc;
-        Shared.setDefaultLookAndFeel();
         initComponents();
     }
 
