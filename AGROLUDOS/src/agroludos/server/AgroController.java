@@ -29,6 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.mail.MessagingException;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 /**
  * Front controller del progetto.
@@ -113,13 +114,24 @@ public final class AgroController
             currentFrame.dispose();
         }
         currentFrame = frame;
-        Shared.setDefaultLookAndFeel();
+        SetLookNFeel();
         lang.ApplyLanguage(currentFrame);
         currentFrame.setVisible(true);
     }
     private void LoadLanguage()
     {
         lang = new LangManager();
+    }
+    private void SetLookNFeel()
+    {
+        try
+        {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        }
+        catch (Exception e)
+        {
+            
+        }
     }
     
     /**

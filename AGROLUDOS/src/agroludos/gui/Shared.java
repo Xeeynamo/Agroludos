@@ -8,17 +8,6 @@ import javax.swing.*;
  */
 public class Shared
 {
-    public static void setDefaultLookAndFeel()
-    {
-        try
-        {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        }
-        catch (Exception e)
-        {
-            
-        }
-    }
     public static void showError(Component parent, String message)
     {
         JOptionPane.showMessageDialog(parent, message, "Errore", JOptionPane.ERROR_MESSAGE);

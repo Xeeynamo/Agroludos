@@ -10,10 +10,22 @@ public class Agroludos
     
     public static void main(String[] args)
     {
+        String server;
+        String username;
+        String password;
         if (args == null || args.length != 3)
-            FrontController.Initialize(DEFAULT_SERVER, DEFAULT_USERNAME, DEFAULT_PASSWORD);
+        {
+            server = DEFAULT_SERVER;
+            username = DEFAULT_USERNAME;
+            password = DEFAULT_PASSWORD;
+        }
         else
-            FrontController.Initialize(args[0], args[1], args[2]);
+        {
+            server = args[0];
+            username = args[1];
+            password = args[2];
+        }
+        FrontController.Initialize(server, username, password);
         FrontController.processRequest("FrameLogin");
     }
 }
