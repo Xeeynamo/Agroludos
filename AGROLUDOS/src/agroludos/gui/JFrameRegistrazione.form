@@ -90,9 +90,10 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Informazioni sul partecipante"/>
+            <TitledBorder title="SIGNUP_USERINFO"/>
           </Border>
         </Property>
+        <Property name="name" type="java.lang.String" value="SIGNUP_USERINFO" noResource="true"/>
       </Properties>
 
       <Layout>
@@ -112,9 +113,9 @@
                               <Component id="jLabel22" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel25" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel16" alignment="0" min="-2" pref="73" max="-2" attributes="0"/>
                               <Component id="jLabel29" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel30" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel16" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -193,38 +194,46 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Nome"/>
+            <Property name="text" type="java.lang.String" value="SIGNUP_INFONAME"/>
+            <Property name="name" type="java.lang.String" value="SIGNUP_INFO" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel14">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cognome"/>
+            <Property name="text" type="java.lang.String" value="SIGNUP_INFOSURNAME"/>
+            <Property name="name" type="java.lang.String" value="SIGNUP_INFOSURNAME" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel16">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Indirizzo"/>
+            <Property name="text" type="java.lang.String" value="SIGNUP_INFOADDRESS"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="name" type="java.lang.String" value="SIGNUP_INFOADDRESS" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel20">
           <Properties>
             <Property name="text" type="java.lang.String" value="Data di nascita"/>
+            <Property name="toolTipText" type="java.lang.String" value="SIGNUP_INFOBIRTHDAY"/>
+            <Property name="name" type="java.lang.String" value="SIGNUP_INFOBIRTHDAY" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel22">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Sesso"/>
+            <Property name="text" type="java.lang.String" value="SIGNUP_INFOSEX"/>
+            <Property name="name" type="java.lang.String" value="SIGNUP_INFOSEX" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel25">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Tessera san."/>
+            <Property name="text" type="java.lang.String" value="SIGNUP_INFOTESSAN"/>
+            <Property name="name" type="java.lang.String" value="SIGNUP_INFOTESSAN" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel29">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Data SRC"/>
+            <Property name="text" type="java.lang.String" value="SIGNUP_INFOSRCDATE"/>
+            <Property name="name" type="java.lang.String" value="SIGNUP_INFOSRCDATE" noResource="true"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane4">
@@ -244,7 +253,8 @@
         </Container>
         <Component class="javax.swing.JLabel" name="jLabel30">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Certificato SRC"/>
+            <Property name="text" type="java.lang.String" value="SIGNUP_INFOSRCTEXT"/>
+            <Property name="name" type="java.lang.String" value="SIGNUP_INFOSRCTEXT" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jRegistraNome">
@@ -269,7 +279,8 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Codice Fiscale"/>
+            <Property name="text" type="java.lang.String" value="SIGNUP_INFOCODE"/>
+            <Property name="name" type="java.lang.String" value="SIGNUP_INFOCODE" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="jRegistraDatanascita">
@@ -292,17 +303,20 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="E-mail"/>
+        <Property name="text" type="java.lang.String" value="SIGNUP_MAIL"/>
+        <Property name="name" type="java.lang.String" value="SIGNUP_MAIL" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Password"/>
+        <Property name="text" type="java.lang.String" value="SIGNUP_PASSWORD"/>
+        <Property name="name" type="java.lang.String" value="SIGNUP_PASSWORD" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jRegistraConferma">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Conferma"/>
+        <Property name="text" type="java.lang.String" value="SIGNUP_INFOOK"/>
+        <Property name="name" type="java.lang.String" value="SIGNUP_INFOOK" noResource="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRegistraConfermaActionPerformed"/>
@@ -310,7 +324,8 @@
     </Component>
     <Component class="javax.swing.JButton" name="jRegistraAnnulla">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Annulla"/>
+        <Property name="text" type="java.lang.String" value="SIGNUP_INFOCANCEL"/>
+        <Property name="name" type="java.lang.String" value="SIGNUP_INFOCANCEL" noResource="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRegistraAnnullaActionPerformed"/>
@@ -318,7 +333,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Ripeti password"/>
+        <Property name="text" type="java.lang.String" value="SIGNUP_PASSWORD2"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+        <Property name="name" type="java.lang.String" value="SIGNUP_PASSWORD2" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="jRegistratiPwd">

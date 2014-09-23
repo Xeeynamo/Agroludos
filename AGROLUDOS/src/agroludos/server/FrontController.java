@@ -6,11 +6,9 @@
 
 package agroludos.server;
 
-import agroludos.components.TransferObject;
-
 public class FrontController
 {
-    private static Dispatcher dispatcher ;
+    private static Dispatcher dispatcher;
     public static void Initialize(String server, String username, String password)
     {
         dispatcher = new Dispatcher(server, username, password);

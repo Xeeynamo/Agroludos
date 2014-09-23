@@ -89,32 +89,43 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registrazione");
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Informazioni sul partecipante"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("SIGNUP_USERINFO"));
+        jPanel2.setName("SIGNUP_USERINFO"); // NOI18N
 
-        jLabel5.setText("Nome");
+        jLabel5.setText("SIGNUP_INFONAME");
+        jLabel5.setName("SIGNUP_INFO"); // NOI18N
 
-        jLabel14.setText("Cognome");
+        jLabel14.setText("SIGNUP_INFOSURNAME");
+        jLabel14.setName("SIGNUP_INFOSURNAME"); // NOI18N
 
-        jLabel16.setText("Indirizzo");
+        jLabel16.setText("SIGNUP_INFOADDRESS");
         jLabel16.setToolTipText("");
+        jLabel16.setName("SIGNUP_INFOADDRESS"); // NOI18N
 
         jLabel20.setText("Data di nascita");
+        jLabel20.setToolTipText("SIGNUP_INFOBIRTHDAY");
+        jLabel20.setName("SIGNUP_INFOBIRTHDAY"); // NOI18N
 
-        jLabel22.setText("Sesso");
+        jLabel22.setText("SIGNUP_INFOSEX");
+        jLabel22.setName("SIGNUP_INFOSEX"); // NOI18N
 
-        jLabel25.setText("Tessera san.");
+        jLabel25.setText("SIGNUP_INFOTESSAN");
+        jLabel25.setName("SIGNUP_INFOTESSAN"); // NOI18N
 
-        jLabel29.setText("Data SRC");
+        jLabel29.setText("SIGNUP_INFOSRCDATE");
+        jLabel29.setName("SIGNUP_INFOSRCDATE"); // NOI18N
 
         jRegistraCertificatoSrc.setColumns(20);
         jRegistraCertificatoSrc.setRows(5);
         jScrollPane4.setViewportView(jRegistraCertificatoSrc);
 
-        jLabel30.setText("Certificato SRC");
+        jLabel30.setText("SIGNUP_INFOSRCTEXT");
+        jLabel30.setName("SIGNUP_INFOSRCTEXT"); // NOI18N
 
         jRegistraSesso.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Uomo", "Donna" }));
 
-        jLabel4.setText("Codice Fiscale");
+        jLabel4.setText("SIGNUP_INFOCODE");
+        jLabel4.setName("SIGNUP_INFOCODE"); // NOI18N
 
         jRegistraDatanascita.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d/M/yyyy"))));
 
@@ -137,9 +148,9 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
                             .addComponent(jLabel22)
                             .addComponent(jLabel25)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel29)
-                            .addComponent(jLabel30))
+                            .addComponent(jLabel30)
+                            .addComponent(jLabel16))
                         .addGap(20, 20, 20)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jRegistraCognome)
@@ -197,25 +208,31 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jLabel1.setText("E-mail");
+        jLabel1.setText("SIGNUP_MAIL");
+        jLabel1.setName("SIGNUP_MAIL"); // NOI18N
 
-        jLabel2.setText("Password");
+        jLabel2.setText("SIGNUP_PASSWORD");
+        jLabel2.setName("SIGNUP_PASSWORD"); // NOI18N
 
-        jRegistraConferma.setText("Conferma");
+        jRegistraConferma.setText("SIGNUP_INFOOK");
+        jRegistraConferma.setName("SIGNUP_INFOOK"); // NOI18N
         jRegistraConferma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRegistraConfermaActionPerformed(evt);
             }
         });
 
-        jRegistraAnnulla.setText("Annulla");
+        jRegistraAnnulla.setText("SIGNUP_INFOCANCEL");
+        jRegistraAnnulla.setName("SIGNUP_INFOCANCEL"); // NOI18N
         jRegistraAnnulla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRegistraAnnullaActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("Ripeti password");
+        jLabel3.setText("SIGNUP_PASSWORD2");
+        jLabel3.setToolTipText("");
+        jLabel3.setName("SIGNUP_PASSWORD2"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
