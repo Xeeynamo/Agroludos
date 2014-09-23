@@ -81,7 +81,7 @@ public class Dispatcher
     };
     
     private final ApplicationController appCtrl;
-    public Dispatcher(String server, String username, String password)
+    public Dispatcher(String server, String username, String password) throws InternalErrorException
     {
         appCtrl = new ApplicationController(server, username, password);
     }

@@ -159,8 +159,9 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel7">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Posti rimanenti"/>
+                <Property name="text" type="java.lang.String" value="HP_NFREE"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
+                <Property name="name" type="java.lang.String" value="HP_NFREE" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelNPart">
@@ -170,7 +171,8 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel12">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Costo competizione"/>
+                <Property name="text" type="java.lang.String" value="HP_PRICE"/>
+                <Property name="name" type="java.lang.String" value="HP_PRICE" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelMailMC">
@@ -185,7 +187,8 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel26">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Manager"/>
+                <Property name="text" type="java.lang.String" value="HP_MC"/>
+                <Property name="name" type="java.lang.String" value="HP_MC" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelMC">
@@ -195,7 +198,8 @@
             </Component>
             <Component class="javax.swing.JButton" name="jIscrizioneCompetizione">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Iscriviti alla competizione"/>
+                <Property name="text" type="java.lang.String" value="HP_BOOKCOMP"/>
+                <Property name="name" type="java.lang.String" value="HP_BOOKCOMP" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jIscrizioneCompetizioneActionPerformed"/>
@@ -203,7 +207,8 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel17">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Prezzo totale"/>
+                <Property name="text" type="java.lang.String" value="HP_TOTPRICE"/>
+                <Property name="name" type="java.lang.String" value="HP_TOTPRICE" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelPrezzoTot">
@@ -234,10 +239,14 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Scelta optional"/>
+                    <TitledBorder title="HP_CHOISEOPTS"/>
                   </Border>
                 </Property>
+                <Property name="name" type="java.lang.String" value="HP_CHOISEOPTS" noResource="true"/>
               </Properties>
+              <AccessibilityProperties>
+                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="HP_CHOISEOPTS"/>
+              </AccessibilityProperties>
 
               <Layout>
                 <DimensionLayout dim="0">
@@ -343,7 +352,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jSeparator1" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" alignment="0" pref="0" max="32767" attributes="0"/>
                           <Component id="jPanel3" alignment="0" max="32767" attributes="0"/>
                           <Component id="jButtonMyAnnullaIscrizione" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
@@ -368,7 +377,7 @@
                                   </Group>
                                   <Component id="jLabel23" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="98" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -430,7 +439,8 @@
             </Container>
             <Component class="javax.swing.JLabel" name="jLabel5">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Costo competizione"/>
+                <Property name="text" type="java.lang.String" value="HP_PRICE"/>
+                <Property name="name" type="java.lang.String" value="HP_PRICE" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelMyCosto">
@@ -442,9 +452,10 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Modifica optional"/>
+                    <TitledBorder title="HP_MODIFYOPTS"/>
                   </Border>
                 </Property>
+                <Property name="name" type="java.lang.String" value="HP_MODIFYOPTS" noResource="true"/>
               </Properties>
 
               <Layout>
@@ -456,7 +467,7 @@
                               <Group type="102" attributes="0">
                                   <Component id="jButtonMyOptionalConferma" min="-2" pref="89" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jButtonMyOptionalAnnulla" pref="88" max="32767" attributes="0"/>
+                                  <Component id="jButtonMyOptionalAnnulla" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -545,7 +556,8 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="jButtonMyOptionalConferma">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Conferma"/>
+                    <Property name="text" type="java.lang.String" value="HP_CONFIRM"/>
+                    <Property name="name" type="java.lang.String" value="HP_CONFIRM" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonMyOptionalConfermaActionPerformed"/>
@@ -553,7 +565,8 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="jButtonMyOptionalAnnulla">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Annulla"/>
+                    <Property name="text" type="java.lang.String" value="HP_CANCEL"/>
+                    <Property name="name" type="java.lang.String" value="HP_CANCEL" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonMyOptionalAnnullaActionPerformed"/>
@@ -568,7 +581,8 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel23">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Manager"/>
+                <Property name="text" type="java.lang.String" value="HP_MC"/>
+                <Property name="name" type="java.lang.String" value="HP_MC" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelMyManager">
@@ -578,7 +592,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButtonMyAnnullaIscrizione">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Annulla iscrizione"/>
+                <Property name="text" type="java.lang.String" value="HP_CANCELBOOKCOMP"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonMyAnnullaIscrizioneActionPerformed"/>
@@ -586,7 +600,8 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Prezzo totale"/>
+                <Property name="text" type="java.lang.String" value="HP_TOTPRICE"/>
+                <Property name="name" type="java.lang.String" value="HP_TOTPRICE" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelMyPrezzoTotale">

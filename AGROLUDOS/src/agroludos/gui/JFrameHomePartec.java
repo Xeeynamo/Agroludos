@@ -114,29 +114,34 @@ public class JFrameHomePartec extends javax.swing.JFrame
             }
         });
 
-        jLabel7.setText("Posti rimanenti");
+        jLabel7.setText("HP_NFREE");
         jLabel7.setToolTipText("");
+        jLabel7.setName("HP_NFREE"); // NOI18N
 
         jLabelNPart.setText("-");
 
-        jLabel12.setText("Costo competizione");
+        jLabel12.setText("HP_PRICE");
+        jLabel12.setName("HP_PRICE"); // NOI18N
 
         jLabelMailMC.setText("-");
 
         jLabelPrezzo_Comp.setText("-");
 
-        jLabel26.setText("Manager");
+        jLabel26.setText("HP_MC");
+        jLabel26.setName("HP_MC"); // NOI18N
 
         jLabelMC.setText("-");
 
-        jIscrizioneCompetizione.setText("Iscriviti alla competizione");
+        jIscrizioneCompetizione.setText("HP_BOOKCOMP");
+        jIscrizioneCompetizione.setName("HP_BOOKCOMP"); // NOI18N
         jIscrizioneCompetizione.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jIscrizioneCompetizioneActionPerformed(evt);
             }
         });
 
-        jLabel17.setText("Prezzo totale");
+        jLabel17.setText("HP_TOTPRICE");
+        jLabel17.setName("HP_TOTPRICE"); // NOI18N
 
         jLabelPrezzoTot.setText("-");
 
@@ -147,7 +152,8 @@ public class JFrameHomePartec extends javax.swing.JFrame
         });
         jScrollPane3.setViewportView(jListDisponibili);
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Scelta optional"));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("HP_CHOISEOPTS"));
+        jPanel5.setName("HP_CHOISEOPTS"); // NOI18N
 
         jCheckBoxOpt1.setText("-");
         jCheckBoxOpt1.addActionListener(new java.awt.event.ActionListener() {
@@ -278,6 +284,8 @@ public class JFrameHomePartec extends javax.swing.JFrame
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel5.getAccessibleContext().setAccessibleName("HP_CHOISEOPTS");
+
         jTabsCompetizioni.addTab("Competizioni disponibili", jPanel2);
         jPanel2.setName("jPanelCompDisponibili");
 
@@ -288,11 +296,13 @@ public class JFrameHomePartec extends javax.swing.JFrame
         });
         jScrollPane2.setViewportView(jListMyIscrizioni);
 
-        jLabel5.setText("Costo competizione");
+        jLabel5.setText("HP_PRICE");
+        jLabel5.setName("HP_PRICE"); // NOI18N
 
         jLabelMyCosto.setText("-");
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Modifica optional"));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("HP_MODIFYOPTS"));
+        jPanel3.setName("HP_MODIFYOPTS"); // NOI18N
 
         jCheckBoxMyOptional1.setText("-");
         jCheckBoxMyOptional1.addActionListener(new java.awt.event.ActionListener() {
@@ -321,14 +331,16 @@ public class JFrameHomePartec extends javax.swing.JFrame
 
         jLabelMyOptionalCosto3.setText("-");
 
-        jButtonMyOptionalConferma.setText("Conferma");
+        jButtonMyOptionalConferma.setText("HP_CONFIRM");
+        jButtonMyOptionalConferma.setName("HP_CONFIRM"); // NOI18N
         jButtonMyOptionalConferma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonMyOptionalConfermaActionPerformed(evt);
             }
         });
 
-        jButtonMyOptionalAnnulla.setText("Annulla");
+        jButtonMyOptionalAnnulla.setText("HP_CANCEL");
+        jButtonMyOptionalAnnulla.setName("HP_CANCEL"); // NOI18N
         jButtonMyOptionalAnnulla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonMyOptionalAnnullaActionPerformed(evt);
@@ -345,7 +357,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jButtonMyOptionalConferma, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonMyOptionalAnnulla, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
+                        .addComponent(jButtonMyOptionalAnnulla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCheckBoxMyOptional1)
@@ -381,18 +393,20 @@ public class JFrameHomePartec extends javax.swing.JFrame
 
         jLabelMyManagerMail.setText("-");
 
-        jLabel23.setText("Manager");
+        jLabel23.setText("HP_MC");
+        jLabel23.setName("HP_MC"); // NOI18N
 
         jLabelMyManager.setText("-");
 
-        jButtonMyAnnullaIscrizione.setText("Annulla iscrizione");
+        jButtonMyAnnullaIscrizione.setText("HP_CANCELBOOKCOMP");
         jButtonMyAnnullaIscrizione.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonMyAnnullaIscrizioneActionPerformed(evt);
             }
         });
 
-        jLabel2.setText("Prezzo totale");
+        jLabel2.setText("HP_TOTPRICE");
+        jLabel2.setName("HP_TOTPRICE"); // NOI18N
 
         jLabelMyPrezzoTotale.setText("-");
 
@@ -404,7 +418,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonMyAnnullaIscrizione, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -424,7 +438,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
                                     .addComponent(jLabelMyManagerMail)
                                     .addComponent(jLabelMyManager)))
                             .addComponent(jLabel23))
-                        .addGap(0, 98, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(

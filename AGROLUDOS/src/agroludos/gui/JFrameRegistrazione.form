@@ -213,7 +213,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel20">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Data di nascita"/>
+            <Property name="text" type="java.lang.String" value="SIGNUP_INFOBIRTHDAY"/>
             <Property name="toolTipText" type="java.lang.String" value="SIGNUP_INFOBIRTHDAY"/>
             <Property name="name" type="java.lang.String" value="SIGNUP_INFOBIRTHDAY" noResource="true"/>
           </Properties>
@@ -269,8 +269,8 @@
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="2">
-                <StringItem index="0" value="Uomo"/>
-                <StringItem index="1" value="Donna"/>
+                <StringItem index="0" value="M"/>
+                <StringItem index="1" value="F"/>
               </StringArray>
             </Property>
           </Properties>

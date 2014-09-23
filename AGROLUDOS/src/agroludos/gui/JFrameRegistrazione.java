@@ -116,7 +116,7 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
         jLabel16.setToolTipText("");
         jLabel16.setName("SIGNUP_INFOADDRESS"); // NOI18N
 
-        jLabel20.setText("Data di nascita");
+        jLabel20.setText("SIGNUP_INFOBIRTHDAY");
         jLabel20.setToolTipText("SIGNUP_INFOBIRTHDAY");
         jLabel20.setName("SIGNUP_INFOBIRTHDAY"); // NOI18N
 
@@ -136,7 +136,7 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
         jLabel30.setText("SIGNUP_INFOSRCTEXT");
         jLabel30.setName("SIGNUP_INFOSRCTEXT"); // NOI18N
 
-        jRegistraSesso.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Uomo", "Donna" }));
+        jRegistraSesso.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "M", "F" }));
 
         jLabel4.setText("SIGNUP_INFOCODE");
         jLabel4.setName("SIGNUP_INFOCODE"); // NOI18N
