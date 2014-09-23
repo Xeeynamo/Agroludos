@@ -474,6 +474,7 @@ public class ApplicationController
     UserType type;
     
     public ApplicationController(String server, String username, String password)
+            throws InternalErrorException
     {
         type = UserType.Anonimo;
         user = new AgroController(server, username, password);
