@@ -61,8 +61,8 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Competizioni disponibili">
-                <Property name="tabTitle" type="java.lang.String" value="Competizioni disponibili"/>
+              <JTabbedPaneConstraints tabName="HP_AVAILABLEC">
+                <Property name="tabTitle" type="java.lang.String" value="HP_AVAILABLEC"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -74,7 +74,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jSeparator2" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jScrollPane3" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jScrollPane3" alignment="0" pref="215" max="32767" attributes="0"/>
                           <Component id="jIscrizioneCompetizione" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -339,8 +339,8 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Le tue iscrizioni">
-                <Property name="tabTitle" type="java.lang.String" value="Le tue iscrizioni"/>
+              <JTabbedPaneConstraints tabName="HP_BOOKS">
+                <Property name="tabTitle" type="java.lang.String" value="HP_BOOKS"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

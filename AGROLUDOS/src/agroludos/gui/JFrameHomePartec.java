@@ -223,7 +223,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane3)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
                     .addComponent(jIscrizioneCompetizione, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -286,7 +286,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
 
         jPanel5.getAccessibleContext().setAccessibleName("HP_CHOISEOPTS");
 
-        jTabsCompetizioni.addTab("Competizioni disponibili", jPanel2);
+        jTabsCompetizioni.addTab("HP_AVAILABLEC", jPanel2);
         jPanel2.setName("jPanelCompDisponibili");
 
         jListMyIscrizioni.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -469,7 +469,7 @@ public class JFrameHomePartec extends javax.swing.JFrame
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabsCompetizioni.addTab("Le tue iscrizioni", jPanel1);
+        jTabsCompetizioni.addTab("HP_BOOKS", jPanel1);
         jPanel1.setName("jPanelCompPrenotate");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
