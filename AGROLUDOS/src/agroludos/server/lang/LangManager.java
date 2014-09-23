@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 /**
  *
@@ -37,6 +38,15 @@ public class LangManager extends PropertyEditorSupport {
         {
             JTabbedPane c = (JTabbedPane)component;
         }
+        else if (component instanceof JPanel)
+        {
+            JPanel c = (JPanel)component;
+            if (c.getBorder() instanceof TitledBorder)
+            {
+                TitledBorder titledBorder = (TitledBorder)c.getBorder();
+                titledBorder.setTitle(str);
+            }
+        }
         else if (component instanceof JLabel)
         {
             JLabel c = (JLabel)component;
@@ -52,7 +62,8 @@ public class LangManager extends PropertyEditorSupport {
             JCheckBox c = (JCheckBox)component;
             c.setText(str);
         }
-        else if (component instanceof Container)
+        
+        if (component instanceof Container)
         {
             ApplyLanguage((Container)component);
         }
