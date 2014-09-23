@@ -7,6 +7,8 @@ import agroludos.server.exception.DeniedRequestException;
 import agroludos.server.exception.InternalErrorException;
 import agroludos.server.exception.RequestNotSupportedException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import javax.swing.JFrame;
 
@@ -474,14 +476,7 @@ public class ApplicationController
     public ApplicationController(String server, String username, String password)
     {
         type = UserType.Anonimo;
-        try
-        {
-            user = new AgroController(server, username, password);
-        }
-        catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e)
-        {
-            Shared.showError(null, e.toString());
-        }
+        user = new AgroController(server, username, password);
     }
     
     private boolean validateRequest(Request request) throws RequestNotSupportedException
@@ -500,14 +495,14 @@ public class ApplicationController
         {
             return subProcessRequest(request, o);
         }
-        catch (Exception e)
+        catch (DeniedRequestException | RequestNotSupportedException | InternalErrorException e)
         {
             agroludos.gui.Shared.showError(user.getCurrentFrame(), e.toString());
             return null;
         }
     }
     private TransferObject subProcessRequest(Request request, TransferObject o)
-            throws DeniedRequestException, RequestNotSupportedException, InternalErrorException
+            throws DeniedRequestException, RequestNotSupportedException, InternalErrorException, InternalError
     {
         if (!validateRequest(request))
             throw new DeniedRequestException();
@@ -544,7 +539,8 @@ public class ApplicationController
                         throw new InternalErrorException(user.getStringLang("AC_LOGIN_ERROR"));
                     break;
                 case AddPartecipante:
-                    user.addPartecipante(o.getIndex(0).toString(), (Partecipante)o.getIndex(1));
+                    user.addPartecipante();
+                    this.subProcessRequest(Request.FrameLogin, null);
                     break;
                 case SendMail:
                     user.sendMail(o.getIndex(0).toString(), o.getIndex(1).toString(), o.getIndex(2).toString());
@@ -681,32 +677,22 @@ public class ApplicationController
                    
             }
         }
-        catch (ClassNotFoundException ex)
-        {
-            
-        }
         catch (MessagingException ex)
         {
             throw new InternalErrorException(user.getStringLang("AC_MAIL_ERROR") + "\n" + ex.toString());
         }
-        catch (WrongLoginException | CampiVuotiException | TipoCompetizioneInvalidException |
-                DefCodFiscException | DefEmailException | SrcScadutaException | CompPienaException
-                |MinMaxException | DatePriorException | CompetizioneEsistenteException ex)
+        catch (MinMaxException | DatePriorException | CompetizioneEsistenteException ex)
         {
             throw new InternalErrorException(ex.toString());
-        }
-        catch (IllegalAccessException ex)
-        {
-            
-        }
-        catch (InstantiationException ex)
-        {
-            
-        }
-        catch (SQLException ex)
-        {
-            throw new InternalErrorException("Impossibile stabilire una connessione col database.\n" +
-                    ex.toString());
+        } catch (SQLException ex) {
+        } catch (TipoCompetizioneInvalidException ex) {
+            Logger.getLogger(ApplicationController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SrcScadutaException ex) {
+            Logger.getLogger(ApplicationController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CompPienaException ex) {
+            Logger.getLogger(ApplicationController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (WrongLoginException ex) {
+            Logger.getLogger(ApplicationController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }

@@ -11,9 +11,7 @@ import agroludos.exception.DefPassException;
 import agroludos.exception.TooLongException;
 import agroludos.server.ApplicationController;
 import agroludos.components.TransferObject;
-import agroludos.server.exception.DeniedRequestException;
-import agroludos.server.exception.InternalErrorException;
-import agroludos.server.exception.RequestNotSupportedException;
+import agroludos.server.FrontController;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -29,23 +27,39 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
         this.fc = fc;
         initComponents();
     }
-
     
-    //AGGIUNTA by ROS (13/07/2014)
-    private String DefinePass (char [] P1,char [] P2) throws DefPassException
-    {
-        String x;
-        String pass1,pass2;
-        if (Arrays.equals(P1,P2))
-            return x=new String (P1);
-        else
-            throw new DefPassException();
+    public String jRegistraMailText() {
+        return jRegistraMail.getText();
     }
-    
-    void CheckMaximumLength(String s, int maxlength) throws TooLongException
-    {
-        if (s.length() > maxlength)
-            throw new TooLongException(s);
+    public String jRegistraNomeText() {
+        return jRegistraNome.getText();
+    }
+    public String jRegistraCognomeText() {
+        return jRegistraCognome.getText();
+    }
+    public String jRegistraIndirizzoText() {
+        return jRegistraIndirizzo.getText();
+    }
+    public String jRegistraDataNascitaText() {
+        return jRegistraDatanascita.getText();
+    }
+    public char jRegistraSessoText() {
+        return jRegistraSesso.getSelectedIndex() == 0 ? 'M' : 'F';
+    }
+    public String jRegistraCodFiscText() {
+        return jRegistraCodFisc.getText();
+    }
+    public String jRegistraTesserasanText() {
+        return jRegistraTesserasan.getText();
+    }
+    public String jRegistraDataSrcText() {
+        return jRegistraDataSrc.getText();
+    }
+    public String jRegistraPwdText() {
+        return new String(jRegistratiPwd.getPassword());
+    }
+    public String jRegistraPwd2Text() {
+        return new String(jRegistratiPwd2.getPassword());
     }
     
     /**
@@ -289,48 +303,11 @@ public class JFrameRegistrazione extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jRegistraConfermaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegistraConfermaActionPerformed
-
-        SimpleDateFormat d1 = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat d2 = new SimpleDateFormat("dd/MM/yyyy");
-        String Password;
-        try
-        {
-            CheckMaximumLength(jRegistraMail.getText(), 255);
-            CheckMaximumLength(jRegistraNome.getText(), 45);
-            CheckMaximumLength(jRegistraCognome.getText(), 45);
-            CheckMaximumLength(jRegistraIndirizzo.getText(), 255);
-            CheckMaximumLength(jRegistraCodFisc.getText(), 16);
-            CheckMaximumLength(jRegistraTesserasan.getText(), 20);
-            
-            d2.parse(jRegistraDataSrc.getText());
-            Password=DefinePass (jRegistratiPwd.getPassword(),jRegistratiPwd2.getPassword());
-            Partecipante p = new Partecipante(
-                jRegistraMail.getText(),
-                jRegistraNome.getText(),
-                jRegistraCognome.getText(),
-                jRegistraCodFisc.getText(),
-                jRegistraIndirizzo.getText(),
-                d1.parse(jRegistraDatanascita.getText()),    
-                jRegistraSesso.getSelectedIndex() == 0 ? 'M' : 'F',
-                jRegistraTesserasan.getText(),
-                d2.parse(jRegistraDataSrc.getText()),
-                jRegistraCertificatoSrc.getText());
-            
-            fc.processRequest(ApplicationController.Request.AddPartecipante, new TransferObject(new StringTO(Password), p));
-            Shared.showDialog(this, "Registrazione", "Registrazione avvenuta con successo!");
-            fc.processRequest(ApplicationController.Request.FrameLogin, null);
-        } catch (ParseException e) {
-            Shared.showError(this, "Data di nascita o data SRC non riconosciuta. Il formato corretto è DD/MM/YYYY.");
-        } catch (DefPassException e) {
-            Shared.showError(this, "Password inserite diverse.");
-        } catch (TooLongException e) {
-            Shared.showError(this, e.toString());
-        }
-        
+        FrontController.processRequest("AddPartecipante");
     }//GEN-LAST:event_jRegistraConfermaActionPerformed
 
     private void jRegistraAnnullaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegistraAnnullaActionPerformed
-        fc.processRequest(ApplicationController.Request.FrameLogin, null);    
+        FrontController.processRequest("FrameLogin");    
     }//GEN-LAST:event_jRegistraAnnullaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
